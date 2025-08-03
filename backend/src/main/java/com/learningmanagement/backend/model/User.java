@@ -32,6 +32,8 @@ public class User {
     @JsonProperty("Role")
     private Role role;
 
+    private String salt;
+
     public enum Role {
         ADMIN, TUTOR, STUDENT
     }
@@ -44,6 +46,14 @@ public class User {
         this.email = email;
         this.mobileNumber = mobileNumber;
         this.role = role;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public String getConfirmPassword() {
