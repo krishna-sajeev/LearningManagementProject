@@ -1,18 +1,20 @@
 package com.learningmanagement.backend.controller;
 
-import com.learningmanagement.backend.hashing.PasswordUtil;
-import com.learningmanagement.backend.hashing.SaltUtil;
+import com.learningmanagement.backend.Util.JwtUtil;
+import com.learningmanagement.backend.Util.PasswordUtil;
+import com.learningmanagement.backend.Util.SaltUtil;
 import com.learningmanagement.backend.model.User;
 import com.learningmanagement.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,12 +24,19 @@ public class UserController {
     @Autowired
     UserRepository repo;
 
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/signup")
     public ResponseEntity<Map<String,String>> signup(@RequestBody User input){
         Map<String,String> response =new HashMap<>();
         try{
-            if(input.getPassword() != input.getConfirmPassword())
+            User existingUser = repo.findByEmail(input.getEmail());
+            if (existingUser != null) {
+                response.put("status", "User already registered with this email");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            }
+            if(input.getPassword().equals(input.getConfirmPassword()))
                 response.put("status","Passwords do not match");
             String salt = SaltUtil.generateSalt(16);
             String hashedPassword = PasswordUtil.hashWithSHA256(input.getPassword(), salt);
@@ -49,24 +58,28 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String,Object>> login(@RequestBody User input) {
+    public ResponseEntity<?> login(@RequestBody User input) {
         Map<String, Object> response = new HashMap<>();
-        try{
+        String token;
+        try {
             User userFromDb = repo.findByEmail(input.getEmail());
 
             String enteredHashed = PasswordUtil.hashWithSHA256(input.getPassword(), userFromDb.getSalt());
-            if (enteredHashed.equals(userFromDb.getPassword())) {
-                response.put("status","Login Successfully");
+            if (!enteredHashed.equals(userFromDb.getPassword()) || (userFromDb == null)) {
+                ResponseEntity.status(401).body("Invalid credentials");
             }
-            else{
 
-                response.put("status","Login Failed");
+            token = jwtUtil.generateToken(userFromDb.getEmail());
+            if (token == null) {
+                return ResponseEntity.status(500).body("Token generation failed");
             }
+
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Collections.singletonMap("token", token));
     }
 }
 

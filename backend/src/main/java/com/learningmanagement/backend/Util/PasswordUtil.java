@@ -1,4 +1,4 @@
-package com.learningmanagement.backend.hashing;
+package com.learningmanagement.backend.Util;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
