@@ -13,6 +13,7 @@ import { Link as RouterLink } from "react-router-dom";
 import Layout from "../common/Layout";
 const Register = () => {
   const [form, setForm] = useState({
+    fullName:"",
     email: "",
     password: "",
     confirmPassword: "",
@@ -47,6 +48,18 @@ const Register = () => {
           Register
         </Typography>
         <form onSubmit={handleSubmit}>
+
+
+          <TextField
+  name="fullName"
+  label="Full Name"
+  type="name"
+  fullWidth
+  margin="normal"
+  value={form.fullName}
+  onChange={handleChange}
+  required
+/>
           <TextField
             name="email"
             label="Email"
