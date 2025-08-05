@@ -63,10 +63,12 @@ public class UserController {
         String token;
         try {
             User userFromDb = repo.findByEmail(input.getEmail());
-
+        if(userFromDb == null){
+                return  ResponseEntity.status(401).body("Invalid credentials");
+        }
             String enteredHashed = PasswordUtil.hashWithSHA256(input.getPassword(), userFromDb.getSalt());
-            if (!enteredHashed.equals(userFromDb.getPassword()) || (userFromDb == null)) {
-                ResponseEntity.status(401).body("Invalid credentials");
+            if (!enteredHashed.equals(userFromDb.getPassword()) ) {
+               return ResponseEntity.status(401).body("Invalid credentials");
             }
 
             token = jwtUtil.generateToken(userFromDb.getEmail());
