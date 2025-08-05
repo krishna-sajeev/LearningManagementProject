@@ -81,5 +81,6 @@ public class UserController {
 
         return ResponseEntity.ok(Collections.singletonMap("token", token));
     }
+
 }
 
