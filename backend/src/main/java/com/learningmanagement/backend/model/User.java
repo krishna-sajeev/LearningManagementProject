@@ -15,13 +15,13 @@ public class User {
     @JsonProperty("Full Name")
     private String fullName;
 
-    @JsonProperty("Password")
+//    @JsonProperty("Password")
     private String password;
 
     @Transient  // not stored in DB
     private String confirmPassword;
 
-    @JsonProperty("Email")
+//    @JsonProperty("Email")
     private String email;
 
 

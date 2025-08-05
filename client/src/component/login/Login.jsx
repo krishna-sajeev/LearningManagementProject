@@ -27,6 +27,7 @@ const [form, setForm] = useState({
     e.preventDefault();
     // Send login data to backend
     console.log("Login submitted:", form);
+
   };
 
   return (
@@ -81,7 +82,7 @@ const [form, setForm] = useState({
           </TextField>
 
           <Button type="submit" variant="contained" color="primary" size="large">
-            Login
+           <Link href="/admin-dashboard"> Login</Link>
           </Button>
 
           <Box display="flex" justifyContent="space-between" mt={1}>
