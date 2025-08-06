@@ -9,27 +9,27 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @JsonProperty("UserId")
+    @JsonProperty("UserId")
     private int id;
 
-//    @JsonProperty("Full Name")
+    @JsonProperty("Full Name")
     private String fullName;
 
-//    @JsonProperty("Password")
+    @JsonProperty("Password")
     private String password;
 
     @Transient  // not stored in DB
     private String confirmPassword;
 
-//    @JsonProperty("Email")
+    @JsonProperty("Email")
     private String email;
 
 
-//    @JsonProperty("Mobile Number")
+    @JsonProperty("Mobile Number")
     private long mobileNumber;
 
     @Enumerated(EnumType.STRING)
-//    @JsonProperty("Role")
+    @JsonProperty("Role")
     private Role role;
 
     private String salt;
