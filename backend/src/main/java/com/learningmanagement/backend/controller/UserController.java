@@ -36,8 +36,12 @@ public class UserController {
                 response.put("status", "User already registered with this email");
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
             }
-            if(input.getPassword().equals(input.getConfirmPassword()))
-                response.put("status","Passwords do not match");
+//            if(input.getPassword().equals(input.getConfirmPassword()))
+//                response.put("status","Passwords do not match");
+            if (input.getPassword() == null || input.getConfirmPassword() == null || !input.getPassword().equals(input.getConfirmPassword())) {
+                response.put("status", "Passwords do not match");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
             String salt = SaltUtil.generateSalt(16);
             String hashedPassword = PasswordUtil.hashWithSHA256(input.getPassword(), salt);
 
