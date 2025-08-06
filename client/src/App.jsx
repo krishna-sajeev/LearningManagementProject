@@ -10,6 +10,11 @@ import ManageUser from "./component/admindashboard/ManageUser";
 import ViewPayments from "./component/admindashboard/ViewPayments";
 import GenerateReports from "./component/admindashboard/GenerateReports";
 import AddCourse from './component/admindashboard/AddCourse';
+import StudentDetail from "./component/teacherdashboard/StudentDetail";
+import Assignment from "./component/teacherdashboard/Assignment";
+import Attendence from "./component/teacherdashboard/Attendence";
+import Batch from "./component/teacherdashboard/Batch";
+import TeacherDashboard from "./component/teacherdashboard/TeacherDashboard";
 
 function App() {
   return (
@@ -20,16 +25,18 @@ function App() {
         <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/teacher-dashboard" element={<TeacherDashboard/>}/>
  <Route path="/adminuser" element={<ManageUser />} />
 <Route path="/admincourse" element={<ManageCourse />} />
-
 <Route path="/adminpayments" element={<ViewPayments />} />
 <Route path="/adminreports" element={<GenerateReports />} /> 
-
 <Route path="/admincourse" element={<ManageCourse />} />
 <Route path="/admincourse/add" element={<AddCourse />} />
 
-
+<Route path="/teacher/student-detail" element={<StudentDetail/>}/>
+<Route path="/teacher/assignment" element={<Assignment/>}/>
+<Route path="/teacher/attendance" element={<Attendence/>}/>
+<Route path="/teacher/schedule" element={<Batch/>}/>
       </Routes>
     </Router>
   );
