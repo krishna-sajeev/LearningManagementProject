@@ -15,10 +15,12 @@ import Assignment from "./component/teacherdashboard/Assignment";
 import Attendence from "./component/teacherdashboard/Attendence";
 import Batch from "./component/teacherdashboard/Batch";
 import TeacherDashboard from "./component/teacherdashboard/TeacherDashboard";
+import StudentDashboard from "./component/studentdashboard/StudentDashboard";
+import Sidebar from "./component/common/Sidebar";
 
 function App() {
   return (
-    <Router>
+   
       <Routes>
          <Route path="/" element={<Navigate to="/login" />} /> 
         <Route path="/login" element={<Login />} />
@@ -33,12 +35,17 @@ function App() {
 <Route path="/admincourse" element={<ManageCourse />} />
 <Route path="/admincourse/add" element={<AddCourse />} />
 
+
+
+
 <Route path="/teacher/student-detail" element={<StudentDetail/>}/>
 <Route path="/teacher/assignment" element={<Assignment/>}/>
 <Route path="/teacher/attendance" element={<Attendence/>}/>
 <Route path="/teacher/schedule" element={<Batch/>}/>
+ <Route path="/student/student-dashboard" element={<StudentDashboard />}/> 
+
+<Route path="/Sidebar" element={<Sidebar/>}/>
       </Routes>
-    </Router>
   );
 }
 

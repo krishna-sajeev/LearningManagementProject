@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5174")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     @Autowired
@@ -65,14 +65,15 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody User input) {
         Map<String, Object> response = new HashMap<>();
         String token;
+        User userFromDb;
         try {
-            User userFromDb = repo.findByEmail(input.getEmail());
-        if(userFromDb == null){
-                return  ResponseEntity.status(401).body("Invalid credentials");
-        }
+            userFromDb = repo.findByEmail(input.getEmail());
+            if (userFromDb == null) {
+                return ResponseEntity.status(401).body("Invalid credentials");
+            }
             String enteredHashed = PasswordUtil.hashWithSHA256(input.getPassword(), userFromDb.getSalt());
-            if (!enteredHashed.equals(userFromDb.getPassword()) ) {
-               return ResponseEntity.status(401).body("Invalid credentials");
+            if (!enteredHashed.equals(userFromDb.getPassword())) {
+                return ResponseEntity.status(401).body("Invalid credentials");
             }
 
             token = jwtUtil.generateToken(userFromDb.getEmail());
@@ -85,7 +86,15 @@ public class UserController {
             throw new RuntimeException(e);
         }
 
-        return ResponseEntity.ok(Collections.singletonMap("token", token));
+        response.put("token", token);
+        response.put("user", Map.of(
+                "id", userFromDb.getId(),
+                "fullName", userFromDb.getFullName(),
+                "email", userFromDb.getEmail(),
+                "role", userFromDb.getRole()
+        ));
+
+        return ResponseEntity.ok(response);
     }
 
 }
