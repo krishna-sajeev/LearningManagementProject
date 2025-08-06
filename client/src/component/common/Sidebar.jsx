@@ -15,13 +15,6 @@ const Sidebar = ({ role }) => {
       { name: "Manage Courses", path: "/admincourse" }
 
     ],
-     teacher: [
-      { name: "Manage Student Detail", path: "/teacher/student-detail" },
-      { name: "Assignments", path: "/teacher/assignment" },
-      { name: "Attendance", path: "/teacher/attendance" },
-      { name: "View Batch Schedule", path: "/teacher/schedule" },
-      { name: "Logout", path: "/login" },
-    ],
   };
 
   return (
