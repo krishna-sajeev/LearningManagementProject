@@ -9,10 +9,10 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty("UserId")
+//    @JsonProperty("UserId")
     private int id;
 
-    @JsonProperty("Full Name")
+//    @JsonProperty("Full Name")
     private String fullName;
 
 //    @JsonProperty("Password")
@@ -25,11 +25,11 @@ public class User {
     private String email;
 
 
-    @JsonProperty("Mobile Number")
+//    @JsonProperty("Mobile Number")
     private long mobileNumber;
 
     @Enumerated(EnumType.STRING)
-    @JsonProperty("Role")
+//    @JsonProperty("Role")
     private Role role;
 
     private String salt;
