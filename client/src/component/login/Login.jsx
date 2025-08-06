@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { data, Link as RouterLink, useNavigate } from "react-router-dom";
 import Layout from "../common/Layout";
 import {
   Container,
@@ -11,24 +11,59 @@ import {
   MenuItem,
   Link,
 } from "@mui/material";
+import axios from "axios";
 
 const Login = () => {
-const [form, setForm] = useState({
-    email: "",
-    password: "",
-    role: "",
+   let navigate=useNavigate();
+const [user, setUser] = useState({
+    Email: " ",
+    Password: " ",
+    Role: " ",
   });
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setUser({ ...user, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Send login data to backend
-    console.log("Login submitted:", form);
+    console.log("Login submitted:", user);
 
   };
+
+  let validateUser = () => {
+  console.log(user);
+  axios.post("http://localhost:8081/login", user)
+    .then((res) => {
+      console.log(res.data);
+      if (res.data.token) {
+        alert("Login successful");
+
+        //  Store token and role in localStorage
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("role", user.Role); //  Save selected role
+        localStorage.setItem("userName", res.data.user.fullName); // Optional
+        //  Navigate based on role
+        // if (user.Role === "STUDENT") {
+        //   navigate("/student-dashboard");
+        // } else if (user.Role === "ADMIN") {
+        //   navigate("/admin-dashboard");
+        // } else if (user.Role === "TUTOR") {
+        //   navigate("/tutor-dashboard");
+        // }
+        navigate("/Sidebar");
+      } else {
+        alert("Login failed");
+        setUser({ Email: "", Password: "", Role: "" });
+      }
+    })
+    .catch((err) => {
+      console.error("Login error:", err);
+      alert("Login failed due to bad credentials or server error");
+    });
+};
+
 
   return (
     <Layout>
@@ -43,7 +78,7 @@ const [form, setForm] = useState({
         </Typography>
 
         <Box
-          component="form"
+          
           onSubmit={handleSubmit}
           sx={{ mt: 3, display: "flex", flexDirection: "column", gap: 2 }}
         >
@@ -51,8 +86,8 @@ const [form, setForm] = useState({
             label="Email"
             variant="outlined"
             fullWidth
-            name="email"
-            value={form.email}
+            name="Email"
+            value={user.Email}
             onChange={handleChange}
             required
           />
@@ -61,29 +96,27 @@ const [form, setForm] = useState({
             type="password"
             variant="outlined"
             fullWidth
-            name="password"
-            value={form.password}
+            name="Password"
+            value={user.Password}
             onChange={handleChange}
             required
           />
           <TextField
             select
             label=" Role"
-            name="role"
-            value={form.role}
+            name="Role"
+            value={user.Role}
             onChange={handleChange}
             variant="outlined"
             fullWidth
             required
           >
-            <MenuItem value="admin">Admin</MenuItem>
-            <MenuItem value="tutor">Tutor</MenuItem>
-            <MenuItem value="student">Student</MenuItem>
+            <MenuItem value="ADMIN">ADMIN</MenuItem>
+            <MenuItem value="TUTOR">TUTOR</MenuItem>
+            <MenuItem value="STUDENT">STUDENT</MenuItem>
           </TextField>
 
-          <Button type="submit" variant="contained" color="primary" size="large">
-           <Link href="/admin-dashboard"> Login</Link>
-          </Button>
+          <Button sx={{ mt: 1 /* margin top */ }} onClick={validateUser}>Log in</Button>
 
           <Box display="flex" justifyContent="space-between" mt={1}>
        {/* <Link component={RouterLink} to="/forgot-password" variant="body2">

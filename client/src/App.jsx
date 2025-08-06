@@ -10,6 +10,9 @@ import ManageUser from "./component/admindashboard/ManageUser";
 import ViewPayments from "./component/admindashboard/ViewPayments";
 import GenerateReports from "./component/admindashboard/GenerateReports";
 import AddCourse from './component/admindashboard/AddCourse';
+import Myprofile from "./component/student/StudentDashboard/Myprofile";
+import StudentDashboard from "./component/student/StudentDashboard/StudentDashboard";
+import Sidebar from "./component/common/Sidebar";
 
 function App() {
   return (
@@ -28,6 +31,11 @@ function App() {
 
 <Route path="/admincourse" element={<ManageCourse />} />
 <Route path="/admincourse/add" element={<AddCourse />} />
+
+ <Route path="/student-dashboard" element={<StudentDashboard />}/> 
+<Route path="/MyProfile" element={<Myprofile />} />
+
+<Route path="/Sidebar" element={<Sidebar/>}/>
 
 
       </Routes>
