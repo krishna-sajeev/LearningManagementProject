@@ -49,14 +49,16 @@ const Sidebar = ({ role }) => {
       { name: "Logout", path: "/login" },
     ],
     student: [
-      { name: "My Profile", path: "/student/student-dashboard" },
+      { name: "My Profile", path: "/student/Profile" },
+      { name: "Student Dashboard", path:"/student/student-dashboard"},
       { name: "Enrolled Course", path: "/student/enrolled-course" },
       { name: "Feedback", path: "/student/feedback" },
       { name: "Live Session", path: "/student/live-session" },
       { name: "Recorded videos", path: "/student/recorded-videos" },
       { name: "Reference Material", path: "/student/reference-material" },
       { name: "Assignment", path: "/student/assignment" },
-      { name: "Project", path: "/student/project" },
+      { name: "Project", path: "/student/project" }
+      
     ],
   };
 
@@ -89,7 +91,7 @@ const Sidebar = ({ role }) => {
       aria-label="open drawer"
       edge="start"
       onClick={handleDrawerToggle}
-      sx={{ mr: 2, display: { sm: "none" } }}
+      sx={{ mr: 2 }}
     >
       <MenuIcon />
     </IconButton>
@@ -105,7 +107,7 @@ const Sidebar = ({ role }) => {
     </Typography>
 
     {/* Right-side Buttons */}
-    <Box sx={{ display: { xs: "none", sm: "block" } }}>
+    <Box sx={{ display: {  sm: "block" } }}>
       <Button sx={{ color: "#ecf0f1" }} onClick={() => navigate("/")}>
         Home
       </Button>
@@ -161,7 +163,7 @@ const Sidebar = ({ role }) => {
       <Box component="main" sx={{ flexGrow: 1, p: 3, ml: { sm: `${drawerWidth}px` } }}>
         <Toolbar />
         {/* Your actual page content will go here */}
-        <Typography variant="h4">Welcome to the LMS Dashboard</Typography>
+    
       </Box>
     </Box>
   );

@@ -16,6 +16,8 @@ import Attendence from "./component/teacherdashboard/Attendence";
 import Batch from "./component/teacherdashboard/Batch";
 import TeacherDashboard from "./component/teacherdashboard/TeacherDashboard";
 import StudentDashboard from "./component/studentdashboard/StudentDashboard";
+
+import Assignments from "./component/studentdashboard/Assignment";
 import Sidebar from "./component/common/Sidebar";
 
 function App() {
@@ -44,7 +46,9 @@ function App() {
 <Route path="/teacher/schedule" element={<Batch/>}/>
  <Route path="/student/student-dashboard" element={<StudentDashboard />}/> 
 
-<Route path="/Sidebar" element={<Sidebar/>}/>
+ <Route path="/student/assignment" element={<Assignments />}/>
+
+
       </Routes>
   );
 }

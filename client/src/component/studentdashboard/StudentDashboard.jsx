@@ -1,70 +1,101 @@
-import React from 'react'
-import { Box, Typography, Grid } from "@mui/material";
-import Sidebar from "../common/Sidebar";
-import Header from "../common/Header";
+import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  Typography,
+  Card,
+  CardHeader,
+  CardMedia,
+  CardContent,
+  Avatar,
+  IconButton,
+  Button
+} from '@mui/material';
+import { red } from '@mui/material/colors';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Sidebar from '../common/Sidebar';
+import Header from '../common/Header';
+import axiosInstance from '../../axiosinteceptor';
 
+
+
+
+// Main Student Dashboard Component
 const StudentDashboard = () => {
+  let token=localStorage.getItem('token');
+  const[courses,setCourses]=useState([]);
+   useEffect(()=>{
+    axiosInstance.get('http://localhost:8080/display')
+    .then((res)=>{
+      console.log(res)
+        setCourses(res.data)
+    })
+    .catch((err)=>{
+          console.log(err);
+          
+    })
+  },[]);
+
   return (
     <>
-     <Sidebar role="student" />
+      <Sidebar role="student" />
       <Header title="Student Dashboard" />
-      
+        <Typography variant="h5" gutterBottom align="center">
+    Welcome Student
+  </Typography>
+ <Box sx={{ textAlign: 'center', mt: 5, mb: 2 }}>
+  <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#2c3e50' }}>
+    Available Courses
+  </Typography>
+  <Box
+    sx={{
+      width: 120,
+      height: 4,
+      backgroundColor: '#3498db',
+      margin: '8px auto 0',
+      borderRadius: 2,
+    }}
+  />
+</Box>
       <Box
-        sx={{
-          marginLeft: "260px",     // sidebar width
-          marginTop: "64px",       // header height
-          padding: 3,              // standard spacing
-        }}
+        sx={{ display: 'flex', flexWrap: 'wrap', gap: 4, justifyContent: 'center', mt: 4 }}
       >
-        <Typography variant="h5" gutterBottom>
-          Welcome Teacher
+        
+{courses.map((course) => (
+         <Card sx={{ maxWidth: 345 }}>
+      <CardHeader
+        avatar={
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="course">
+           ICT
+          </Avatar>
+        }
+       
+        title={course.title}
+        subheader={course.startdate}
+      />
+      <CardMedia
+        component="img"
+        height="194"
+        image={course.icon}
+        alt="Course Banner"
+      />
+      <CardContent>
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          {course.description}
         </Typography>
-
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6} md={3}>
-            <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
-              My Profile
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
-              Enrolled Course
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
-              Feedback
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
-              Live Session
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
-              Recorded videos
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
-              Reference Material
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
-              Assignment
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
-              Project
-            </Box>
-          </Grid>
-        </Grid>
+      </CardContent>
+      <Box sx={{ mt: 4 , marginBottom:5,marginLeft:5}}>
+          <Button variant="contained" size="large">
+            Explore More
+          </Button>
+        </Box>
+        
+    </Card>
+    
+   ))}
+        
       </Box>
     </>
-  )
-}
+  );
+};
 
-export default StudentDashboard
+export default StudentDashboard;

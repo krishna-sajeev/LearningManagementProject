@@ -5,6 +5,7 @@ import com.learningmanagement.backend.model.Course;
 import com.learningmanagement.backend.repository.CourseRepository;
 import com.learningmanagement.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,4 +41,15 @@ public class CourseController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/display")
+    public ResponseEntity<List<Course>> viewCourses() {
+        try {
+            List<Course> courses = repo.findAll();
+            return ResponseEntity.ok(courses);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
+
+

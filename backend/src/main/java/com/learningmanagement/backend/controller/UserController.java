@@ -38,7 +38,7 @@ public class UserController {
             }
 //            if(input.getPassword().equals(input.getConfirmPassword()))
 //                response.put("status","Passwords do not match");
-            if (input.getPassword() == null || input.getConfirmPassword() == null || !input.getPassword().equals(input.getConfirmPassword())) {
+            if ((input.getPassword() == null) || (input.getConfirmPassword() == null) || (!input.getPassword().equals(input.getConfirmPassword()))) {
                 response.put("status", "Passwords do not match");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
