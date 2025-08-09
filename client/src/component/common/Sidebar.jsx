@@ -40,7 +40,7 @@ const Sidebar = ({ role, children }) => {
       { name: "Logout", path: "/login" },
     ],
     student: [
-      { name: "My Profile", path: "/student/Profile" },
+      { name: "My Profile", path: "/student/profile" },
       { name: "Student Dashboard", path: "/student/student-dashboard" },
       { name: "Enrolled Course", path: "/student/enrolled-course" },
       { name: "Feedback", path: "/student/feedback" },

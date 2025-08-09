@@ -22,6 +22,7 @@ import Assignments from "./component/studentdashboard/Assignments";
 
 import Layout from "./component/common/Layout";
 import Project from "./component/studentdashboard/Project";
+import MyProfile from "./component/studentdashboard/MyProfile";
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
         <Route path="/student/student-dashboard" element={<Layout role="student"><StudentDashboard /></Layout>} />
         <Route path="/student/assignment" element={<Layout role="student"><Assignments /></Layout>} />
         <Route path="/student/project" element={<Layout role="student"><Project /></Layout>} />
+        <Route path="/student/profile" element={<Layout role="student"><MyProfile /></Layout>} />
         
       </Routes>
   
