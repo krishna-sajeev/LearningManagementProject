@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography, Grid } from "@mui/material";
 import Sidebar from "../common/Sidebar";
 import Header from "../common/Header";
-
+import { Link } from "react-router-dom";
 const AdminDashboard = () => {
   return (
     <>
@@ -23,22 +23,28 @@ const AdminDashboard = () => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={3}>
             <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
-              Manage Users
+              <Link to="/adminmanageusers"> 
+              View Users
+               </Link> 
             </Box>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
-              Manage Courses
+           <Link to="/adminmanagecourse">  Add Courses</Link> 
             </Box>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
+             {/* <link to="/adminpayments"> */}
               View Payment Status
+              {/* </link> */}
             </Box>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
-              Generate Reports
+             <Link to="/adminreports">   
+             Generate Reports
+              </Link> 
             </Box>
           </Grid>
         </Grid>
