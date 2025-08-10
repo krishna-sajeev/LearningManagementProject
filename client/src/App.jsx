@@ -23,6 +23,9 @@ import Assignments from "./component/studentdashboard/Assignments";
 import Layout from "./component/common/Layout";
 import Project from "./component/studentdashboard/Project";
 import MyProfile from "./component/studentdashboard/MyProfile";
+import NewAssignment from "./component/teacherdashboard/NewAssignment";
+import EditAssignment from "./component/teacherdashboard/EditAssignment";
+import ViewSubmission from "./component/teacherdashboard/ViewSubmission";
 
 function App() {
   return (
@@ -46,6 +49,9 @@ function App() {
         <Route path="/teacher/assignment" element={<Layout role="teacher"><Assignment /></Layout>} />
         <Route path="/teacher/attendance" element={<Layout role="teacher"><Attendence /></Layout>} />
         <Route path="/teacher/schedule" element={<Layout role="teacher"><Batch /></Layout>} />
+        <Route path="/new-assignment" element={<Layout role="teacher"><NewAssignment/></Layout>} />
+        <Route path="/edit-assignment/:id" element={<Layout role="teacher"><EditAssignment/></Layout>}/>
+        <Route path="/view-submission/:id" element={<Layout role="teacher"><ViewSubmission/></Layout>} />
 
         {/* Student Routes */}
         <Route path="/student/student-dashboard" element={<Layout role="student"><StudentDashboard /></Layout>} />
