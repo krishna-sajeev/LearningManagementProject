@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 
 const Header = ({ title }) => {
+  
   return (
     <Box
       bgcolor="#34495e"
@@ -18,9 +19,7 @@ const Header = ({ title }) => {
         borderRadius: "0 0 8px 8px",
       }}
     >
-      <Typography variant="h5" fontWeight="bold">
-        {title}
-      </Typography>
+      
     </Box>
   );
 };

@@ -23,7 +23,7 @@ setFormData({ ...formData, [e.target.name]: value });
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8081/addCourse", formData);
+      await axios.post("http://localhost:8080/addCourse", formData);
       alert("Course added successfully!");
       setFormData({
         title: "",

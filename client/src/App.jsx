@@ -22,7 +22,7 @@ import Assignments from "./component/studentdashboard/Assignments";
 
 import Layout from "./component/common/Layout";
 import Project from "./component/studentdashboard/Project";
-import MyProfile from "./component/studentdashboard/MyProfile";
+import MyProfile from "./component/profile/MyProfile";
 import NewAssignment from "./component/teacherdashboard/NewAssignment";
 import EditAssignment from "./component/teacherdashboard/EditAssignment";
 import ViewSubmission from "./component/teacherdashboard/ViewSubmission";
@@ -36,15 +36,15 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* Admin Routes */}
-        <Route path="/admin-dashboard" element={<Layout role="admin"><AdminDashboard /></Layout>} />
-        <Route path="/adminuser" element={<Layout role="admin"><ManageUser /></Layout>} />
-        <Route path="/admincourse" element={<Layout role="admin"><ManageCourse /></Layout>} />
-        <Route path="/adminpayments" element={<Layout role="admin"><ViewPayments /></Layout>} />
-        <Route path="/adminreports" element={<Layout role="admin"><GenerateReports /></Layout>} />
-        <Route path="/admincourse/add" element={<Layout role="admin"><AddCourse /></Layout>} />
+        <Route path="/admin/admin-dashboard" element={<Layout role="admin"><AdminDashboard /></Layout>} />
+        <Route path="/admin/adminuser" element={<Layout role="admin"><ManageUser /></Layout>} />
+        <Route path="/admin/admincourse" element={<Layout role="admin"><ManageCourse /></Layout>} />
+        <Route path="/admin/adminpayments" element={<Layout role="admin"><ViewPayments /></Layout>} />
+        <Route path="/admin/adminreports" element={<Layout role="admin"><GenerateReports /></Layout>} />
+        <Route path="/admin/admincourse/add" element={<Layout role="admin"><AddCourse /></Layout>} />
 
         {/* Teacher Routes */}
-        <Route path="/teacher-dashboard" element={<Layout role="teacher"><TeacherDashboard /></Layout>} />
+        <Route path="/teacher/teacher-dashboard" element={<Layout role="teacher"><TeacherDashboard /></Layout>} />
         <Route path="/teacher/student-detail" element={<Layout role="teacher"><StudentDetail /></Layout>} />
         <Route path="/teacher/assignment" element={<Layout role="teacher"><Assignment /></Layout>} />
         <Route path="/teacher/attendance" element={<Layout role="teacher"><Attendence /></Layout>} />
