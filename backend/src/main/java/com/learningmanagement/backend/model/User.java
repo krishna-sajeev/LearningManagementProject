@@ -35,7 +35,7 @@ public class User {
     private String salt;
 
     public enum Role {
-        ADMIN, TUTOR, STUDENT
+        ADMIN, TEACHER, STUDENT
     }
 
     public User(int id, String fullName, String password, String confirmPassword, String email, long mobileNumber, Role role) {

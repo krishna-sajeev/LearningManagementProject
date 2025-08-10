@@ -19,7 +19,7 @@ const ManageCourse = () => {
             <Typography variant="body1">Course list will go here...</Typography>
             <Grid container spacing={2} sx={{ mt: 2 }}>
               <Grid item>
-               <Link to="/admincourse/add" style={{ textDecoration: "none" }}>
+               <Link to="/admin/admincourse/add" style={{ textDecoration: "none" }}>
   <Button variant="contained" color="primary">Add Course</Button>
 </Link>
 

@@ -44,7 +44,7 @@ function App() {
         <Route path="/admin/admincourse/add" element={<Layout role="admin"><AddCourse /></Layout>} />
 
         {/* Teacher Routes */}
-        <Route path="/teacher-dashboard" element={<Layout role="teacher"><TeacherDashboard /></Layout>} />
+        <Route path="/teacher/teacher-dashboard" element={<Layout role="teacher"><TeacherDashboard /></Layout>} />
         <Route path="/teacher/student-detail" element={<Layout role="teacher"><StudentDetail /></Layout>} />
         <Route path="/teacher/assignment" element={<Layout role="teacher"><Assignment /></Layout>} />
         <Route path="/teacher/attendance" element={<Layout role="teacher"><Attendence /></Layout>} />
