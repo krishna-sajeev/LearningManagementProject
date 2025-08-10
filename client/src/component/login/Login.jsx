@@ -16,9 +16,9 @@ import axios from "axios";
 const Login = () => {
    let navigate=useNavigate();
 const [user, setUser] = useState({
-    email: " ",
-    password: " ",
-    role: " ",
+    email: "",
+    password: "",
+    role: "",
   });
 
   const handleChange = (e) => {
@@ -29,7 +29,7 @@ const [user, setUser] = useState({
     e.preventDefault();
     // Send login data to backend
     console.log("Login submitted:", user);
-
+    validateUser();
   };
 
   let validateUser = () => {
