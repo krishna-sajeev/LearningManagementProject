@@ -59,7 +59,7 @@ function App() {
         <Route path="/student/project" element={<Layout role="student"><Project /></Layout>} />
         <Route path="/student/profile" element={<Layout role="student"><MyProfile /></Layout>} />
         
-      </Routes>
+      </Routes> 
   
   );
 }
