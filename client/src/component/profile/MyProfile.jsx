@@ -1,71 +1,94 @@
-import React, { useEffect, useState } from 'react'
-import { Box, Typography, Avatar, Divider, List, ListItem, ListItemText, LinearProgress } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { 
+  Box, Typography, Avatar, Divider, Accordion, AccordionDetails, AccordionSummary, 
+  List, ListItem, ListItemText, LinearProgress, Paper, Grid 
+} from '@mui/material';
 import axiosInstance from '../../axiosinteceptor';
-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const MyProfile = () => {
-     let token=localStorage.getItem('token');
-     let id = localStorage.getItem("id");
-    const[user,setUser]=useState([]);
-     useEffect(()=>{
-      axiosInstance.get(`http://localhost:8080/my-profile/${id}`)
-      .then((res)=>{
-        console.log(res)
-          setUser(res.data)
-      })
-      .catch((err)=>{
-            console.log(err);
-            
-      })
-    },[]);
+  const token = localStorage.getItem('token');
+  const id = localStorage.getItem("id");
+
+  const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axiosInstance.get(`http://localhost:8080/my-profile/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then((res) => {
+      setUser(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+  }, [id, token]);
+
+  if (loading) {
+    return <Typography>Loading profile...</Typography>;
+  }
+
   return (
-    <>
-        <Box sx={{ p: 4, maxWidth: '800px', margin: 'auto' }}>
+    <Box sx={{ p: 4, maxWidth: '900px', margin: 'auto' }}>
+      
+      {/* Header */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
         <Avatar sx={{ width: 80, height: 80, mr: 3 }}>
           {user.fullName?.charAt(0) || "U"}
         </Avatar>
-
         <Box>
-          <Typography variant="h5" fontWeight="bold">{user.fullName}</Typography>
-          <Typography variant="body1" color="text.secondary">{user.email}</Typography>
-         
-        </Box>
-        
-      </Box>
- <Accordion>
-        
-        <AccordionSummary
-          expandIcon={<ArrowDownwardIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
+          <Typography variant="h5" fontWeight="bold">{user?.fullName || "Unknown User"}</Typography>
+          <Typography variant="body1" color="text.secondary">{user?.email || "N/A"}</Typography>
           
+        </Box>
+      </Box>
+
+      
+
+      {/* Contact Details */}
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="contact-details" id="contact-header">
           <Typography component="span">Contact Details</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-           Project idea
-          </Typography>
+          <Typography>Mobile Number: {user?.mobileNumber || "N/A"}</Typography>
+          <Typography>Email: {user?.email || "N/A"}</Typography>
         </AccordionDetails>
-        </Accordion>
-      <Divider sx={{ mb: 2 }} />
-      {/* <Typography variant="h6" gutterBottom>Enrolled Courses</Typography>
-      <List>
-        {user.enrolledCourses.map((course, idx) => (
-          <ListItem key={idx}>
-            <Box sx={{ width: '100%' }}>
-              <ListItemText primary={course.title} />
-              <LinearProgress variant="determinate" value={course.progress} sx={{ height: 8, borderRadius: 5 }} />
-            </Box>
-          </ListItem>
-        ))}
-      </List> */}
-    </Box>
-    </>
-  )
-}
+      </Accordion>
 
-export default MyProfile
+      {/* Enrolled Courses */}
+      {user.enrolledCourses?.length > 0 && (
+        <Box sx={{ mt: 3 }}>
+          <Typography variant="h6" gutterBottom>Enrolled Courses</Typography>
+          <List>
+            {user.enrolledCourses.map((course, idx) => (
+              <ListItem key={idx}>
+                <Box sx={{ width: '100%' }}>
+                  <ListItemText 
+                    primary={course.title} 
+                    secondary={`Progress: ${course.progress || 0}%`} 
+                  />
+                  <LinearProgress 
+                    variant="determinate" 
+                    value={course.progress || 0} 
+                    sx={{ height: 8, borderRadius: 5 }} 
+                  />
+                </Box>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      )}
+
+      <Divider sx={{ my: 3 }} />
+
+     
+    </Box>
+  );
+};
+
+export default MyProfile;

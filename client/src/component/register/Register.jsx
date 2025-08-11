@@ -22,7 +22,7 @@ const Register = () => {
     password: "",
     confirmPassword: "",
     role: "",
-    mobile: "",
+    mobileNumber: "",
   });
 
   const [error, setError] = useState("");
@@ -39,7 +39,7 @@ const Register = () => {
     e.preventDefault();
 
    
-    if (!/^\d{10}$/.test(form.mobile)) {
+    if (!/^\d{10}$/.test(form.mobileNumber)) {
       setError("Enter a valid 10-digit mobile number.");
       return;
     }
@@ -125,12 +125,12 @@ const Register = () => {
               required
             />
             <TextField
-              name="mobile"
+              name="mobileNumber"
               label="Mobile Number"
               type="tel"
               fullWidth
               margin="normal"
-              value={form.mobile}
+              value={form.mobileNumber}
               onChange={handleChange}
               required
             />
