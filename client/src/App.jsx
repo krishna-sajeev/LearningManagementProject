@@ -9,7 +9,6 @@ import ManageCourse from "./component/admindashboard/ManageCourse";
 import ManageUser from "./component/admindashboard/ManageUser";
 import ViewPayments from "./component/admindashboard/ViewPayments";
 import GenerateReports from "./component/admindashboard/GenerateReports";
-import AddCourse from './component/admindashboard/AddCourse';
 
 import StudentDetail from "./component/teacherdashboard/StudentDetail";
 import Assignment from "./component/teacherdashboard/Assignment";
@@ -26,6 +25,11 @@ import MyProfile from "./component/profile/MyProfile";
 import NewAssignment from "./component/teacherdashboard/NewAssignment";
 import EditAssignment from "./component/teacherdashboard/EditAssignment";
 import ViewSubmission from "./component/teacherdashboard/ViewSubmission";
+import ManageUsers from "./component/admindashboard/ManageUsers";
+import ManageCourses from "./component/admindashboard/ManageCourses";
+import Certificate from "./component/admindashboard/Certificate";
+
+
 
 function App() {
   return (
@@ -41,8 +45,13 @@ function App() {
         <Route path="/admin/admincourse" element={<Layout role="admin"><ManageCourse /></Layout>} />
         <Route path="/admin/adminpayments" element={<Layout role="admin"><ViewPayments /></Layout>} />
         <Route path="/admin/adminreports" element={<Layout role="admin"><GenerateReports /></Layout>} />
-        <Route path="/admin/admincourse/add" element={<Layout role="admin"><AddCourse /></Layout>} />
-
+        <Route path="/admin/adminmanageusers" element={<Layout role="admin"><ManageUsers /></Layout>} />
+        <Route path="/admin/adminuser" element={<Layout role="admin"><ManageUser /></Layout>} />
+          <Route path="/admin/adminmanagecourse" element={<Layout role="admin"><ManageCourses /></Layout>} />
+          <Route path="/admin/adminreport" element={<Layout role="admin"><Certificate /></Layout>} /> 
+          <Route path="/admin/adminpayments" element={<Layout role="admin"><ViewPayments /></Layout>} />
+          <Route path="/admin/adminreports" element={<Layout role="admin"><GenerateReports /></Layout>} />  
+          
         {/* Teacher Routes */}
         <Route path="/teacher/teacher-dashboard" element={<Layout role="teacher"><TeacherDashboard /></Layout>} />
         <Route path="/teacher/student-detail" element={<Layout role="teacher"><StudentDetail /></Layout>} />

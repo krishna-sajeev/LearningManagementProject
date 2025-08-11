@@ -33,6 +33,8 @@ const Sidebar = ({ role, children }) => {
     admin: [
 
       { name: "Manage Users", path: "/admin/adminuser" },
+      { name: "My Profile", path: "/student/profile"},
+      { name: "Admin Dashboard", path: "/admin/admin-dashboard" },
       { name: "Manage Courses", path: "/admin/admincourse" },
       { name: "Payments", path: "/admin/adminpayments" },
       { name: "Reports", path: "/admin/adminreports" },

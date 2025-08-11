@@ -114,7 +114,7 @@ const [user, setUser] = useState({
             <MenuItem value="STUDENT">STUDENT</MenuItem>
           </TextField>
 
-          <Button sx={{ mt: 1 /* margin top */ }} onClick={validateUser}><Link href="/admin-dashboard">Log in</Link></Button>
+          <Button sx={{ mt: 1 /* margin top */ }} onClick={validateUser}>Log in</Button>
 
           <Box display="flex" justifyContent="space-between" mt={1}>
        {/* <Link component={RouterLink} to="/forgot-password" variant="body2">
