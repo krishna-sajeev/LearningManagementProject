@@ -13,7 +13,8 @@ const ManageUser = () => {
           <Typography variant="h5" gutterBottom>
             User Management
           </Typography>
-           <Paper elevation={5} sx={{ p:30,
+           <Paper elevation={5} sx={{ 
+            p:30,
              mt:8 }}>
             <Typography variant="body1">User list will go here...</Typography>
             <Grid container spacing={2} sx={{ mt: 4 }}>
