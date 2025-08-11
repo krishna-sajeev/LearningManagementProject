@@ -136,6 +136,7 @@ const ManageCourse = () => {
         </Table>
       </TableContainer>
 
+<<<<<<< HEAD
       {/* Edit Dialog */}
       <Dialog open={openEdit} onClose={() => setOpenEdit(false)}>
         <DialogTitle>Edit Course</DialogTitle>
@@ -163,6 +164,28 @@ const ManageCourse = () => {
         </DialogActions>
       </Dialog>
     </Container>
+=======
+          <Paper elevation={3} sx={{ p: 34, mt: 2 }}>
+            <Typography variant="body1">Course list will go here...</Typography>
+            <Grid container spacing={2} sx={{ mt: 2 }}>
+              <Grid item>
+               <Link to="/admin/admincourse/add" style={{ textDecoration: "none" }}>
+  <Button variant="contained" color="primary">Add Course</Button>
+</Link>
+
+              </Grid>
+              <Grid item>
+                <Button variant="outlined" color="secondary">Edit Course</Button>
+              </Grid>
+              <Grid item>
+                <Button variant="contained" color="error">Delete Course</Button>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Box>
+      </Box>
+    </Box>
+>>>>>>> fd00b1dbf75c2eaba638e7be30ab856c94476c74
   );
 };
 

@@ -26,24 +26,24 @@ const GenerateReports = () => {
       <Sidebar role="admin" />
       <Box flexGrow={1}>
         <Header title="Generate Reports" />
-        <Box p={3}>
+        <Box p={8}>
           <Typography variant="h5" gutterBottom>
             Summary Report
           </Typography>
           <Grid container spacing={3} sx={{ mt: 2 }}>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={8} sm={2} md={4}>
               <StatCard title="Total Users" value={stats.totalUsers} />
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={8} sm={3} md={4}>
               <StatCard title="Total Courses" value={stats.totalCourses} />
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={8} sm={3} md={4}>
               <StatCard title="Total Payments" value={stats.totalPayments} />
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={8} sm={3} md={4}>
               <StatCard title="Active Tutors" value={stats.activeTutors} />
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={8} sm={3} md={4}>
               <StatCard title="Enrolled Students" value={stats.enrolledStudents} />
             </Grid>
           </Grid>

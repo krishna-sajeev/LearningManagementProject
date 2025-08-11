@@ -14,11 +14,12 @@ import {
 import axios from "axios";
 
 const Login = () => {
+  
    let navigate=useNavigate();
 const [user, setUser] = useState({
-    Email: " ",
-    Password: " ",
-    Role: " ",
+    email: "",
+    password: "",
+    role: "",
   });
 
   const handleChange = (e) => {
@@ -29,33 +30,30 @@ const [user, setUser] = useState({
     e.preventDefault();
     // Send login data to backend
     console.log("Login submitted:", user);
-
+    validateUser();
   };
 
   let validateUser = () => {
   console.log(user);
-  axios.post("http://localhost:8081/login", user)
+  axios.post("http://localhost:8080/login", user)
     .then((res) => {
       console.log(res.data);
       if (res.data.token) {
+        console.log(`/${user.role}/${user.role.toLowerCase()}-dashboard`)
         alert("Login successful");
 
         //  Store token and role in localStorage
         localStorage.setItem("token", res.data.token);
-        localStorage.setItem("role", user.Role); //  Save selected role
+        localStorage.setItem("role", user.role); //  Save selected role
+        localStorage.setItem("id",res.data.user.id)
         localStorage.setItem("userName", res.data.user.fullName); // Optional
-        //  Navigate based on role
-        // if (user.Role === "STUDENT") {
-        //   navigate("/student-dashboard");
-        // } else if (user.Role === "ADMIN") {
-        //   navigate("/admin-dashboard");
-        // } else if (user.Role === "TUTOR") {
-        //   navigate("/tutor-dashboard");
-        // }
-        navigate("/Sidebar");
+        
+        
+        navigate(`/${user.role.toLowerCase()}/${user.role.toLowerCase()}-dashboard`);
+
       } else {
-        alert("Login failed");
-        setUser({ Email: "", Password: "", Role: "" });
+        alert(res.data.status);
+        setUser({ email: "", password: "", role: "" });
       }
     })
     .catch((err) => {
@@ -86,8 +84,8 @@ const [user, setUser] = useState({
             label="Email"
             variant="outlined"
             fullWidth
-            name="Email"
-            value={user.Email}
+            name="email"
+            value={user.email}
             onChange={handleChange}
             required
           />
@@ -96,23 +94,23 @@ const [user, setUser] = useState({
             type="password"
             variant="outlined"
             fullWidth
-            name="Password"
-            value={user.Password}
+            name="password"
+            value={user.password}
             onChange={handleChange}
             required
           />
           <TextField
             select
             label=" Role"
-            name="Role"
-            value={user.Role}
+            name="role"
+            value={user.role}
             onChange={handleChange}
             variant="outlined"
             fullWidth
             required
           >
             <MenuItem value="ADMIN">ADMIN</MenuItem>
-            <MenuItem value="TUTOR">TUTOR</MenuItem>
+           <MenuItem value="TEACHER">TEACHER</MenuItem>
             <MenuItem value="STUDENT">STUDENT</MenuItem>
           </TextField>
 

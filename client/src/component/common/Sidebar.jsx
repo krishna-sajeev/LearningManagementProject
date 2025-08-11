@@ -1,25 +1,17 @@
 import React, { useState } from "react";
 import {
-  AppBar,
-  Box,
-  CssBaseline,
-  Drawer,
-  IconButton,
-  List,
-  ListItemButton,
-  ListItemText,
-  Toolbar,
-  Typography,
-  Button,
+  AppBar, Box, CssBaseline, Drawer, IconButton, List,
+  ListItemButton, ListItemText, Toolbar, Typography, Button
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
-const Sidebar = ({ role }) => {
+const Sidebar = ({ role, children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -30,16 +22,26 @@ const Sidebar = ({ role }) => {
       localStorage.clear();
     }
     navigate(link.path);
-    setMobileOpen(false); // close drawer on mobile after click
+    setMobileOpen(false);
   };
+    let clearUser=()=>{
+    localStorage.removeItem("token");
+    navigate('/')
+  }
 
   const sidebarLinks = {
     admin: [
+ HEAD
       
       { name: "Manage Users", path: "/adminuser" },
       { name: "Manage Courses", path: "/admincourse" },
       { name: "Payments", path: "/adminpayments" },
       { name: "Certificate", path: "/adminreport" },
+
+      { name: "Manage Users", path: "/admin/adminuser" },
+      { name: "Manage Courses", path: "/admin/admincourse" },
+      { name: "Payments", path: "/admin/adminpayments" },
+      { name: "Reports", path: "/admin/adminreports" }, fd00b1dbf75c2eaba638e7be30ab856c94476c74
       { name: "Logout", path: "/login" },
     ],
     teacher: [
@@ -50,16 +52,15 @@ const Sidebar = ({ role }) => {
       { name: "Logout", path: "/login" },
     ],
     student: [
-      { name: "My Profile", path: "/student/Profile" },
-      { name: "Student Dashboard", path:"/student/student-dashboard"},
+      { name: "My Profile", path: "/student/profile" },
+      { name: "Student Dashboard", path: "/student/student-dashboard" },
       { name: "Enrolled Course", path: "/student/enrolled-course" },
       { name: "Feedback", path: "/student/feedback" },
       { name: "Live Session", path: "/student/live-session" },
       { name: "Recorded videos", path: "/student/recorded-videos" },
       { name: "Reference Material", path: "/student/reference-material" },
       { name: "Assignment", path: "/student/assignment" },
-      { name: "Project", path: "/student/project" }
-      
+      { name: "Project", path: "/student/project" },
     ],
   };
 
@@ -73,9 +74,7 @@ const Sidebar = ({ role }) => {
           <ListItemButton key={link.name} onClick={() => handleNavigation(link)}>
             <ListItemText primary={link.name} />
           </ListItemButton>
-        )) || (
-          <ListItemText primary="No sidebar available for this role." />
-        )}
+        )) }
       </List>
     </Box>
   );
@@ -83,47 +82,37 @@ const Sidebar = ({ role }) => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      {/* Top Navbar */}
+      {/* App Bar */}
+      
       <AppBar component="nav" position="fixed" sx={{ bgcolor: "#2c3e50" }}>
-  <Toolbar>
-    {/* Menu Icon (only visible on small screens) */}
-    <IconButton
-      color="inherit"
-      aria-label="open drawer"
-      edge="start"
-      onClick={handleDrawerToggle}
-      sx={{ mr: 2 }}
-    >
-      <MenuIcon />
-    </IconButton>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2 }}
+          >
+          </IconButton>
+          
+          <Box >
+            <Button sx={{ color: "#ecf0f1" }} onClick={() => navigate("/")}>Home</Button>
+            <Button sx={{ color: "#ecf0f1" }} onClick={() => navigate("/about")}>About Us</Button>
+            
+            {token && (
+            <Button sx={{ color: "#ecf0f1" }}  onClick={clearUser}>
+              Logout
+            </Button>
+          )}
+            {!token && (
+            <Button sx={{ color: "#ecf0f1" }} onClick={() => navigate("/login")}>Login</Button>
+            )}
 
-    {/* App Title */}
-    <Typography
-      variant="h6"
-      noWrap
-      component="div"
-      sx={{ flexGrow: 1 }}
-    >
-      Learning Platform
-    </Typography>
+          </Box>
+        </Toolbar>
+      </AppBar>
 
-    {/* Right-side Buttons */}
-    <Box sx={{ display: {  sm: "block" } }}>
-      <Button sx={{ color: "#ecf0f1" }} onClick={() => navigate("/")}>
-        Home
-      </Button>
-      <Button sx={{ color: "#ecf0f1" }} onClick={() => navigate("/about")}>
-        About Us
-      </Button>
-      <Button sx={{ color: "#ecf0f1" }} onClick={() => navigate("/login")}>
-        Login
-      </Button>
-    </Box>
-  </Toolbar>
-</AppBar>
-
-
-      {/* Drawer (Sidebar) */}
+      {/* Sidebar Drawer */}
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
@@ -133,9 +122,7 @@ const Sidebar = ({ role }) => {
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
+          ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: "block", sm: "none" },
             "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
@@ -154,17 +141,16 @@ const Sidebar = ({ role }) => {
               color: "#ecf0f1",
             },
           }}
-          open
+          
         >
           {drawer}
         </Drawer>
       </Box>
 
-      {/* Main Content Placeholder */}
-      <Box component="main" sx={{ flexGrow: 1, p: 3, ml: { sm: `${drawerWidth}px` } }}>
+      {/* Main Content */}
+      <Box component="main" sx={{ flexGrow: 1, p: 3, ml: { sm: `${drawerWidth}px`-1 } }}>
         <Toolbar />
-        {/* Your actual page content will go here */}
-    
+        {children}
       </Box>
     </Box>
   );

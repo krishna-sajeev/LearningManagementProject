@@ -1,50 +1,85 @@
 import React from "react";
-import { Box, Typography, Table, TableHead, TableRow, TableCell, TableBody, Paper } from "@mui/material";
-import Sidebar from "../common/Sidebar";
-import Header from "../common/Header";
-
-const dummyPayments = [
-  { id: 1, student: "John Doe", course: "React JS", amount: "₹5000", status: "Paid" },
-  { id: 2, student: "Jane Smith", course: "Java", amount: "₹4500", status: "Pending" },
-  { id: 3, student: "Rahul Kumar", course: "Python", amount: "₹6000", status: "Paid" },
-];
+import {
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Paper, Button
+} from "@mui/material";
 
 const ViewPayments = () => {
+  // Sample data
+  const students = [
+    // { id: 1, name: "John Doe", email: "john@example.com", mobile: "9876543210", course: "Java Full Stack", paymentType: "Monthly", status: "Paid" },
+     { id: 2, name: "Priya Sharma", email: "nishakrishna1995@gmail.com", mobile: "9876543222", course: "React & Spring Boot", paymentType: "Quarterly", status: "Pending" },
+    // { id: 3, name: "Amit Kumar", email: "amit@example.com", mobile: "9876543233", course: "Python Django", paymentType: "One-Time", status: "Pending" },
+  ];
+
+ 
+const sendReminder = async (studentEmail) => {
+  try {
+    const response = await fetch('http://localhost:8080/email/sendReminder', { //not wrkng
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: studentEmail }),
+    });
+
+    if (response.ok) {
+      alert(`Reminder email sent to ${studentEmail}`);
+    } else {
+      alert('Failed to send reminder email');
+    }
+  } catch (error) {
+    alert('Error sending reminder email');
+    console.error(error);
+  }
+};
+
   return (
-    <Box display="flex">
-      <Sidebar role="admin" />
-      <Box flexGrow={1}>
-        <Header title="View Payment Status" />
-        <Box p={3}>
-          <Typography variant="h5" gutterBottom>
-            Payment Details
-          </Typography>
-<Paper elevation={3} sx={{ p: 34, mt: 2 }}>
-        
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Student</TableCell>
-                  <TableCell>Course</TableCell>
-                  <TableCell>Amount</TableCell>
-                  <TableCell>Status</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {dummyPayments.map((payment) => (
-                  <TableRow key={payment.id}>
-                    <TableCell>{payment.student}</TableCell>
-                    <TableCell>{payment.course}</TableCell>
-                    <TableCell>{payment.amount}</TableCell>
-                    <TableCell>{payment.status}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Paper>
-        </Box>
-      </Box>
-    </Box>
+    <TableContainer component={Paper} sx={{ mt: 3 }}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell><b>Name</b></TableCell>
+            <TableCell><b>Email</b></TableCell>
+            <TableCell><b>Mobile</b></TableCell>
+            <TableCell><b>Course</b></TableCell>
+            <TableCell><b>Payment Type</b></TableCell>
+            <TableCell><b>Status</b></TableCell>
+            <TableCell><b>Action</b></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {students.map((student) => (    //now only user table
+            <TableRow key={student.id}>
+              <TableCell>{student.name}</TableCell>
+              <TableCell>{student.email}</TableCell>
+              <TableCell>{student.mobile}</TableCell>
+              <TableCell>{student.course}</TableCell>
+              <TableCell>{student.paymentType}</TableCell>
+              <TableCell
+                sx={{
+                  color: student.status === "Pending" ? "red" : "green",
+                  fontWeight: "bold"
+                }}
+              >
+                {student.status}
+              </TableCell>
+              <TableCell>
+                {student.status === "Pending" && (
+                  <Button
+                    variant="contained"
+                    color="warning"
+                    onClick={() => sendReminder(student.email)}
+                  >
+                    Send Reminder
+                  </Button>
+                )}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 
