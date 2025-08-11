@@ -25,7 +25,7 @@ public class UserController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public ResponseEntity<Map<String,String>> signup(@RequestBody User input){
         Map<String,String> response =new HashMap<>();
         try{
@@ -73,7 +73,9 @@ public class UserController {
             if (!enteredHashed.equals(userFromDb.getPassword())) {
                 return ResponseEntity.status(401).body("Invalid credentials");
             }
-
+            if(!userFromDb.getRole().equals(input.getRole())){
+                return ResponseEntity.status(401).body("Invalid Role");
+            }
             token = jwtUtil.generateToken(userFromDb.getEmail());
             if (token == null) {
                 return ResponseEntity.status(500).body("Token generation failed");
