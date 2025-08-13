@@ -23,20 +23,20 @@ const AdminDashboard = () => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={3}>
             <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
-              <Link to="/adminmanageusers"> 
+              <Link to="/admin/adminmanageusers"> 
               View Users
                </Link> 
             </Box>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
-           <Link to="/adminmanagecourse">  Add Courses</Link> 
+           <Link to="/admin/adminmanagecourse">  Add Courses</Link> 
             </Box>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
              {/* <link to="/adminpayments"> */}
-             <Link to="/adminpayments"> View Payment Status</Link>
+             <Link to="/admin/adminpayments"> View Payment Status</Link>
               {/* </link> */}
             </Box>
           </Grid>

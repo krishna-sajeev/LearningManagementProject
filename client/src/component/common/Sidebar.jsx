@@ -31,17 +31,15 @@ const Sidebar = ({ role, children }) => {
 
   const sidebarLinks = {
     admin: [
- HEAD
-      
-      { name: "Manage Users", path: "/adminuser" },
-      { name: "Manage Courses", path: "/admincourse" },
-      { name: "Payments", path: "/adminpayments" },
-      { name: "Certificate", path: "/adminreport" },
+      // { name: "Manage Users", path: "/adminuser" },
+      // { name: "Manage Courses", path: "/admincourse" },
+      // { name: "Payments", path: "/adminpayments" },
+      // { name: "Certificate", path: "/adminreport" },
 
       { name: "Manage Users", path: "/admin/adminuser" },
-      { name: "Manage Courses", path: "/admin/admincourse" },
+      { name: "Manage Courses", path: "/admin/admincourses" },
       { name: "Payments", path: "/admin/adminpayments" },
-      { name: "Reports", path: "/admin/adminreports" }, fd00b1dbf75c2eaba638e7be30ab856c94476c74
+      { name: "Reports", path: "/admin/adminreports" }, 
       { name: "Logout", path: "/login" },
     ],
     teacher: [

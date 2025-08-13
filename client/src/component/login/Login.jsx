@@ -115,9 +115,9 @@ const [user, setUser] = useState({
           </TextField>
 
           <Button sx={{ mt: 1 /* margin top */ }} onClick={validateUser}>
-          <Link href="/admin/admin-dashboard">
+           <Link href="/admin/admin-dashboard"> 
           Log in
-           </Link> 
+            </Link>  
           </Button>
 
           <Box display="flex" justifyContent="space-between" mt={1}>

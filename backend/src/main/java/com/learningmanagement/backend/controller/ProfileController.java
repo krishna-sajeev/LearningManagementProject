@@ -21,7 +21,7 @@ public class ProfileController {
     UserRepository repo;
 
     @GetMapping("/my-profile/{id}")
-    public ResponseEntity<?> viewProfile(@PathVariable int id ) {
+    public ResponseEntity<?> viewProfile(@PathVariable Long id ) {
         Map<String, String> response = new HashMap<>();
 
         User profile;
@@ -38,7 +38,7 @@ public class ProfileController {
 
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Map<String,String>> delete(@PathVariable int id){
+    public ResponseEntity<Map<String,String>> delete(@PathVariable Long id){
         Map<String, String> response = new HashMap<>();
 
         try {
@@ -58,7 +58,7 @@ public class ProfileController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable int id, @RequestBody User input) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody User input) {
         Map<String, String> response = new HashMap<>();
 
         try {

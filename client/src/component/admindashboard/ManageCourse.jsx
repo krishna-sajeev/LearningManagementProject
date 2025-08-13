@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"; 
 import {
   Container,
   Typography,
@@ -15,9 +15,12 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField
+  TextField,
+  Grid,         // <--- Added this
 } from "@mui/material";
+
 import { Edit, Delete } from "@mui/icons-material";
+import { Link } from "react-router-dom";   // <--- Added this
 import axios from "axios";
 
 const ManageCourse = () => {
@@ -54,7 +57,7 @@ const ManageCourse = () => {
     if (window.confirm("Are you sure you want to delete this course?")) {
       try {
         await axios.delete(`http://localhost:8080/courses/${id}`);
-        setCourses(courses.filter((course) => course.id!== id));
+        setCourses(courses.filter((course) => course.id !== id));
       } catch (err) {
         console.error("Error deleting course:", err);
       }
@@ -90,6 +93,7 @@ const ManageCourse = () => {
       <Typography variant="h4" gutterBottom>
         Manage Courses
       </Typography>
+
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -136,7 +140,6 @@ const ManageCourse = () => {
         </Table>
       </TableContainer>
 
-<<<<<<< HEAD
       {/* Edit Dialog */}
       <Dialog open={openEdit} onClose={() => setOpenEdit(false)}>
         <DialogTitle>Edit Course</DialogTitle>
@@ -163,29 +166,22 @@ const ManageCourse = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Container>
-=======
-          <Paper elevation={3} sx={{ p: 34, mt: 2 }}>
-            <Typography variant="body1">Course list will go here...</Typography>
-            <Grid container spacing={2} sx={{ mt: 2 }}>
-              <Grid item>
-               <Link to="/admin/admincourse/add" style={{ textDecoration: "none" }}>
-  <Button variant="contained" color="primary">Add Course</Button>
-</Link>
 
-              </Grid>
-              <Grid item>
-                <Button variant="outlined" color="secondary">Edit Course</Button>
-              </Grid>
-              <Grid item>
-                <Button variant="contained" color="error">Delete Course</Button>
-              </Grid>
-            </Grid>
-          </Paper>
-        </Box>
-      </Box>
-    </Box>
->>>>>>> fd00b1dbf75c2eaba638e7be30ab856c94476c74
+      {/* Added inside Container */}
+      <Paper elevation={3} sx={{ p: 3, mt: 4 }}>
+        <Typography variant="body1">Course list will go here...</Typography>
+        <Grid container spacing={2} sx={{ mt: 2 }}>
+          <Grid item>
+            <Link to="/admincourse/add" style={{ textDecoration: "none" }}>
+              <Button variant="contained" color="primary">
+                Add Course
+              </Button>
+            </Link>
+          </Grid>
+          
+        </Grid>
+      </Paper>
+    </Container>
   );
 };
 

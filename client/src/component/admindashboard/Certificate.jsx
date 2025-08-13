@@ -32,7 +32,7 @@ const Certificate = () => {
     );
     
 
-     const blob = new Blob([downloadResponse.data], { type: "application/pdf" });
+    const blob = new Blob([downloadResponse.data], { type: "application/pdf" });
     const link = document.createElement("a");
     link.href = window.URL.createObjectURL(blob);
     link.download = `${formData.studentName}_certificate.pdf`;

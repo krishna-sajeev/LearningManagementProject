@@ -84,7 +84,7 @@ const ManageCourses = () => {
               fullWidth margin="normal" 
               InputLabelProps={{ shrink: true }} />
           <Button type="submit" variant="contained" 
-          fullWidth sx={{ mt: 2 }}>Add Course</Button>
+          fullWidth sx={{ mt: 2 }}>Manage Course</Button>
         </form>
       </Paper>
     </Container>
