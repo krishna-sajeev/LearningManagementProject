@@ -14,22 +14,35 @@ import ForgotPassword from "./component/login/ForgotPassword"
  import ManageCourse from "./component/admindashboard/ManageCourse"
  import Certificate from "./component/admindashboard/Certificate";
 
-import StudentDetail from "./component/teacherdashboard/StudentDetail";
-import Assignment from "./component/teacherdashboard/Assignment";
-import Attendence from "./component/teacherdashboard/Attendence";
-import Batch from "./component/teacherdashboard/Batch";
-// import TeacherDashboard from "./component/teacherdashboard/TeacherDashboard";
-import StudentDashboard from "./component/studentdashboard/StudentDashboard";
-import Sidebar from "./component/common/Sidebar";
+// import AdminDashboard from "./component/admindashboard/AdminDashboard";
+// import ManageCourse from "./component/admindashboard/ManageCourse";
+// import ManageUser from "./component/admindashboard/ManageUser";
+// import ViewPayments from "./component/admindashboard/ViewPayments";
+// import GenerateReports from "./component/admindashboard/GenerateReports";
+
+
+// import StudentDetail from "./component/teacherdashboard/StudentDetail";
+// import Assignment from "./component/teacherdashboard/Assignment";
+// import Attendence from "./component/teacherdashboard/Attendence";
+// import Batch from "./component/teacherdashboard/Batch";
+// import StudentDashboard from "./component/studentdashboard/StudentDashboard";
+// import Sidebar from "./component/common/Sidebar";
 // import StudentDashboard from "./component/studentdashboard/StudentDashboard";
 // import Assignment from "./component/studentdashboard/Assignment";
-import Layout from "./component/common/Layout";
-import Project from "./component/studentdashboard/Project";
-import MyProfile from "./component/profile/MyProfile";
-import NewAssignment from "./component/teacherdashboard/NewAssignment";
-import EditAssignment from "./component/teacherdashboard/EditAssignment";
-import ViewSubmission from "./component/teacherdashboard/ViewSubmission";
+// import TeacherDashboard from "./component/teacherdashboard/TeacherDashboard";
+// import StudentDashboard from "./component/studentdashboard/StudentDashboard";
+// import Assignments from "./component/studentdashboard/Assignments";
 
+
+import Layout from "./component/common/Layout";
+// import Project from "./component/studentdashboard/Project";
+// import MyProfile from "./component/profile/MyProfile";
+// import NewAssignment from "./component/teacherdashboard/NewAssignment";
+// import EditAssignment from "./component/teacherdashboard/EditAssignment";
+// import ViewSubmission from "./component/teacherdashboard/ViewSubmission";
+// import ManageUsers from "./component/admindashboard/ManageUsers";
+// import ManageCourses from "./component/admindashboard/ManageCourses";
+// import Certificate from "./component/admindashboard/Certificate";
 
 function App() {
   return (
@@ -39,7 +52,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} /> 
 
-           <Route path="admin/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="admin/admin-dashboard" element={<AdminDashboard />} />
           {/* <Route path="/teacher-dashboard" element={<TeacherDashboard/>}/> */}
           <Route path="/admin/adminuser" element={<ManageUser />} />
           <Route path="/admin/adminmanageusers" element={<ManageUsers />} />
@@ -50,7 +63,6 @@ function App() {
           <Route path="/adminreports" element={<GenerateReports />} />  
           {/* <Route path="/admincourse/add" element={<AddCourse />} /> */}
  
-
         {/* Admin Routes
         <Route path="/admin/admin-dashboard" element={<Layout role="admin"><AdminDashboard /></Layout>} />
         <Route path="/admin/adminuser" element={<Layout role="admin"><ManageUser /></Layout>} />
@@ -58,6 +70,15 @@ function App() {
         <Route path="/admin/adminpayments" element={<Layout role="admin"><ViewPayments /></Layout>} />
         <Route path="/admin/adminreports" element={<Layout role="admin"><GenerateReports /></Layout>} />
         <Route path="/admin/admincourse/add" element={<Layout role="admin"><AddCourse /></Layout>} /> */}
+
+
+           <Route path="/admin/adminmanageusers" element={<Layout role="admin"><ManageUsers /></Layout>} />
+           <Route path="/admin/adminuser" element={<Layout role="admin"><ManageUser /></Layout>} />
+          <Route path="/admin/adminmanagecourse" element={<Layout role="admin"><ManageCourses /></Layout>} />
+          <Route path="/admin/adminreport" element={<Layout role="admin"><Certificate /></Layout>} /> 
+          <Route path="/admin/adminpayments" element={<Layout role="admin"><ViewPayments /></Layout>} />
+          <Route path="/admin/adminreports" element={<Layout role="admin"><GenerateReports /></Layout>} />  
+          
 
         {/* Teacher Routes */}
         {/* <Route path="/teacher/teacher-dashboard" element={<Layout role="teacher"><TeacherDashboard /></Layout>} />
@@ -71,6 +92,7 @@ function App() {
 
 
 
+
 {/* <Route path="/teacher/student-detail" element={<StudentDetail/>}/>
 <Route path="/teacher/assignment" element={<Assignment/>}/>
 <Route path="/teacher/attendance" element={<Attendence/>}/>
@@ -78,14 +100,20 @@ function App() {
  {/* <Route path="/student/student-dashboard" element={<StudentDashboard />}/> 
  <Route path="/student/assignment" element={<Assignments />}/> */}
 
+
         {/* Student Routes */}
         {/* <Route path="/student/student-dashboard" element={<Layout role="student"><StudentDashboard /></Layout>} />
         <Route path="/student/assignment" element={<Layout role="student"><Assignment /></Layout>} />
         <Route path="/student/project" element={<Layout role="student"><Project /></Layout>} />
         <Route path="/student/profile" element={<Layout role="student"><MyProfile /></Layout>} />
+
          */}
 
       </Routes>
+
+        
+      
+
   
   );
 }

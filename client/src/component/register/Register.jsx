@@ -22,6 +22,7 @@ const Register = () => {
     confirmPassword: "",
     mobileNumber: "",
     role: ""
+
   });
   const [backendMessage, setBackendMessage] = useState("");
   const navigate = useNavigate();
@@ -36,9 +37,14 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+ 
     if (form.password !== form.confirmPassword) {
       setBackendMessage("Passwords do not match");
-      return;
+return;
+    }
+    if (!/^\d{10}$/.test(form.mobileNumber)) {
+      setError("Enter a valid 10-digit mobile number.");
+return;
     }
 
     try {
@@ -132,10 +138,12 @@ const Register = () => {
               onChange={handleChange}
               sx={{ mb: 2 }}
             />
-            <TextField
+            <TextField 
               fullWidth
-              label="Mobile"
               name="mobileNumber"
+              label="Mobile Number"
+              type="tel"
+              margin="normal"
               value={form.mobileNumber}
               onChange={handleChange}
               sx={{ mb: 2 }}
@@ -171,5 +179,4 @@ const Register = () => {
     </Layout>
   );
 };
-
 export default Register;
