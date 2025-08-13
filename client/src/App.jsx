@@ -28,6 +28,7 @@ import ViewSubmission from "./component/teacherdashboard/ViewSubmission";
 import ManageUsers from "./component/admindashboard/ManageUsers";
 import ManageCourses from "./component/admindashboard/ManageCourses";
 import Certificate from "./component/admindashboard/Certificate";
+import Feedback from "./component/studentdashboard/Feedback";
 
 
 
@@ -67,6 +68,7 @@ function App() {
         <Route path="/student/assignment" element={<Layout role="student"><Assignments /></Layout>} />
         <Route path="/student/project" element={<Layout role="student"><Project /></Layout>} />
         <Route path="/student/profile" element={<Layout role="student"><MyProfile /></Layout>} />
+        <Route path="/student/feedback" element={<Layout role="student"><Feedback /></Layout>} />
         
       </Routes> 
   
