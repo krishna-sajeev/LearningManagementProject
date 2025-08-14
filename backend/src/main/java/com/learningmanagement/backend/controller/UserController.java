@@ -27,7 +27,7 @@ public class UserController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public ResponseEntity<Map<String,String>> signup(@RequestBody User input){
         Map<String,String> response =new HashMap<>();
         try{

@@ -36,7 +36,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* Admin Routes */}
-        <Route path="/admin-dashboard" element={<Layout role="admin"><AdminDashboard /></Layout>} />
+        <Route path="admin/admin-dashboard" element={<Layout role="admin"><AdminDashboard /></Layout>} />
         <Route path="/adminuser" element={<Layout role="admin"><ManageUser /></Layout>} />
         <Route path="/admincourse" element={<Layout role="admin"><ManageCourse /></Layout>} />
         <Route path="/adminpayments" element={<Layout role="admin"><ViewPayments /></Layout>} />
@@ -44,7 +44,7 @@ function App() {
         <Route path="/admincourse/add" element={<Layout role="admin"><AddCourse /></Layout>} />
 
         {/* Teacher Routes */}
-        <Route path="/teacher-dashboard" element={<Layout role="teacher"><TeacherDashboard /></Layout>} />
+        <Route path="/tutor/tutor-dashboard" element={<Layout role="teacher"><TeacherDashboard /></Layout>} />
         <Route path="/teacher/student-detail" element={<Layout role="teacher"><StudentDetail /></Layout>} />
         <Route path="/teacher/assignment" element={<Layout role="teacher"><Assignment /></Layout>} />
         <Route path="/teacher/attendance" element={<Layout role="teacher"><Attendence /></Layout>} />

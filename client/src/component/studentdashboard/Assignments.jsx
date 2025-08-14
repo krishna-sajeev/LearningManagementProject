@@ -13,7 +13,7 @@ const Assignments = () => {
   let token=localStorage.getItem('token');
     const[courses,setCourses]=useState([]);
      useEffect(()=>{
-      axiosInstance.get('http://localhost:8080/display')
+      axiosInstance.get('http://localhost:8081/display')
       .then((res)=>{
         console.log(res)
           setCourses(res.data)

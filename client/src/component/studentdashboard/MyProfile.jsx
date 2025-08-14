@@ -10,7 +10,7 @@ const MyProfile = () => {
      let id = localStorage.getItem("id");
     const[user,setUser]=useState([]);
      useEffect(()=>{
-      axiosInstance.get(`http://localhost:8080/my-profile/${id}`)
+      axiosInstance.get(`http://localhost:8081/my-profile/${id}`)
       .then((res)=>{
         console.log(res)
           setUser(res.data)

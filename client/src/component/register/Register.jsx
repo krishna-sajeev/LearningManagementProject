@@ -22,7 +22,7 @@ const Register = () => {
     password: "",
     confirmPassword: "",
     role: "",
-    mobile: "",
+    mobileNumber: "",
   });
 
   const [error, setError] = useState("");
@@ -43,14 +43,14 @@ const Register = () => {
       setError("Passwords do not match!");
       return;
     }
-    if (!/^\d{10}$/.test(form.mobile)) {
+    if (!/^\d{10}$/.test(form.mobileNumber)) {
       setError("Enter a valid 10-digit mobile number.");
       return;
     }
 
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:8080/signup", form);
+      const res = await axios.post("http://localhost:8081/register", form);
 
       if (res.data.status) {
         setBackendMessage(res.data.status);
@@ -125,12 +125,12 @@ const Register = () => {
               required
             />
             <TextField
-              name="mobile"
+              name="mobileNumber"
               label="Mobile Number"
               type="tel"
               fullWidth
               margin="normal"
-              value={form.mobile}
+              value={form.mobileNumber}
               onChange={handleChange}
               required
             />
@@ -144,9 +144,9 @@ const Register = () => {
               onChange={handleChange}
               required
             >
-              <MenuItem value="admin">Admin</MenuItem>
-              <MenuItem value="tutor">Tutor</MenuItem>
-              <MenuItem value="student">Student</MenuItem>
+              <MenuItem value="ADMIN">Admin</MenuItem>
+              <MenuItem value="TUTOR">Tutor</MenuItem>
+              <MenuItem value="STUDENT">Student</MenuItem>
             </TextField>
 
             <Button
