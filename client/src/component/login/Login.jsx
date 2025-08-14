@@ -14,6 +14,7 @@ import {
 import axios from "axios";
 
 const Login = () => {
+  
    let navigate=useNavigate();
 const [user, setUser] = useState({
     email: "",
@@ -51,7 +52,7 @@ const [user, setUser] = useState({
         navigate(`/${user.role.toLowerCase()}/${user.role.toLowerCase()}-dashboard`);
 
       } else {
-        alert("Login failed");
+        alert(res.data.status);
         setUser({ email: "", password: "", role: "" });
       }
     })
@@ -109,7 +110,7 @@ const [user, setUser] = useState({
             required
           >
             <MenuItem value="ADMIN">ADMIN</MenuItem>
-            <MenuItem value="TUTOR">TUTOR</MenuItem>
+           <MenuItem value="TEACHER">TEACHER</MenuItem>
             <MenuItem value="STUDENT">STUDENT</MenuItem>
           </TextField>
 

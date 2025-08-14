@@ -47,6 +47,31 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @DeleteMapping("/courses/{id}")
+    public ResponseEntity<Void> deleteCourse(@PathVariable int id) {
+        if (repo.existsById(id)) {
+            repo.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/courses/{id}")
+    public ResponseEntity<Course> updateCourse(@PathVariable int id, @RequestBody Course updatedCourse) {
+        return repo.findById(id).map(course -> {
+            course.setTitle(updatedCourse.getTitle());
+            course.setDescription(updatedCourse.getDescription());
+            course.setInstructor(updatedCourse.getInstructor());
+            course.setDuration(updatedCourse.getDuration());
+            course.setDate(updatedCourse.getDate());
+            course.setStatus(updatedCourse.getStatus());
+            course.setIcon(updatedCourse.getIcon());
+            course.setFee(updatedCourse.getFee());
+            return ResponseEntity.ok(repo.save(course));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
 }
 
 

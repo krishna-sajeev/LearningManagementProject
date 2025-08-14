@@ -38,11 +38,15 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+<<<<<<< HEAD
     // Frontend validation
     if (form.password !== form.confirmPassword) {
       setError("Passwords do not match!");
       return;
     }
+=======
+   
+>>>>>>> origin/main
     if (!/^\d{10}$/.test(form.mobileNumber)) {
       setError("Enter a valid 10-digit mobile number.");
       return;
@@ -50,23 +54,31 @@ const Register = () => {
 
     setLoading(true);
     try {
+<<<<<<< HEAD
       const res = await axios.post("http://localhost:8081/register", form);
+=======
+  const res = await axios.post("http://localhost:8080/register", form);
+>>>>>>> origin/main
 
-      if (res.data.status) {
-        setBackendMessage(res.data.status);
-        if (res.data.status.toLowerCase().includes("success")) {
-          setTimeout(() => navigate("/login"), 1500);
-        }
-      }
-    } catch (err) {
-      if (err.response && err.response.data && err.response.data.status) {
-        setBackendMessage(err.response.data.status);
-      } else {
-        setBackendMessage("Registration failed. Please try again.");
-      }
-    } finally {
-      setLoading(false);
+  if (res.data && res.data.status) {
+    setBackendMessage(res.data.status);
+    alert(res.data.status); // Alert from backend message
+
+    if (res.data.status.toLowerCase().includes("success")) {
+      setTimeout(() => navigate("/login"), 1500);
     }
+  }
+} catch (err) {
+  let message = "Registration failed. Please try again.";
+  
+  if (err.response && err.response.data && err.response.data.status) {
+    message = err.response.data.status;
+  }
+  
+  setBackendMessage(message);
+  alert(message); // Alert from backend message
+}
+
   };
 
   return (
@@ -144,9 +156,15 @@ const Register = () => {
               onChange={handleChange}
               required
             >
+<<<<<<< HEAD
               <MenuItem value="ADMIN">Admin</MenuItem>
               <MenuItem value="TUTOR">Tutor</MenuItem>
               <MenuItem value="STUDENT">Student</MenuItem>
+=======
+              <MenuItem value="ADMIN">ADMIN</MenuItem>
+              <MenuItem value="TEACHER">TEACHER</MenuItem>
+              <MenuItem value="STUDENT">STUDENT</MenuItem>
+>>>>>>> origin/main
             </TextField>
 
             <Button

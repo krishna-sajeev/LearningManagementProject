@@ -11,6 +11,7 @@ const drawerWidth = 220;
 const Sidebar = ({ role, children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -23,13 +24,20 @@ const Sidebar = ({ role, children }) => {
     navigate(link.path);
     setMobileOpen(false);
   };
+    let clearUser=()=>{
+    localStorage.removeItem("token");
+    navigate('/')
+  }
 
   const sidebarLinks = {
     admin: [
-      { name: "Manage Users", path: "/adminuser" },
-      { name: "Manage Courses", path: "/admincourse" },
-      { name: "Payments", path: "/adminpayments" },
-      { name: "Reports", path: "/adminreports" },
+
+      { name: "Manage Users", path: "/admin/adminuser" },
+      { name: "My Profile", path: "/student/profile"},
+      { name: "Admin Dashboard", path: "/admin/admin-dashboard" },
+      { name: "Manage Courses", path: "/admin/admincourse" },
+      { name: "Payments", path: "/admin/adminpayments" },
+      { name: "Reports", path: "/admin/adminreports" },
       { name: "Logout", path: "/login" },
     ],
     teacher: [
@@ -86,7 +94,16 @@ const Sidebar = ({ role, children }) => {
           <Box >
             <Button sx={{ color: "#ecf0f1" }} onClick={() => navigate("/")}>Home</Button>
             <Button sx={{ color: "#ecf0f1" }} onClick={() => navigate("/about")}>About Us</Button>
+            
+            {token && (
+            <Button sx={{ color: "#ecf0f1" }}  onClick={clearUser}>
+              Logout
+            </Button>
+          )}
+            {!token && (
             <Button sx={{ color: "#ecf0f1" }} onClick={() => navigate("/login")}>Login</Button>
+            )}
+
           </Box>
         </Toolbar>
       </AppBar>
