@@ -5,14 +5,9 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import axios from 'axios';
 
 const statusOptions = ['Active', 'Late Submission Permitted', 'Closed'];
-
-const coursesWithBatches = {
-  Mathematics: ['Batch A', 'Batch B', 'Batch C'],
-  Science: ['Batch X', 'Batch Y'],
-  English: ['Batch 1', 'Batch 2', 'Batch 3'],
-};
 
 const EditAssignment = () => {
   const navigate = useNavigate();
@@ -20,8 +15,8 @@ const EditAssignment = () => {
 
   const [formData, setFormData] = useState({
     title: '',
+    details: '',
     course: '',
-    batch: '',
     dueDate: '',
     status: 'Active',
   });
@@ -32,37 +27,41 @@ const EditAssignment = () => {
     severity: 'success',
   });
 
+  // Fetch assignment from backend
   useEffect(() => {
-    // Simulated data with batch included
-    const allAssignments = [
-      { id: 1, title: 'Math Homework', course: 'Mathematics', batch: 'Batch A', dueDate: '2025-08-20', status: 'Active' },
-      { id: 2, title: 'Science Project', course: 'Science', batch: 'Batch X', dueDate: '2025-08-25', status: 'Closed' },
-    ];
-
-    const found = allAssignments.find(item => item.id === Number(id));
-    if (found) {
-      setFormData(found);
-    }
+    const fetchAssignment = async () => {
+      try {
+        const response = await axios.get('http://localhost:8081/viewAssignments');
+        const assignment = response.data.find(a => a.assignmentId === Number(id));
+        if (assignment) {
+          setFormData({
+            title: assignment.title,
+            details: assignment.details,
+            course: assignment.course, // pre-filled course
+            dueDate: assignment.dueDate,
+            status: assignment.status,
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching assignment:', error);
+      }
+    };
+    fetchAssignment();
   }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    if (name === 'course') {
-      setFormData({ ...formData, course: value, batch: '' });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    setFormData({ ...formData, [name]: value });
   };
 
   const validateDueDate = (dateStr) => {
     const today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(0, 0, 0, 0);
     const dueDate = new Date(dateStr);
     return dueDate >= today;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateDueDate(formData.dueDate)) {
@@ -74,17 +73,25 @@ const EditAssignment = () => {
       return;
     }
 
-    // TODO: Call API to update assignment here
+    try {
+      await axios.put(`http://localhost:8081/updateAssignment/${id}`, formData);
+      setSnackbar({
+        open: true,
+        message: 'Assignment updated successfully!',
+        severity: 'success',
+      });
 
-    setSnackbar({
-      open: true,
-      message: 'Assignment updated successfully!',
-      severity: 'success',
-    });
-
-    setTimeout(() => {
-      navigate('/teacher/assignment');
-    }, 1500);
+      setTimeout(() => {
+        navigate('/teacher/assignment');
+      }, 1500);
+    } catch (error) {
+      console.error('Error updating assignment:', error);
+      setSnackbar({
+        open: true,
+        message: 'Failed to update assignment.',
+        severity: 'error',
+      });
+    }
   };
 
   const handleCloseSnackbar = () => {
@@ -106,42 +113,18 @@ const EditAssignment = () => {
         />
 
         <TextField
-          select
-          label="Course"
-          name="course"
-          value={formData.course}
+          label="Assignment Details"
+          name="details"
+          value={formData.details}
           onChange={handleChange}
+          multiline
+          rows={4}
+          placeholder="Enter detailed description of the assignment"
           required
-        >
-          <MenuItem value="">
-            <em>Select Course</em>
-          </MenuItem>
-          {Object.keys(coursesWithBatches).map(course => (
-            <MenuItem key={course} value={course}>
-              {course}
-            </MenuItem>
-          ))}
-        </TextField>
+        />
 
-        {formData.course && (
-          <TextField
-            select
-            label="Batch"
-            name="batch"
-            value={formData.batch}
-            onChange={handleChange}
-            required
-          >
-            <MenuItem value="">
-              <em>Select Batch</em>
-            </MenuItem>
-            {coursesWithBatches[formData.course].map(batch => (
-              <MenuItem key={batch} value={batch}>
-                {batch}
-              </MenuItem>
-            ))}
-          </TextField>
-        )}
+       
+  
 
         <TextField
           label="Due Date"

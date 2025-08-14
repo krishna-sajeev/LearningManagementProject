@@ -17,11 +17,8 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:5173")
 public class CourseController {
 
-
     @Autowired
     CourseRepository repo;
-
-
     @PostMapping("/addCourse")
     public ResponseEntity<Map<String, String>> addCourse(@RequestBody Course input) {
         Map<String, String> response = new HashMap<>();
