@@ -36,5 +36,72 @@ public class Feedback {
     @JsonProperty("reviewDate")
     private LocalDate reviewDate;
 
+    public Feedback(UUID feedId, int userId, String reviewType, String comment, String courseId, int star, LocalDate reviewDate) {
+        this.feedId = feedId;
+        this.userId = userId;
+        this.reviewType = reviewType;
+        this.comment = comment;
+        this.courseId = courseId;
+        this.star = star;
+        this.reviewDate = reviewDate;
+    }
 
+    public Feedback() {
+    }
+
+    public UUID getFeedId() {
+        return feedId;
+    }
+
+    public void setFeedId(UUID feedId) {
+        this.feedId = feedId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getReviewType() {
+        return reviewType;
+    }
+
+    public void setReviewType(String reviewType) {
+        this.reviewType = reviewType;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    public int getStar() {
+        return star;
+    }
+
+    public void setStar(int star) {
+        this.star = star;
+    }
+
+    public LocalDate getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setReviewDate(LocalDate reviewDate) {
+        this.reviewDate = reviewDate;
+    }
 }
