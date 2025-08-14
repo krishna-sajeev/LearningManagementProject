@@ -56,7 +56,7 @@ const Sidebar = ({ role, children }) => {
       { name: "Recorded videos", path: "/student/recorded-videos" },
       { name: "Reference Material", path: "/student/reference-material" },
       { name: "Assignment", path: "/student/assignment" },
-      { name: "Project", path: "/student/project" },
+      { name: "Project", path: "/student/project" }
     ],
   };
 
