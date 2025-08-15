@@ -8,10 +8,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import axiosInstance from '../../axiosinteceptor';
+import { Button } from '@mui/material';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const LiveSession = () => {
   const [live, setLive] = useState([]);
   const [user, setUser] = useState([]);
+  const navigate = useNavigate();
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -37,18 +40,15 @@ const LiveSession = () => {
       .then((res) => {
         const sessionData = Array.isArray(res.data) ? res.data : [res.data];
         setLive(sessionData);
-
-        if (res.data.instructorId) {
-          axiosInstance.get(`http://localhost:8080/users/${res.data.instructorId}`)
-            .then((result) => setUser(result.data))
+        sessionData.map(session => axiosInstance.get(`http://localhost:8080/users/${session.instructorId}`)
+            .then((result) =>{setUser(result.data) 
+          console.log(result.data)} )
             
-            .catch(console.error);
-            
-        }
+        );       
       })
       .catch(console.error);
   }, []);
-
+ 
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -57,6 +57,8 @@ const LiveSession = () => {
             <StyledTableCell>Date</StyledTableCell>
             <StyledTableCell align="right">Live URL</StyledTableCell>
             <StyledTableCell align="right">Instructor</StyledTableCell>
+            <StyledTableCell align="right">Feedback</StyledTableCell>
+            
           </TableRow>
         </TableHead>
         <TableBody>
@@ -65,6 +67,29 @@ const LiveSession = () => {
               <StyledTableCell>{row.date}</StyledTableCell>
               <StyledTableCell align="right">{row.liveURL}</StyledTableCell>
               <StyledTableCell align="right">{user.fullName}</StyledTableCell>
+              <StyledTableCell align='right'>
+               <Button
+                  variant="contained"
+                  size="large"
+                  sx={{
+                    background: 'linear-gradient(45deg, #2196f3, #21cbf3)',
+                    color: '#fff',
+                    px: 4,
+                    py: 1.5,
+                    fontSize: '1.1rem',
+                    fontWeight: 'bold',
+                    borderRadius: 2,
+                    '&:hover': {
+                      background: 'linear-gradient(45deg, #1976d2, #00bcd4)',
+                      transform: 'scale(1.05)',
+                    },
+                    transition: 'all 0.3s ease',
+                  }}
+                  onClick={()=>navigate('/student/feedback')}
+                >
+                  Feedback
+                </Button>
+            </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
