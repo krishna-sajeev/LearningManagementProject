@@ -16,12 +16,7 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-<<<<<<< HEAD
-  Grid
-=======
-  Grid,
-  Link
->>>>>>> d7c5164d9e7fc2b1f61b07fca6db68bc9a102644
+
 } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
 import { Link } from "react-router-dom";
@@ -92,89 +87,6 @@ const ManageCourse = () => {
     }
   };
 
-<<<<<<< HEAD
-  return (
-    <Container sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Manage Courses
-      </Typography>
-
-      {/* Courses Table */}
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Duration</TableCell>
-              <TableCell>Instructor</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Fee</TableCell>
-              <TableCell>Icon</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {courses.map((course) => (
-              <TableRow key={course.id}>
-                <TableCell>{course.title}</TableCell>
-                <TableCell>{course.description}</TableCell>
-                <TableCell>{course.duration}</TableCell>
-                <TableCell>{course.instructor}</TableCell>
-                <TableCell>{course.status}</TableCell>
-                <TableCell>{course.fee}</TableCell>
-                <TableCell>{course.icon}</TableCell>
-                <TableCell>{course.date}</TableCell>
-                <TableCell>
-                  <IconButton
-                    color="primary"
-                    onClick={() => handleEditClick(course)}
-                  >
-                    <Edit />
-                  </IconButton>
-                  <IconButton
-                    color="error"
-                    onClick={() => handleDelete(course.id)}
-                  >
-                    <Delete />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      {/* Edit Dialog */}
-      <Dialog open={openEdit} onClose={() => setOpenEdit(false)}>
-        <DialogTitle>Edit Course</DialogTitle>
-        <DialogContent>
-          {Object.keys(editCourse).map((field) =>
-            field !== "userId" ? (
-              <TextField
-                key={field}
-                margin="dense"
-                label={field}
-                fullWidth
-                value={editCourse[field]}
-                onChange={(e) =>
-                  setEditCourse({ ...editCourse, [field]: e.target.value })
-                }
-              />
-            ) : null
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenEdit(false)}>Cancel</Button>
-          <Button onClick={handleEditSave} variant="contained">
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
-</Container>
-  );
-=======
 return (
   <Container sx={{ mt: 4 }}>
     <Typography variant="h4" gutterBottom>
@@ -230,6 +142,5 @@ return (
   </Container>
 );
 
->>>>>>> d7c5164d9e7fc2b1f61b07fca6db68bc9a102644
 };
 export default ManageCourse;
