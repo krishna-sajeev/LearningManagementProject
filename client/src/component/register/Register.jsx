@@ -20,8 +20,8 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "",
     mobileNumber: "",
-    role: ""
   });
   const [backendMessage, setBackendMessage] = useState("");
   const navigate = useNavigate();

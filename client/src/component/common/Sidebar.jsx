@@ -32,10 +32,17 @@ const Sidebar = ({ role, children }) => {
   const sidebarLinks = {
     admin: [
 
+<<<<<<< HEAD
       { name: "My Profile", path: "/student/profile"},
       { name: "Admin Dashboard", path: "/admin/admin-dashboard" },
       { name: "Manage Users", path: "/admin/adminuser" },
       { name: "Manage Course", path: "/admin/adminmanagecourse" },
+=======
+      { name: "Manage Users", path: "/admin/adminuser" },
+      { name: "My Profile", path: "/student/profile"},
+      { name: "Admin Dashboard", path: "/admin/admin-dashboard" },
+      { name: "Manage Courses", path: "/admin/admincourse" },
+>>>>>>> d7c5164d9e7fc2b1f61b07fca6db68bc9a102644
       { name: "Payments", path: "/admin/adminpayments" },
       { name: "Reports", path: "/admin/adminreports" },
       { name: "Logout", path: "/login" },

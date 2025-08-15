@@ -30,7 +30,8 @@ const AdminDashboard = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
-           <Link to="/admin/adminmanagecourses">  Manage Course</Link> 
+           {/* <Link to="/admin/adminmanagecourses">  Manage Course</Link>  */}
+           <Link to="/admin/adminmanagecourse">  Add Courses</Link> 
             </Box>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
@@ -42,7 +43,8 @@ const AdminDashboard = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Box p={2} bgcolor="#f0f0f0" borderRadius={2}>
-             <Link to="/admin/adminreport">   
+             {/* <Link to="/admin/adminreport">    */}
+             <Link to="/admin/adminreports">   
              Generate Reports
               </Link> 
             </Box>

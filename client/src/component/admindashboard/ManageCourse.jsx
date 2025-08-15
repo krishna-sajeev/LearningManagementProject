@@ -16,7 +16,12 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+<<<<<<< HEAD
   Grid
+=======
+  Grid,
+  Link
+>>>>>>> d7c5164d9e7fc2b1f61b07fca6db68bc9a102644
 } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
 import { Link } from "react-router-dom";
@@ -87,6 +92,7 @@ const ManageCourse = () => {
     }
   };
 
+<<<<<<< HEAD
   return (
     <Container sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -168,6 +174,62 @@ const ManageCourse = () => {
       </Dialog>
 </Container>
   );
-};
+=======
+return (
+  <Container sx={{ mt: 4 }}>
+    <Typography variant="h4" gutterBottom>
+      Manage Courses
+    </Typography>
 
+    {/* Your table code here */}
+
+    {/* Edit Dialog */}
+    <Dialog open={openEdit} onClose={() => setOpenEdit(false)}>
+      <DialogTitle>Edit Course</DialogTitle>
+      <DialogContent>
+        {Object.keys(editCourse).map((field) =>
+          field !== "userId" ? (
+            <TextField
+              key={field}
+              margin="dense"
+              label={field}
+              fullWidth
+              value={editCourse[field]}
+              onChange={(e) =>
+                setEditCourse({ ...editCourse, [field]: e.target.value })
+              }
+            />
+          ) : null
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => setOpenEdit(false)}>Cancel</Button>
+        <Button onClick={handleEditSave} variant="contained">
+          Save
+        </Button>
+      </DialogActions>
+    </Dialog>
+
+    {/* The Paper section should be here */}
+    <Paper elevation={3} sx={{ p: 4, mt: 2 }}>
+      <Typography variant="body1">Course list will go here...</Typography>
+      <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid item>
+          <Link to="/admin/adminmanagecourse" style={{ textDecoration: "none" }}>
+            Add Course
+          </Link>
+        </Grid>
+        <Grid item>
+          <Button variant="outlined" color="secondary">Edit Course</Button>
+        </Grid>
+        <Grid item>
+          <Button variant="contained" color="error">Delete Course</Button>
+        </Grid>
+      </Grid>
+    </Paper>
+  </Container>
+);
+
+>>>>>>> d7c5164d9e7fc2b1f61b07fca6db68bc9a102644
+};
 export default ManageCourse;
