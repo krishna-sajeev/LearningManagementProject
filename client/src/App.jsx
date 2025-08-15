@@ -29,6 +29,8 @@ import ManageUsers from "./component/admindashboard/ManageUsers";
 import ManageCourses from "./component/admindashboard/ManageCourses";
 import Certificate from "./component/admindashboard/Certificate";
 import Feedback from "./component/studentdashboard/Feedback";
+import CourseDetails from "./component/studentdashboard/CourseDetails";
+import LiveSession from "./component/studentdashboard/LiveSession";
 
 
 
@@ -81,6 +83,8 @@ function App() {
         <Route path="/student/project" element={<Layout role="student"><Project /></Layout>} />
         <Route path="/student/profile" element={<Layout role="student"><MyProfile /></Layout>} />
         <Route path="/student/feedback" element={<Layout role="student"><Feedback /></Layout>} />
+        <Route path="/student/:title" element={<Layout role="student"><CourseDetails /></Layout>} />
+        <Route path="/student/live-session" element={<Layout role="student"><LiveSession /></Layout>} />
         
       </Routes> 
   
