@@ -38,7 +38,15 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+<<<<<<< HEAD
+    // Frontend validation
+    if (form.password !== form.confirmPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
+=======
    
+>>>>>>> origin/main
     if (!/^\d{10}$/.test(form.mobileNumber)) {
       setError("Enter a valid 10-digit mobile number.");
       return;
@@ -46,7 +54,11 @@ const Register = () => {
 
     setLoading(true);
     try {
+<<<<<<< HEAD
+      const res = await axios.post("http://localhost:8081/register", form);
+=======
   const res = await axios.post("http://localhost:8080/register", form);
+>>>>>>> origin/main
 
   if (res.data && res.data.status) {
     setBackendMessage(res.data.status);
@@ -144,9 +156,15 @@ const Register = () => {
               onChange={handleChange}
               required
             >
+<<<<<<< HEAD
+              <MenuItem value="ADMIN">Admin</MenuItem>
+              <MenuItem value="TUTOR">Tutor</MenuItem>
+              <MenuItem value="STUDENT">Student</MenuItem>
+=======
               <MenuItem value="ADMIN">ADMIN</MenuItem>
               <MenuItem value="TEACHER">TEACHER</MenuItem>
               <MenuItem value="STUDENT">STUDENT</MenuItem>
+>>>>>>> origin/main
             </TextField>
 
             <Button

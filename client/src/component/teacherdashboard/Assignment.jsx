@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
@@ -8,21 +8,40 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import axios from 'axios';
 
 const Assignment = () => {
   const navigate = useNavigate();
+  const [assignments, setAssignments] = useState([]);
 
-  const [assignments, setAssignments] = useState([
-    { id: 1, title: 'Math Homework', course: 'Mathematics', batch: 'Batch A', dueDate: '2025-08-20', status: 'Active' },
-    { id: 2, title: 'Science Project', course: 'Science', batch: 'Batch B', dueDate: '2025-08-25', status: 'Closed' },
-  ]);
+  // Fetch all assignments
+  const fetchAssignments = async () => {
+    try {
+      const response = await axios.get('http://localhost:8081/viewAssignments');
+      setAssignments(response.data);
+    } catch (error) {
+      console.error('Error fetching assignments:', error);
+    }
+  };
 
-  const handleDelete = (id) => {
+  // Delete assignment by ID
+  const handleDelete = async (id) => {
+    if (!id) return;
+
     const confirmed = window.confirm('Are you sure you want to delete this assignment?');
     if (!confirmed) return;
 
-    console.log(`Delete assignment with id: ${id}`);
+    try {
+      await axios.delete(`http://localhost:8081/deleteAssignment/${id}`);
+      setAssignments(assignments.filter(a => a.assignmentId !== id));
+    } catch (error) {
+      console.error('Error deleting assignment:', error);
+    }
   };
+
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
 
   return (
     <>
@@ -50,8 +69,7 @@ const Assignment = () => {
           <TableHead>
             <TableRow>
               <TableCell>Assignment Title</TableCell>
-              <TableCell>Course</TableCell>
-              <TableCell>Batch</TableCell> 
+              <TableCell>Details</TableCell>
               <TableCell>Due Date</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Action</TableCell>
@@ -59,18 +77,17 @@ const Assignment = () => {
           </TableHead>
           <TableBody>
             {assignments.map((assignment) => (
-              <TableRow key={assignment.id}>
+              <TableRow key={assignment.assignmentId}>
                 <TableCell>{assignment.title}</TableCell>
-                <TableCell>{assignment.course}</TableCell>
-                <TableCell>{assignment.batch}</TableCell> 
+                <TableCell>{assignment.details}</TableCell>
                 <TableCell>{assignment.dueDate}</TableCell>
-                <TableCell>{assignment.status}</TableCell> 
+                <TableCell>{assignment.status}</TableCell>
                 <TableCell>
                   <Button
                     variant="outlined"
                     size="small"
                     style={{ marginRight: '0.5rem' }}
-                    onClick={() => navigate(`/view-submission/${assignment.id}`)}
+                    onClick={() => navigate(`/view-submission/${assignment.assignmentId}`)}
                   >
                     View Submission
                   </Button>
@@ -79,7 +96,7 @@ const Assignment = () => {
                     size="small"
                     color="primary"
                     style={{ marginRight: '0.5rem' }}
-                    onClick={() => navigate(`/edit-assignment/${assignment.id}`)}
+                    onClick={() => navigate(`/edit-assignment/${assignment.assignmentId}`)}
                   >
                     Edit
                   </Button>
@@ -87,7 +104,7 @@ const Assignment = () => {
                     variant="contained"
                     size="small"
                     color="error"
-                    onClick={() => handleDelete(assignment.id)}
+                    onClick={() => handleDelete(assignment.assignmentId)}
                   >
                     Delete
                   </Button>

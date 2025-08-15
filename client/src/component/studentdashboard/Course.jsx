@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../axiosinteceptor';
 
 const Course = () => {
+
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
 
@@ -30,6 +31,7 @@ const Course = () => {
   const handleExplore = (course) => {
     navigate(`/student/${course.title}`, { state: { course } });
   };
+
 
   return (
     <>
