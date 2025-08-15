@@ -1,26 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Paper, Grid } from "@mui/material";
 import Sidebar from "../common/Sidebar";
 import Header from "../common/Header";
-
-const stats = {
-  totalUsers: 150,
-  totalCourses: 12,
-  totalPayments: "₹75,000",
-  activeTutors: 8,
-  enrolledStudents: 120,
-};
+import axios from "axios";
 
 const StatCard = ({ title, value }) => (
-  //<Paper elevation={3} sx={{ p: 34, mt: 2 }}></Paper>
-  <Paper elevation={3} sx={{ p:7,mt:2, textAlign: "center" }}>
+  <Paper elevation={3} sx={{ p: 7, mt: 2, textAlign: "center" }}>
     <Typography variant="h6" gutterBottom>{title}</Typography>
     <Typography variant="h5" color="primary">{value}</Typography>
   </Paper>
-  
 );
 
 const GenerateReports = () => {
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    totalCourses: 0,
+    totalPayments: 0,
+    activeTutors: 0,
+    enrolledStudents: 0
+  });
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/admin/stats") 
+      .then(response => {
+        setStats(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching stats:", error);
+      });
+  }, []);
+
   return (
     <Box display="flex">
       <Sidebar role="admin" />
@@ -38,7 +47,7 @@ const GenerateReports = () => {
               <StatCard title="Total Courses" value={stats.totalCourses} />
             </Grid>
             <Grid item xs={8} sm={3} md={4}>
-              <StatCard title="Total Payments" value={stats.totalPayments} />
+              <StatCard title="Total Payments" value={`₹${stats.totalPayments}`} />
             </Grid>
             <Grid item xs={8} sm={3} md={4}>
               <StatCard title="Active Tutors" value={stats.activeTutors} />

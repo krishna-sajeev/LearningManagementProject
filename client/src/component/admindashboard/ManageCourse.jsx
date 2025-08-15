@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Typography,
@@ -15,10 +15,11 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,        // <--- Added this
-  Grid} from "@mui/material";
+  TextField,
+  Grid
+} from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
-import { Link } from "react-router-dom";   // <--- Added this
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const ManageCourse = () => {
@@ -36,7 +37,7 @@ const ManageCourse = () => {
     date: ""
   });
 
-  // Fetch courses from backend
+  // Fetch courses
   const fetchCourses = async () => {
     try {
       const res = await axios.get("http://localhost:8080/display");
@@ -62,7 +63,7 @@ const ManageCourse = () => {
     }
   };
 
-  // Edit course open
+  // Open edit dialog
   const handleEditClick = (course) => {
     setEditCourse(course);
     setOpenEdit(true);
@@ -92,6 +93,7 @@ const ManageCourse = () => {
         Manage Courses
       </Typography>
 
+      {/* Courses Table */}
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -164,76 +166,8 @@ const ManageCourse = () => {
           </Button>
         </DialogActions>
       </Dialog>
-
-      {/* Added inside Container */}
-      <Paper elevation={3} sx={{ p: 3, mt: 4 }}>
-        <Typography variant="body1">Course list will go here...</Typography>
-        <Grid container spacing={2} sx={{ mt: 2 }}>
-          <Grid item>
-            <Link to="/admincourse/add" style={{ textDecoration: "none" }}>
-              <Button variant="contained" color="primary">
-                Add Course
-              </Button>
-            </Link>
-          </Grid>
-          
-        </Grid>
-      </Paper>
-    </Container>
+</Container>
   );
-
-return (
-
-  <Container sx={{ mt: 4 }}>
-    <Typography variant="h4" gutterBottom>
-      Manage Courses
-    </Typography>
-
-    {/* Edit Dialog */}
-    <Dialog open={openEdit} onClose={() => setOpenEdit(false)}>
-      <DialogTitle>Edit Course</DialogTitle>
-      <DialogContent>
-        {Object.keys(editCourse).map((field) =>
-          field !== "userId" ? (
-            <TextField
-              key={field}
-              margin="dense"
-              label={field}
-              fullWidth
-              value={editCourse[field]}
-              onChange={(e) =>
-                setEditCourse({ ...editCourse, [field]: e.target.value })
-              }
-            />
-          ) : null
-        )}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setOpenEdit(false)}>Cancel</Button>
-        <Button onClick={handleEditSave} variant="contained">
-          Save
-        </Button>
-      </DialogActions>
-    </Dialog>
-
-    {/* The Paper section should be here */}
-    <Paper elevation={3} sx={{ p: 4, mt: 2 }}>
-      <Typography variant="body1">Course list will go here...</Typography>
-      <Grid container spacing={2} sx={{ mt: 2 }}>
-        <Grid item>
-          <Link to="/admin/adminmanagecourse" style={{ textDecoration: "none" }}>
-            Add Course
-          </Link>
-        </Grid>
-        <Grid item>
-          <Button variant="outlined" color="secondary">Edit Course</Button>
-        </Grid>
-        <Grid item>
-          <Button variant="contained" color="error">Delete Course</Button>
-        </Grid>
-      </Grid>
-    </Paper>
-  </Container>
-)
 };
+
 export default ManageCourse;

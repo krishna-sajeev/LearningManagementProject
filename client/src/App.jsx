@@ -13,6 +13,12 @@ import ForgotPassword from "./component/login/ForgotPassword"
  import ManageCourses from "./component/admindashboard/ManageCourses";
  import ManageCourse from "./component/admindashboard/ManageCourse"
  import Certificate from "./component/admindashboard/Certificate";
+import AdminFeedbackList from "./component/admindashboard/AdminFeedbackList";
+// import AdminDashboard from "./component/admindashboard/AdminDashboard";
+// import ManageCourse from "./component/admindashboard/ManageCourse";
+// import ManageUser from "./component/admindashboard/ManageUser";
+// import ViewPayments from "./component/admindashboard/ViewPayments";
+// import GenerateReports from "./component/admindashboard/GenerateReports";
 
 // import AdminDashboard from "./component/admindashboard/AdminDashboard";
 // import ManageCourse from "./component/admindashboard/ManageCourse";
@@ -20,29 +26,29 @@ import ForgotPassword from "./component/login/ForgotPassword"
 // import ViewPayments from "./component/admindashboard/ViewPayments";
 // import GenerateReports from "./component/admindashboard/GenerateReports";
 
-
-// import StudentDetail from "./component/teacherdashboard/StudentDetail";
-// import Assignment from "./component/teacherdashboard/Assignment";
-// import Attendence from "./component/teacherdashboard/Attendence";
-// import Batch from "./component/teacherdashboard/Batch";
-// import StudentDashboard from "./component/studentdashboard/StudentDashboard";
-// import Sidebar from "./component/common/Sidebar";
-// import StudentDashboard from "./component/studentdashboard/StudentDashboard";
-// import Assignment from "./component/studentdashboard/Assignment";
-// import TeacherDashboard from "./component/teacherdashboard/TeacherDashboard";
-// import StudentDashboard from "./component/studentdashboard/StudentDashboard";
-// import Assignments from "./component/studentdashboard/Assignments";
-
+import StudentDashboard from "./component/studentdashboard/StudentDashboard";
+import Project from "./component/studentdashboard/Project";
+import Assignments from "./component/studentdashboard/Assignments";
+import Course from "./component/studentdashboard/Course";
+import EnrolledCourse from "./component/studentdashboard/EnrolledCourse";
+import Feedback from "./component/studentdashboard/Feedback";
+import LiveSession from "./component/studentdashboard/LiveSession";
+import RecordedVideos from "./component/studentdashboard/RecordedVideos";
+import ReferenceMaterial from "./component/studentdashboard/ReferenceMaterial";
 
 import Layout from "./component/common/Layout";
-// import Project from "./component/studentdashboard/Project";
-// import MyProfile from "./component/profile/MyProfile";
-// import NewAssignment from "./component/teacherdashboard/NewAssignment";
-// import EditAssignment from "./component/teacherdashboard/EditAssignment";
-// import ViewSubmission from "./component/teacherdashboard/ViewSubmission";
-// import ManageUsers from "./component/admindashboard/ManageUsers";
-// import ManageCourses from "./component/admindashboard/ManageCourses";
-// import Certificate from "./component/admindashboard/Certificate";
+import MyProfile from "./component/profile/MyProfile";
+
+
+ import TeacherDashboard from "./component/teacherdashboard/TeacherDashboard"; 
+ import Assignment from "./component/teacherdashboard/Assignment";
+  import Attendence from "./component/teacherdashboard/Attendence";
+   import Batch from "./component/teacherdashboard/Batch";
+    import EditAssignment from "./component/teacherdashboard/EditAssignment";
+     import NewAssignment from "./component/teacherdashboard/NewAssignment";
+      import StudentDetail from "./component/teacherdashboard/StudentDetail";
+       import ViewSubmission from "./component/teacherdashboard/ViewSubmission";
+
 
 function App() {
   return (
@@ -52,68 +58,57 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} /> 
 
-        <Route path="admin/admin-dashboard" element={<AdminDashboard />} />
-          {/* <Route path="/teacher-dashboard" element={<TeacherDashboard/>}/> */}
+          {/* <Route path="admin/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/admin/adminuser" element={<ManageUser />} />
           <Route path="/admin/adminmanageusers" element={<ManageUsers />} />
+
           <Route path="admin/adminmanagecourse" element={<ManageCourses />} />
-          <Route path="/admin/admincourses" element={<ManageCourse />} />
+          <Route path="/admin/admincourse" element={<ManageCourse />} />
           <Route path="/admin/adminreports" element={<Certificate />} /> 
-          <Route path="/adminpayments" element={<ViewPayments />} />
-          <Route path="/adminreports" element={<GenerateReports />} />  
+
+          <Route path="/admin/payments" element={<ViewPayments />} />
+          <Route path="/admin/reports" element={<GenerateReports />} />   */}
           {/* <Route path="/admincourse/add" element={<AddCourse />} /> */}
- 
-        {/* Admin Routes
+         
+
+        {/* Admin Routes */}
         <Route path="/admin/admin-dashboard" element={<Layout role="admin"><AdminDashboard /></Layout>} />
         <Route path="/admin/adminuser" element={<Layout role="admin"><ManageUser /></Layout>} />
-        <Route path="/admin/admincourse" element={<Layout role="admin"><ManageCourse /></Layout>} />
+        <Route path="/admin/adminmanagecourse" element={<Layout role="admin"><ManageCourse /></Layout>} />
         <Route path="/admin/adminpayments" element={<Layout role="admin"><ViewPayments /></Layout>} />
         <Route path="/admin/adminreports" element={<Layout role="admin"><GenerateReports /></Layout>} />
-        <Route path="/admin/admincourse/add" element={<Layout role="admin"><AddCourse /></Layout>} /> */}
+        <Route path="/admin/adminfeedback" element={<Layout role="admin"><AdminFeedbackList /></Layout>} />
 
 
-           <Route path="/admin/adminmanageusers" element={<Layout role="admin"><ManageUsers /></Layout>} />
-           <Route path="/admin/adminuser" element={<Layout role="admin"><ManageUser /></Layout>} />
-          <Route path="/admin/adminmanagecourse" element={<Layout role="admin"><ManageCourses /></Layout>} />
-          <Route path="/admin/adminreport" element={<Layout role="admin"><Certificate /></Layout>} /> 
-          <Route path="/admin/adminpayments" element={<Layout role="admin"><ViewPayments /></Layout>} />
-          <Route path="/admin/adminreports" element={<Layout role="admin"><GenerateReports /></Layout>} />  
-          
-
+        <Route path="/admin/adminmanageusers" element={<Layout role="admin"><ManageUsers /></Layout>} />
+        <Route path="/admin/adminmanagecourses" element={<Layout role="admin"><ManageCourses /></Layout>} />
+        <Route path="/admin/adminreport" element={<Layout role="admin"><Certificate /></Layout>} /> 
+        <Route path="/admin/adminpayments" element={<Layout role="admin"><ViewPayments /></Layout>} />
+        
         {/* Teacher Routes */}
-        {/* <Route path="/teacher/teacher-dashboard" element={<Layout role="teacher"><TeacherDashboard /></Layout>} />
+          <Route path="/teacher/teacher-dashboard" element={<Layout role="teacher"><TeacherDashboard /></Layout>} />
         <Route path="/teacher/student-detail" element={<Layout role="teacher"><StudentDetail /></Layout>} />
         <Route path="/teacher/assignment" element={<Layout role="teacher"><Assignment /></Layout>} />
         <Route path="/teacher/attendance" element={<Layout role="teacher"><Attendence /></Layout>} />
         <Route path="/teacher/schedule" element={<Layout role="teacher"><Batch /></Layout>} />
         <Route path="/new-assignment" element={<Layout role="teacher"><NewAssignment/></Layout>} />
         <Route path="/edit-assignment/:id" element={<Layout role="teacher"><EditAssignment/></Layout>}/>
-        <Route path="/view-submission/:id" element={<Layout role="teacher"><ViewSubmission/></Layout>} /> */}
-
-
-
-
-{/* <Route path="/teacher/student-detail" element={<StudentDetail/>}/>
-<Route path="/teacher/assignment" element={<Assignment/>}/>
-<Route path="/teacher/attendance" element={<Attendence/>}/>
-<Route path="/teacher/schedule" element={<Batch/>}/> */}
- {/* <Route path="/student/student-dashboard" element={<StudentDashboard />}/> 
- <Route path="/student/assignment" element={<Assignments />}/> */}
-
+        <Route path="/view-submission/:id" element={<Layout role="teacher"><ViewSubmission/></Layout>} /> 
 
         {/* Student Routes */}
-        {/* <Route path="/student/student-dashboard" element={<Layout role="student"><StudentDashboard /></Layout>} />
-        <Route path="/student/assignment" element={<Layout role="student"><Assignment /></Layout>} />
-        <Route path="/student/project" element={<Layout role="student"><Project /></Layout>} />
+        <Route path="/student/student-dashboard" element={<Layout role="student"><StudentDashboard /></Layout>} />
+        <Route path="/student/assignment" element={<Layout role="student"><Assignments /></Layout>} />
+        <Route path="/student/project" element={<Layout role="student"><Project /></Layout>} /> 
         <Route path="/student/profile" element={<Layout role="student"><MyProfile /></Layout>} />
-
-         */}
-
-      </Routes>
-
+         <Route path="/student/course" element={<Layout role="student"><Course /></Layout>} /> 
+         <Route path="/student/enrolled-course" element={<Layout role="student"><EnrolledCourse /></Layout>} />
+         <Route path="/student/feedback" element={<Layout role="student"><Feedback /></Layout>} />
+         <Route path="/student/live-session" element={<Layout role="student"><LiveSession/></Layout>} />
+         <Route path="/student/recorded-videos" element={<Layout role="student"><RecordedVideos /></Layout>} />
+         <Route path="/student/reference-material" element={<Layout role="student"><ReferenceMaterial /></Layout>} />
         
-      
 
+      </Routes> 
   
   );
 }

@@ -22,7 +22,6 @@ const Register = () => {
     confirmPassword: "",
     mobileNumber: "",
     role: ""
-
   });
   const [backendMessage, setBackendMessage] = useState("");
   const navigate = useNavigate();
@@ -42,6 +41,7 @@ const Register = () => {
       setBackendMessage("Passwords do not match");
 return;
     }
+   
     if (!/^\d{10}$/.test(form.mobileNumber)) {
       setError("Enter a valid 10-digit mobile number.");
 return;
