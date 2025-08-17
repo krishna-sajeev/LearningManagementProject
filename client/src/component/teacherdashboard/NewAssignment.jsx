@@ -18,7 +18,7 @@ const NewAssignment = () => {
     const fetchCourses = async () => {
       try {
         const response = await axios.get('http://localhost:8081/display');
-        setCourses(response.data); // response.data should be the list of Course objects
+        setCourses(response.data); 
       } catch (error) {
         console.error('Error fetching courses:', error);
         setSnackbar({ open: true, message: 'Failed to load courses', severity: 'error' });

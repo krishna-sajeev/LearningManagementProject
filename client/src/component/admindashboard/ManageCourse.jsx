@@ -40,7 +40,7 @@ const ManageCourse = () => {
   // Fetch courses from backend
   const fetchCourses = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/display");
+      const res = await axios.get("http://localhost:8081/display");
       setCourses(res.data);
     } catch (err) {
       console.error("Error fetching courses:", err);
