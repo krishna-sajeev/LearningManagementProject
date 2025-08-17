@@ -29,9 +29,13 @@ import ManageUsers from "./component/admindashboard/ManageUsers";
 import ManageCourses from "./component/admindashboard/ManageCourses";
 import Certificate from "./component/admindashboard/Certificate";
 import Feedback from "./component/studentdashboard/Feedback";
-import LiveSession from "./component/teacherdashboard/LiveSession";
+
 import ReferenceMaterial from "./component/teacherdashboard/ReferenceMaterial";
 import AddReference from "./component/teacherdashboard/AddReference";
+import LiveSessionTeacher from "./component/teacherdashboard/LiveSessionTeacher";
+import CourseDetails from "./component/studentdashboard/CourseDetails";
+import LiveSession from "./component/studentdashboard/LiveSession";
+
 
 
 
@@ -65,7 +69,7 @@ function App() {
         <Route path="/new-assignment" element={<Layout role="teacher"><NewAssignment/></Layout>} />
         <Route path="/edit-assignment/:id" element={<Layout role="teacher"><EditAssignment/></Layout>}/>
         <Route path="/view-submission/:id" element={<Layout role="teacher"><ViewSubmission/></Layout>} />
-        <Route path="/teacher/livesession" element={<Layout role="teacher"><LiveSession/></Layout>}/>
+        <Route path="/teacher/livesession" element={<Layout role="teacher"><LiveSessionTeacher/></Layout>}/>
         <Route path="/teacher/refernce_material" element={<Layout role="teacher"><ReferenceMaterial/></Layout>}/>
          <Route path="/teacher/addrefernce" element={<Layout role="teacher"><AddReference/></Layout>}/>
 
@@ -75,6 +79,8 @@ function App() {
         <Route path="/student/project" element={<Layout role="student"><Project /></Layout>} />
         <Route path="/student/profile" element={<Layout role="student"><MyProfile /></Layout>} />
         <Route path="/student/feedback" element={<Layout role="student"><Feedback /></Layout>} />
+        <Route path="/student/:title" element={<Layout role="student"><CourseDetails /></Layout>} />
+        <Route path="/student/live-session" element={<Layout role="student"><LiveSession /></Layout>} />
         
       </Routes> 
   
