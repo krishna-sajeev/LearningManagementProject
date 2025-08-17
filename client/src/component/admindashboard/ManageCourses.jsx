@@ -22,7 +22,7 @@ const ManageCourses = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8080/addCourse", course);
+      await axios.post("http://localhost:8081/addCourse", course);
       alert("Course added successfully!");
       setCourse({
         courseId: "",
