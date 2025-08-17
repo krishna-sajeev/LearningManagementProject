@@ -1,64 +1,107 @@
 package com.learningmanagement.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
 
-    @Entity
-    @Table(name = "feedback")
-    public class Feedback {
+@Entity
+public class Feedback {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
 
-        @Column(name = "course_id", nullable = false)
-        private Long courseId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID) // Hibernate 6+ supports this directly
+    @JsonProperty("feedId")
+    private UUID feedId;
 
-        @Column(name = "user_id", nullable = false)
-        private Long userId;
+    @JsonProperty("userId")
+    private int userId;
 
-        @Enumerated(EnumType.STRING)
-        @Column(name = "review_type", nullable = false)
-        private ReviewType reviewType;
+    @JsonProperty("reviewType")
+    private String reviewType;
 
-        @Column(name = "review_date", nullable = false)
-        private LocalDate reviewDate;
+    @JsonProperty("comment")
+    private String comment;
 
-        @Column(nullable = false)
-        private int star;
+    @JsonProperty("courseId")
+    private String courseId;
 
-        @Column(columnDefinition = "TEXT")
-        private String comment;
+    @JsonProperty("star")
+    private int star;
 
-        public enum ReviewType {
-            TEACHER, COURSE
-        }
+    @JsonProperty("reviewDate")
+    private LocalDate reviewDate;
 
-        // Getters and setters
-        public Long getId() { return id; }
-        public void setId(Long id) { this.id = id; }
-
-        public Long getCourseId() { return courseId; }
-        public void setCourseId(Long courseId) { this.courseId = courseId; }
-
-        public Long getUserId() { return userId; }
-        public void setUserId(Long userId) { this.userId = userId; }
-
-        public ReviewType getReviewType() { return reviewType; }
-        public void setReviewType(ReviewType reviewType) { this.reviewType = reviewType; }
-
-        public LocalDate getReviewDate() { return reviewDate; }
-        public void setReviewDate(LocalDate reviewDate) { this.reviewDate = reviewDate; }
-
-        public int getStar() { return star; }
-        public void setStar(int star) { this.star = star; }
-
-        public String getComment() { return comment; }
-        public void setComment(String comment) { this.comment = comment; }
-
+    public Feedback(UUID feedId, int userId, String reviewType, String comment, String courseId, int star, LocalDate reviewDate) {
+        this.feedId = feedId;
+        this.userId = userId;
+        this.reviewType = reviewType;
+        this.comment = comment;
+        this.courseId = courseId;
+        this.star = star;
+        this.reviewDate = reviewDate;
     }
 
+    public Feedback() {
+    }
 
+    public UUID getFeedId() {
+        return feedId;
+    }
 
+    public void setFeedId(UUID feedId) {
+        this.feedId = feedId;
+    }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getReviewType() {
+        return reviewType;
+    }
+
+    public void setReviewType(String reviewType) {
+        this.reviewType = reviewType;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    public int getStar() {
+        return star;
+    }
+
+    public void setStar(int star) {
+        this.star = star;
+    }
+
+    public LocalDate getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setReviewDate(LocalDate reviewDate) {
+        this.reviewDate = reviewDate;
+    }
+}

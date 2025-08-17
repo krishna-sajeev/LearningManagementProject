@@ -21,7 +21,7 @@ const ManageUsers = () => {
   // Fetch users from backend
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/users");
+      const res = await axios.get("http://localhost:8081/users");
       setUsers(res.data);
     } catch (err) {
       console.error("Error fetching users", err);
@@ -36,7 +36,7 @@ const ManageUsers = () => {
   const handleDelete = (userId) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       axios
-        .delete(`http://localhost:8080/users/${userId}`)
+        .delete(`http://localhost:8081/users/${userId}`)
         .then(() => {
           setUsers((prev) => prev.filter((user) => user.userId !== userId)); // instantly update UI
         })
@@ -50,7 +50,7 @@ const ManageUsers = () => {
   // Approve user
   const handleApprove = async (userId) => {
     try {
-      const res = await axios.put(`http://localhost:8080/users/${userId}/approve`);
+      const res = await axios.put(`http://localhost:8081/users/${userId}/approve`);
       alert(res.data.status || "User approved successfully");
       fetchUsers(); // reload list
     } catch (err) {

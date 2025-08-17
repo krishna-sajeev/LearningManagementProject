@@ -1,132 +1,92 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-
-const coursesWithBatches = {
-  Mathematics: ['Batch A', 'Batch B', 'Batch C'],
-  Science: ['Batch X', 'Batch Y'],
-  English: ['Batch 1', 'Batch 2', 'Batch 3'],
-};
+import axios from 'axios';
 
 const NewAssignment = () => {
   const navigate = useNavigate();
+  const [courses, setCourses] = useState([]);
+  const [formData, setFormData] = useState({ title: '', details: '', course: '', dueDate: '' });
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
-  const [formData, setFormData] = useState({
-    title: '',
-    course: '',
-    batch: '',
-    dueDate: '',
-  });
-
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: '',
-    severity: 'success', // success | error | warning | info
-  });
+  // Fetch courses from backend on mount
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get('http://localhost:8081/display');
+        setCourses(response.data); // response.data should be the list of Course objects
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+        setSnackbar({ open: true, message: 'Failed to load courses', severity: 'error' });
+      }
+    };
+    fetchCourses();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'course') {
-      setFormData({ ...formData, course: value, batch: '' });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    setFormData({ ...formData, [name]: value });
   };
 
   const validateDueDate = (dateStr) => {
     const today = new Date();
-    today.setHours(0,0,0,0); // clear time part for comparison
+    today.setHours(0, 0, 0, 0);
     const dueDate = new Date(dateStr);
     return dueDate >= today;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateDueDate(formData.dueDate)) {
-      setSnackbar({
-        open: true,
-        message: 'Due date cannot be in the past.',
-        severity: 'error',
-      });
+      setSnackbar({ open: true, message: 'Due date cannot be in the past.', severity: 'error' });
       return;
     }
 
-    // TODO: call API to save assignment here
-
-    setSnackbar({
-      open: true,
-      message: 'Assignment saved successfully!',
-      severity: 'success',
-    });
-
-    // Redirect after short delay so user can see success message
-    setTimeout(() => {
-      navigate('/teacher/assignment');
-    }, 1500);
+    try {
+      const response = await axios.post('http://localhost:8081/addAssignment', formData);
+      if (response.data.status === 'Successfully Added') {
+        setSnackbar({ open: true, message: 'Assignment saved successfully!', severity: 'success' });
+        setTimeout(() => navigate('/teacher/assignment'), 1500);
+      } else {
+        setSnackbar({ open: true, message: response.data.status || 'Error saving assignment.', severity: 'error' });
+      }
+    } catch (error) {
+      console.error('Error saving assignment:', error);
+      setSnackbar({ open: true, message: 'Server error. Please try again later.', severity: 'error' });
+    }
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbar({ ...snackbar, open: false });
-  };
+  const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
 
-  // Get today's date in YYYY-MM-DD format for min attribute
   const todayStr = new Date().toISOString().split('T')[0];
 
   return (
     <div>
       <h1>New Assignment</h1>
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1rem', maxWidth: '400px' }}>
+        <TextField label="Assignment Title" name="title" value={formData.title} onChange={handleChange} required />
         <TextField
-          label="Assignment Title"
-          name="title"
-          value={formData.title}
+          label="Assignment Details"
+          name="details"
+          value={formData.details}
           onChange={handleChange}
+          multiline
+          rows={4}
+          placeholder="Enter detailed description of the assignment"
           required
         />
-
-        <TextField
-          select
-          label="Course"
-          name="course"
-          value={formData.course}
-          onChange={handleChange}
-          required
-        >
-          <MenuItem value="">
-            <em>Select Course</em>
-          </MenuItem>
-          {Object.keys(coursesWithBatches).map(course => (
-            <MenuItem key={course} value={course}>
-              {course}
+        <TextField select label="Course" name="course" value={formData.course} onChange={handleChange} required>
+          <MenuItem value=""><em>Select Course</em></MenuItem>
+          {courses.map(course => (
+            <MenuItem key={course.id} value={course.title}>
+              {course.title}
             </MenuItem>
           ))}
         </TextField>
-
-        {formData.course && (
-          <TextField
-            select
-            label="Batch"
-            name="batch"
-            value={formData.batch}
-            onChange={handleChange}
-            required
-          >
-            <MenuItem value="">
-              <em>Select Batch</em>
-            </MenuItem>
-            {coursesWithBatches[formData.course].map(batch => (
-              <MenuItem key={batch} value={batch}>
-                {batch}
-              </MenuItem>
-            ))}
-          </TextField>
-        )}
-
         <TextField
           label="Due Date"
           name="dueDate"
@@ -134,10 +94,9 @@ const NewAssignment = () => {
           value={formData.dueDate}
           onChange={handleChange}
           InputLabelProps={{ shrink: true }}
-          inputProps={{ min: todayStr }}  // disable past dates here
+          inputProps={{ min: todayStr }}
           required
         />
-
         <Button type="submit" variant="contained">Save Assignment</Button>
       </form>
 

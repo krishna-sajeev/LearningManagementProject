@@ -16,12 +16,12 @@ const GenerateReports = () => {
     totalUsers: 0,
     totalCourses: 0,
     totalPayments: 0,
-    activeTutors: 0,
+    activeTeachers: 0,
     enrolledStudents: 0
   });
 
   useEffect(() => {
-    axios.get("http://localhost:8080/admin/stats") 
+    axios.get("http://localhost:8081/admin/stats") 
       .then(response => {
         setStats(response.data);
       })
@@ -50,7 +50,7 @@ const GenerateReports = () => {
               <StatCard title="Total Payments" value={`₹${stats.totalPayments}`} />
             </Grid>
             <Grid item xs={8} sm={3} md={4}>
-              <StatCard title="Active Tutors" value={stats.activeTutors} />
+              <StatCard title="Active Teachers" value={stats.activeTeachers} />
             </Grid>
             <Grid item xs={8} sm={3} md={4}>
               <StatCard title="Enrolled Students" value={stats.enrolledStudents} />

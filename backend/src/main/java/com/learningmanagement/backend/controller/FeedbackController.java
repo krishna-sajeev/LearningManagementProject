@@ -1,41 +1,44 @@
-package com.learningmanagement.backend.controller;
 
+package com.learningmanagement.backend.controller;
 
 import com.learningmanagement.backend.model.Feedback;
 import com.learningmanagement.backend.repository.FeedbackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
-//@RequestMapping("/feedback")
+@CrossOrigin(origins = "http://localhost:5173")
 public class FeedbackController {
 
     @Autowired
-    private FeedbackRepository feedbackRepository;
+    private FeedbackRepository repo;
 
-
-
-    @PostMapping("/feedback")    //  Insert Feedback (Student Side)
-    public Feedback addFeedback(@RequestBody Feedback feedback) {
-        return feedbackRepository.save(feedback);
+    // Add new feedback
+    @PostMapping("/feedback")
+    public ResponseEntity<?> addFeedback(@RequestBody Feedback input) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            repo.save(input);
+            response.put("status", "Feedback Added successfully");
+        } catch (Exception e) {
+            response.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+        return ResponseEntity.ok(response);
     }
 
-
-    //  Get all feedback (Admin View)
+    // Get all feedback (Admin View)
     @GetMapping("/feedbacklist")
     public List<Feedback> getAllFeedback() {
-        return feedbackRepository.findAll();
+        return repo.findAll();
     }
 
-    //  Filter by review type (TEACHER or COURSE)
-    @GetMapping("feedbacklist/type/{type}")
+    // Filter by review type (e.g., "COURSE", "TEACHER")
+    @GetMapping("/feedbacklist/type/{type}")
     public List<Feedback> getFeedbackByType(@PathVariable String type) {
-        Feedback.ReviewType reviewType = Feedback.ReviewType.valueOf(type.toUpperCase());
-        return feedbackRepository.findByReviewType(reviewType);
+        return repo.findByReviewType(type);
     }
-
-
 }

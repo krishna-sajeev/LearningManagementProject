@@ -36,24 +36,33 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+
  
     if (form.password !== form.confirmPassword) {
       setBackendMessage("Passwords do not match");
 return;
     }
+
+    // Frontend validation
+    if (form.password !== form.confirmPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
    
+
     if (!/^\d{10}$/.test(form.mobileNumber)) {
       setError("Enter a valid 10-digit mobile number.");
 return;
     }
 
     try {
+
       const payload={
         ...form,
         mobileNumber: Number(form.mobileNumber),
         role:form.role.toUpperCase(),
       };
-      const res = await axios.post("http://localhost:8080/register", payload);
+      const res = await axios.post("http://localhost:8081/register", payload);
 
       if (res.data && typeof res.data.status === "string") {
         setBackendMessage(res.data.status);
@@ -157,9 +166,13 @@ return;
               onChange={handleChange}
               sx={{ mb: 2 }}
             >
-              <MenuItem value="STUDENT">STUDENT</MenuItem>
+
+
+              <MenuItem value="ADMIN">ADMIN</MenuItem>
               <MenuItem value="TEACHER">TEACHER</MenuItem>
-               <MenuItem value="ADMIN">ADMIN</MenuItem>
+              <MenuItem value="STUDENT">STUDENT</MenuItem>
+
+
             </TextField>
 
             <Button variant="contained" type="submit" fullWidth>

@@ -34,15 +34,11 @@ import ReferenceMaterial from "./component/studentdashboard/ReferenceMaterial";
 import Layout from "./component/common/Layout";
 import MyProfile from "./component/profile/MyProfile";
 
-
-  
-       
-       
-       
-       import StudentDetail from "./component/teacherdashboard/StudentDetail";
+import StudentDetail from "./component/teacherdashboard/StudentDetail";
 import NewAssignment from "./component/teacherdashboard/NewAssignment";
 import EditAssignment from "./component/teacherdashboard/EditAssignment";
 import ViewSubmission from "./component/teacherdashboard/ViewSubmission";
+import CourseDetails from "./component/studentdashboard/CourseDetails";
 
 
 
@@ -57,18 +53,27 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* Admin Routes */}
+
+         {/* <Route path="admin/admin-dashboard" element={<Layout role="admin"><AdminDashboard /></Layout>} />
+        <Route path="/adminuser" element={<Layout role="admin"><ManageUser /></Layout>} />
+        <Route path="/admincourse" element={<Layout role="admin"><ManageCourse /></Layout>} />
+        <Route path="/adminpayments" element={<Layout role="admin"><ViewPayments /></Layout>} />
+        <Route path="/adminreports" element={<Layout role="admin"><GenerateReports /></Layout>} /> */}
+        {/* <Route path="/admin/admincourse/add" element={<Layout role="admin"><AddCourse /></Layout>} />  */}
+
+        
         <Route path="/admin/admin-dashboard" element={<Layout role="admin"><AdminDashboard /></Layout>} />
         <Route path="/admin/adminuser" element={<Layout role="admin"><ManageUser /></Layout>} />
-        <Route path="/admin/adminmanagecourse" element={<Layout role="admin"><ManageCourse /></Layout>} />
         <Route path="/admin/adminpayments" element={<Layout role="admin"><ViewPayments /></Layout>} />
         <Route path="/admin/adminfeedback" element={<Layout role="admin"><AdminFeedbackList /></Layout>} />
         <Route path="/admin/adminmanageusers" element={<Layout role="admin"><ManageUsers /></Layout>} />
-        <Route path="/admin/adminmanagecourses" element={<Layout role="admin"><ManageCourses /></Layout>} />
         <Route path="/admin/adminreport" element={<Layout role="admin"><Certificate /></Layout>} /> 
         <Route path="/admin/adminreports" element={<Layout role="admin"><GenerateReports /></Layout>} />  
-          
+         <Route path="/admin/adminmanagecourse" element={<Layout role="admin"><ManageCourse /></Layout>} />
+         <Route path="/admin/adminmanagecourses" element={<Layout role="admin"><ManageCourses /></Layout>} />
+ 
         {/* Teacher Routes */}
-          <Route path="/teacher/teacher-dashboard" element={<Layout role="teacher"><TeacherDashboard /></Layout>} />
+        <Route path="/teacher/teacher-dashboard" element={<Layout role="teacher"><TeacherDashboard /></Layout>} />
         <Route path="/teacher/student-detail" element={<Layout role="teacher"><StudentDetail /></Layout>} />
         <Route path="/teacher/assignment" element={<Layout role="teacher"><Assignment /></Layout>} />
         <Route path="/teacher/attendance" element={<Layout role="teacher"><Attendence /></Layout>} />
@@ -88,6 +93,9 @@ function App() {
          <Route path="/student/live-session" element={<Layout role="student"><LiveSession/></Layout>} />
          <Route path="/student/recorded-videos" element={<Layout role="student"><RecordedVideos /></Layout>} />
          <Route path="/student/reference-material" element={<Layout role="student"><ReferenceMaterial /></Layout>} />
+        <Route path="/student/feedback" element={<Layout role="student"><Feedback /></Layout>} />
+        <Route path="/student/:title" element={<Layout role="student"><CourseDetails /></Layout>} />
+        <Route path="/student/live-session" element={<Layout role="student"><LiveSession /></Layout>} />
         
 
       </Routes> 

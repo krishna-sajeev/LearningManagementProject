@@ -135,4 +135,14 @@ public class UserController {
     }
 
 
+    @GetMapping("/users/{id}")
+    public ResponseEntity<?> getUser(@PathVariable Long id) {
+        Optional<User> user = repo.findById(id);
+        if (user.isPresent()) {
+            return ResponseEntity.ok(user.get());
+        } else {
+            return ResponseEntity.status(404).body("User not found");
+        }
+    }
+    
 }

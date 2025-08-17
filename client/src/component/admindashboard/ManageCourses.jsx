@@ -22,7 +22,7 @@ const ManageCourses = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8080/addCourse", course);
+      await axios.post("http://localhost:8081/addCourse", course);
       alert("Course added successfully!");
       setCourse({
         courseId: "",
@@ -47,42 +47,58 @@ const ManageCourses = () => {
         
         <form onSubmit={handleSubmit}>
           <h1>Add Course</h1>
+
           <TextField label="Course ID" 
           name="courseId" 
           value={course.courseId} 
           onChange={handleChange} 
           fullWidth margin="normal"/>
+
           <TextField label="Title"
            name="title" value={course.title}
             onChange={handleChange}
              fullWidth margin="normal" />
+
           <TextField label="Description" 
           name="description" value={course.description} 
-          onChange={handleChange} fullWidth margin="normal" />
+          onChange={handleChange} 
+          fullWidth margin="normal" />
+
           <TextField label="Duration"
            name="duration" value={course.duration}
-            onChange={handleChange} fullWidth margin="normal" />
+            onChange={handleChange} 
+            fullWidth margin="normal" />
+
           <TextField label="Instructor"
            name="instructor" value={course.instructor}
-            onChange={handleChange} fullWidth margin="normal" />
+            onChange={handleChange}
+             fullWidth margin="normal" />
+
           <TextField select label="Status"
            name="status" value={course.status}
-            onChange={handleChange} fullWidth margin="normal">
+            onChange={handleChange} 
+            fullWidth margin="normal">
             <MenuItem value="Active">Active</MenuItem>
             <MenuItem value="Inactive">Inactive</MenuItem>
           </TextField>
           <TextField label="Fee" name="fee" 
           type="number" value={course.fee} 
-          onChange={handleChange} fullWidth margin="normal" />
+          onChange={handleChange}
+           fullWidth margin="normal" />
+
           <TextField label="Icon URL" 
           name="icon" value={course.icon}
-           onChange={handleChange} fullWidth margin="normal" />
+           onChange={handleChange} 
+           fullWidth margin="normal" />
+
           <TextField label="Date"
-           name="startdate" type="date"
-            value={course.startdate}
+           name="date" type="date"
+            value={course.date}
              onChange={handleChange}
               fullWidth margin="normal" 
               InputLabelProps={{ shrink: true }} />
+
+
           <Button type="submit" variant="contained" 
           fullWidth sx={{ mt: 2 }}>Manage Course</Button>
         </form>

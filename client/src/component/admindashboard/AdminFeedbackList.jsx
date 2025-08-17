@@ -19,7 +19,7 @@ const AdminFeedbackList = () => {
   //  Fetch all feedback
   const fetchFeedback = async (type = null) => {
     try {
-      let url = "http://localhost:8080/feedbacklist";
+      let url = "http://localhost:8081/feedbacklist";
       if (type) {
         url += `/type/${type}`;
       }
@@ -70,7 +70,7 @@ const AdminFeedbackList = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell><b>ID</b></TableCell>
+                {/* <TableCell><b>ID</b></TableCell>   */}
               <TableCell><b>Course ID</b></TableCell>
               <TableCell><b>User ID</b></TableCell>
               <TableCell><b>Review Type</b></TableCell>
@@ -82,8 +82,8 @@ const AdminFeedbackList = () => {
           <TableBody>
             {feedbacks.length > 0 ? (
               feedbacks.map((fb) => (
-                <TableRow key={fb.id}>
-                  <TableCell>{fb.id}</TableCell>
+                <TableRow key={fb.courseid}>
+                  {/* <TableCell>{fb.id}</TableCell> */}
                   <TableCell>{fb.courseId}</TableCell>
                   <TableCell>{fb.userId}</TableCell>
                   <TableCell>{fb.reviewType}</TableCell>
