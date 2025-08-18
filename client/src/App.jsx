@@ -42,18 +42,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
-        {/* Admin Routes */}
-<<<<<<< HEAD
-        <Route path="admin/admin-dashboard" element={<Layout role="admin"><AdminDashboard /></Layout>} />
-        <Route path="/adminuser" element={<Layout role="admin"><ManageUser /></Layout>} />
-        <Route path="/admincourse" element={<Layout role="admin"><ManageCourse /></Layout>} />
-        <Route path="/adminpayments" element={<Layout role="admin"><ViewPayments /></Layout>} />
-        <Route path="/adminreports" element={<Layout role="admin"><GenerateReports /></Layout>} />
-        <Route path="/admincourse/add" element={<Layout role="admin"><AddCourse /></Layout>} />
 
-        {/* Teacher Routes */}
-        <Route path="/tutor/tutor-dashboard" element={<Layout role="teacher"><TeacherDashboard /></Layout>} />
-=======
         <Route path="/admin/admin-dashboard" element={<Layout role="admin"><AdminDashboard /></Layout>} />
         <Route path="/admin/adminuser" element={<Layout role="admin"><ManageUser /></Layout>} />
         <Route path="/admin/admincourse" element={<Layout role="admin"><ManageCourse /></Layout>} />
@@ -68,7 +57,6 @@ function App() {
           
         {/* Teacher Routes */}
         <Route path="/teacher/teacher-dashboard" element={<Layout role="teacher"><TeacherDashboard /></Layout>} />
->>>>>>> origin/main
         <Route path="/teacher/student-detail" element={<Layout role="teacher"><StudentDetail /></Layout>} />
         <Route path="/teacher/assignment" element={<Layout role="teacher"><Assignment /></Layout>} />
         <Route path="/teacher/attendance" element={<Layout role="teacher"><Attendence /></Layout>} />

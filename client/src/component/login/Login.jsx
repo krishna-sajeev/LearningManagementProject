@@ -35,7 +35,7 @@ const [user, setUser] = useState({
 
   let validateUser = () => {
   console.log(user);
-  axios.post("http://localhost:8081/login", user)
+  axios.post("http://localhost:8080/login", user)
     .then((res) => {
       console.log(res.data);
       if (res.data.token) {
