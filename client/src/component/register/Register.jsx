@@ -159,9 +159,9 @@ const Register = () => {
               required
             >
 
-              <MenuItem value="ADMIN">Admin</MenuItem>
-              <MenuItem value="TEACHER">Teacher</MenuItem>
-              <MenuItem value="STUDENT">Student</MenuItem>
+              <MenuItem value="ADMIN">ADMIN</MenuItem>
+              <MenuItem value="TEACHER">TEACHER</MenuItem>
+              <MenuItem value="STUDENT">STUDENT</MenuItem>
             </TextField>
 
             <Button
