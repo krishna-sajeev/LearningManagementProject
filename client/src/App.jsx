@@ -38,7 +38,16 @@ import StudentDetail from "./component/teacherdashboard/StudentDetail";
 import NewAssignment from "./component/teacherdashboard/NewAssignment";
 import EditAssignment from "./component/teacherdashboard/EditAssignment";
 import ViewSubmission from "./component/teacherdashboard/ViewSubmission";
+// import ManageUsers from "./component/admindashboard/ManageUsers";
+// import ManageCourses from "./component/admindashboard/ManageCourses";
+// import Certificate from "./component/admindashboard/Certificate";
+// import Feedback from "./component/studentdashboard/Feedback";
+
+// import ReferenceMaterial from "./component/teacherdashboard/ReferenceMaterial";
+import AddReference from "./component/teacherdashboard/AddReference";
+import LiveSessionTeacher from "./component/teacherdashboard/LiveSessionTeacher";
 import CourseDetails from "./component/studentdashboard/CourseDetails";
+
 
 
 
@@ -62,6 +71,7 @@ function App() {
         {/* <Route path="/admin/admincourse/add" element={<Layout role="admin"><AddCourse /></Layout>} />  */}
 
         
+
         <Route path="/admin/admin-dashboard" element={<Layout role="admin"><AdminDashboard /></Layout>} />
         <Route path="/admin/adminuser" element={<Layout role="admin"><ManageUser /></Layout>} />
         <Route path="/admin/adminpayments" element={<Layout role="admin"><ViewPayments /></Layout>} />
@@ -80,7 +90,10 @@ function App() {
         <Route path="/teacher/schedule" element={<Layout role="teacher"><Batch /></Layout>} />
         <Route path="/new-assignment" element={<Layout role="teacher"><NewAssignment/></Layout>} />
         <Route path="/edit-assignment/:id" element={<Layout role="teacher"><EditAssignment/></Layout>}/>
-        <Route path="/view-submission/:id" element={<Layout role="teacher"><ViewSubmission/></Layout>} /> 
+        <Route path="/view-submission/:id" element={<Layout role="teacher"><ViewSubmission/></Layout>} />
+        <Route path="/teacher/livesession" element={<Layout role="teacher"><LiveSessionTeacher/></Layout>}/>
+        <Route path="/teacher/refernce_material" element={<Layout role="teacher"><ReferenceMaterial/></Layout>}/>
+         <Route path="/teacher/addrefernce" element={<Layout role="teacher"><AddReference/></Layout>}/>
 
         {/* Student Routes */}
         <Route path="/student/student-dashboard" element={<Layout role="student"><StudentDashboard /></Layout>} />

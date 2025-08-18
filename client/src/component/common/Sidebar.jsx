@@ -45,6 +45,8 @@ const Sidebar = ({ role, children }) => {
       { name: "Assignments", path: "/teacher/assignment" },
       { name: "Attendance", path: "/teacher/attendance" },
       { name: "View Batch Schedule", path: "/teacher/schedule" },
+      { name: "Live Session", path: "/teacher/livesession" },
+      { name: "Reference Material", path: "/teacher/refernce_material" },
       { name: "Logout", path: "/login" },
     ],
     student: [

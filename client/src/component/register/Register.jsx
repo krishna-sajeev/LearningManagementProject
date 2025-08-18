@@ -8,7 +8,7 @@ import {
   MenuItem,
   Grid,
   Link,
-  Alert
+  Alert,
 } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Layout from "../common/Layout";
@@ -29,38 +29,28 @@ const Register = () => {
   const handleChange = (e) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
- 
     if (form.password !== form.confirmPassword) {
       setBackendMessage("Passwords do not match");
-return;
-    }
-
-    // Frontend validation
-    if (form.password !== form.confirmPassword) {
-      setError("Passwords do not match!");
       return;
     }
-   
 
     if (!/^\d{10}$/.test(form.mobileNumber)) {
-      setError("Enter a valid 10-digit mobile number.");
-return;
+      setBackendMessage("Enter a valid 10-digit mobile number.");
+      return;
     }
 
     try {
-
-      const payload={
+      const payload = {
         ...form,
         mobileNumber: Number(form.mobileNumber),
-        role:form.role.toUpperCase(),
+        role: form.role.toUpperCase(),
       };
       const res = await axios.post("http://localhost:8081/register", payload);
 
@@ -88,7 +78,7 @@ return;
             mt: 8,
             p: 4,
             border: "1px solid #ccc",
-            borderRadius: "8px"
+            borderRadius: "8px",
           }}
         >
           <Typography variant="h4" gutterBottom>
@@ -105,9 +95,7 @@ return;
               }
               sx={{ mb: 2 }}
             >
-              {typeof backendMessage === "string"
-                ? backendMessage
-                : JSON.stringify(backendMessage)}
+              {backendMessage}
             </Alert>
           )}
 
@@ -147,12 +135,11 @@ return;
               onChange={handleChange}
               sx={{ mb: 2 }}
             />
-            <TextField 
+            <TextField
               fullWidth
               name="mobileNumber"
               label="Mobile Number"
               type="tel"
-              margin="normal"
               value={form.mobileNumber}
               onChange={handleChange}
               sx={{ mb: 2 }}
@@ -166,13 +153,9 @@ return;
               onChange={handleChange}
               sx={{ mb: 2 }}
             >
-
-
               <MenuItem value="ADMIN">ADMIN</MenuItem>
               <MenuItem value="TEACHER">TEACHER</MenuItem>
               <MenuItem value="STUDENT">STUDENT</MenuItem>
-
-
             </TextField>
 
             <Button variant="contained" type="submit" fullWidth>
@@ -180,7 +163,7 @@ return;
             </Button>
 
             <Grid container justifyContent="flex-end" sx={{ mt: 2 }}>
-              <Grid>
+              <Grid item>
                 <Link component={RouterLink} to="/login" variant="body2">
                   Already have an account? Login
                 </Link>
@@ -192,4 +175,5 @@ return;
     </Layout>
   );
 };
+
 export default Register;
