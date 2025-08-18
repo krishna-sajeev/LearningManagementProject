@@ -4,11 +4,18 @@ import com.learningmanagement.backend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User,Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
+
+   // User findByEmail(String email);
+   Optional<User> findByEmail(String email);
+    User findByUserId(String userId);
+
+    boolean existsByEmail(String email);
+    //  direct teacher count
+    @Query("SELECT COUNT(u) FROM User u WHERE u.role = 'TEACHER'")
+    long countTeachers();
 
 
-    @Query(value = "SELECT `id`, `email`, `full_name`, `mobile_number`, `password`, `role`,`salt` FROM `user` WHERE `email` = ?1",nativeQuery = true)
-    User findByEmail(String email);
 }

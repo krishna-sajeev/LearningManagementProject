@@ -6,7 +6,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 
-const drawerWidth = 220;
+const drawerWidth = 240;
 
 const Sidebar = ({ role, children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -32,13 +32,14 @@ const Sidebar = ({ role, children }) => {
   const sidebarLinks = {
     admin: [
 
-      { name: "Manage Users", path: "/admin/adminuser" },
-      { name: "My Profile", path: "/student/profile"},
+      { name: "My Profile", path: "/admin/adminprofile"},
       { name: "Admin Dashboard", path: "/admin/admin-dashboard" },
-      { name: "Manage Courses", path: "/admin/admincourse" },
+      { name: "Manage Users", path: "/admin/adminuser" }, //all user
+      { name: "Manage Courses", path: "/admin/adminmanagecourse" },
       { name: "Payments", path: "/admin/adminpayments" },
-      { name: "Reports", path: "/admin/adminreports" },
+      { name: "Reports", path: "/admin/adminreport" }, //certificate
       { name: "Logout", path: "/login" },
+      
     ],
     teacher: [
       { name: "Manage Student Detail", path: "/teacher/student-detail" },

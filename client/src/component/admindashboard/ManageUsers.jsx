@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button
+} from "@mui/material";
 import Sidebar from "../common/Sidebar";
 import Header from "../common/Header";
 import axios from "axios";
@@ -16,26 +27,37 @@ const ManageUsers = () => {
       console.error("Error fetching users", err);
     }
   };
+
   useEffect(() => {
     fetchUsers();
   }, []);
 
   // Delete user
-  const handleDelete = (id) => {
-  if (window.confirm("Are you sure you want to delete this user?")) {
-    axios
-      .delete(`http://localhost:8081/users/${id}`)
-      .then(() => {
-        console.log(`User with id ${id} deleted`);
-        setUsers((prev) => prev.filter((user) => String(user.id) !== String(id))); // instantly update UI
-      })
-      .catch((error) => {
-        console.error("Delete failed:", error);
-        alert("Failed to delete user. See console for details.");
-      });
-  }
-};
+  const handleDelete = (userId) => {
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      axios
+        .delete(`http://localhost:8081/users/${userId}`)
+        .then(() => {
+          setUsers((prev) => prev.filter((user) => user.userId !== userId)); // instantly update UI
+        })
+        .catch((error) => {
+          console.error("Delete failed:", error);
+          alert("Failed to delete user. See console for details.");
+        });
+    }
+  };
 
+  // Approve user
+  const handleApprove = async (userId) => {
+    try {
+      const res = await axios.put(`http://localhost:8081/users/${userId}/approve`);
+      alert(res.data.status || "User approved successfully");
+      fetchUsers(); // reload list
+    } catch (err) {
+      console.error(err);
+      alert("Error approving user");
+    }
+  };
 
   return (
     <>
@@ -58,7 +80,7 @@ const ManageUsers = () => {
             </TableHead>
             <TableBody>
               {users.map((user) => (
-                <TableRow key={user.id}>
+                <TableRow key={user.userId}>
                   <TableCell>{user.fullName}</TableCell>
                   <TableCell>{user.mobileNumber}</TableCell>
                   <TableCell>{user.role}</TableCell>
@@ -67,14 +89,23 @@ const ManageUsers = () => {
                     <Button
                       variant="contained"
                       color="error"
-                      onClick={() => handleDelete(user.id)}
+                      onClick={() => handleDelete(user.userId)}
                     >
                       Delete
                     </Button>
+                    &nbsp;
+                    {!user.approved && ( // show approve only if not approved
+                      <Button
+                        variant="contained"
+                        color="success"
+                        onClick={() => handleApprove(user.userId)}
+                      >
+                        Approve
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
-              
             </TableBody>
           </Table>
         </TableContainer>

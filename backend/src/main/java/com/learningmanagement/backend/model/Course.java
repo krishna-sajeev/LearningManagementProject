@@ -15,7 +15,7 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @JsonProperty("courseID")
+    @JsonProperty("courseId")
     @Column(unique = true)
     private String courseId;
 
@@ -31,9 +31,8 @@ public class Course {
     @JsonProperty("duration")
     private String duration;
 
-    @JsonProperty("startdate")
-   private String date;
-
+    @JsonProperty("date")
+    private String date;
 
     @JsonProperty("status")
     private String status;
