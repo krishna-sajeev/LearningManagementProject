@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5175")
+@CrossOrigin(origins = "http://localhost:5173")
 public class FeedbackController {
 
     @Autowired

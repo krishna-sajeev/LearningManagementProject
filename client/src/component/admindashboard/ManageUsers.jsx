@@ -24,7 +24,7 @@ const ManageUsers = () => {
   const handleDelete = (id) => {
   if (window.confirm("Are you sure you want to delete this user?")) {
     axios
-      .delete(`http://localhost:8080/users/${id}`)
+      .delete(`http://localhost:8081/users/${id}`)
       .then(() => {
         console.log(`User with id ${id} deleted`);
         setUsers((prev) => prev.filter((user) => String(user.id) !== String(id))); // instantly update UI

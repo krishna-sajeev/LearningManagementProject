@@ -55,7 +55,7 @@ const ManageCourse = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this course?")) {
       try {
-        await axios.delete(`http://localhost:8080/courses/${id}`);
+        await axios.delete(`http://localhost:8081/courses/${id}`);
         setCourses(courses.filter((course) => course.id!== id));
       } catch (err) {
         console.error("Error deleting course:", err);
@@ -73,7 +73,7 @@ const ManageCourse = () => {
   const handleEditSave = async () => {
     try {
       await axios.put(
-        `http://localhost:8080/courses/${editCourse.id}`,
+        `http://localhost:8081/courses/${editCourse.id}`,
         editCourse
       );
       setCourses(

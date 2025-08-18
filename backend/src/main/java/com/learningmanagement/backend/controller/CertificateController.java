@@ -21,7 +21,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 @RestController
 @RequestMapping("/certificates")
-@CrossOrigin(origins = "http://localhost:5175")
+@CrossOrigin(origins = "http://localhost:5173")
 public class CertificateController {
 
     @Autowired

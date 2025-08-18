@@ -30,7 +30,7 @@ const Feedback = () => {
     console.log(payload);
 
     axios
-      .post("http://localhost:8080/feedback", payload)
+      .post("http://localhost:8081/feedback", payload)
       .then((res) => {
         alert(res.data.status);
       })
