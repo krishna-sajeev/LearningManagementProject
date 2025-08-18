@@ -34,7 +34,7 @@ const Sidebar = ({ role, children }) => {
 
       { name: "My Profile", path: "/student/profile"},
       { name: "Admin Dashboard", path: "/admin/admin-dashboard" },
-      { name: "Manage Users", path: "/admin/adminuser" }, //three buttons
+      { name: "Manage Users", path: "/admin/adminuser" }, //all user
       { name: "Manage Courses", path: "/admin/adminmanagecourse" },
       { name: "Payments", path: "/admin/adminpayments" },
       { name: "Reports", path: "/admin/adminreport" }, //certificate
