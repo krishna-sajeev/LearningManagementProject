@@ -71,36 +71,70 @@ public class UserController {
         }
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User input) {
-        try {
-            User userFromDb = repo.findByEmail(input.getEmail());
-            if (userFromDb == null) return ResponseEntity.status(401).body("Invalid credentials");
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@RequestBody User input) {
+//        try {
+//            User userFromDb = repo.findByEmail(input.getEmail());
+//            if (userFromDb == null) return ResponseEntity.status(401).body("Invalid credentials");
+//
+//            String enteredHashed = PasswordUtil.hashWithSHA256(input.getPassword(), userFromDb.getSalt());
+//            if (!enteredHashed.equals(userFromDb.getPassword())) return ResponseEntity.status(401).body("Invalid credentials");
+//
+//            if (input.getRole() == null || !userFromDb.getRole().equals(input.getRole()))
+//                return ResponseEntity.status(401).body("Invalid Role");
+//
+//            String token = jwtUtil.generateToken(userFromDb.getEmail());
+//            if (token == null) return ResponseEntity.status(500).body("Token generation failed");
+//
+//            Map<String, Object> response = new HashMap<>();
+//            response.put("token", token);
+//            response.put("user", Map.of(
+//                    "UserId", userFromDb.getUserId(),
+//                    "fullName", userFromDb.getFullName(),
+//                    "email", userFromDb.getEmail(),
+//                    "role", userFromDb.getRole()
+//            ));
+//            return ResponseEntity.ok(response);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(500).body("Login failed: " + e.getMessage());
+//        }
+//    }
+@PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody User input) {
+    try {
+        Optional<User> userOpt = repo.findByEmail(input.getEmail());
+        User userFromDb = userOpt.orElse(null);
+        if (userFromDb == null)
+            return ResponseEntity.status(401).body("Invalid credentials");
 
-            String enteredHashed = PasswordUtil.hashWithSHA256(input.getPassword(), userFromDb.getSalt());
-            if (!enteredHashed.equals(userFromDb.getPassword())) return ResponseEntity.status(401).body("Invalid credentials");
+        String enteredHashed = PasswordUtil.hashWithSHA256(input.getPassword(), userFromDb.getSalt());
+        if (!enteredHashed.equals(userFromDb.getPassword()))
+            return ResponseEntity.status(401).body("Invalid credentials");
 
-            if (input.getRole() == null || !userFromDb.getRole().equals(input.getRole()))
-                return ResponseEntity.status(401).body("Invalid Role");
+        if (input.getRole() == null || !userFromDb.getRole().equals(input.getRole()))
+            return ResponseEntity.status(401).body("Invalid Role");
 
-            String token = jwtUtil.generateToken(userFromDb.getEmail());
-            if (token == null) return ResponseEntity.status(500).body("Token generation failed");
+        String token = jwtUtil.generateToken(userFromDb.getEmail());
+        if (token == null) return ResponseEntity.status(500).body("Token generation failed");
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("token", token);
-            response.put("user", Map.of(
-                    "UserId", userFromDb.getUserId(),
-                    "fullName", userFromDb.getFullName(),
-                    "email", userFromDb.getEmail(),
-                    "role", userFromDb.getRole()
-            ));
-            return ResponseEntity.ok(response);
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("user", Map.of(
+                "UserId", userFromDb.getUserId(),
+                "fullName", userFromDb.getFullName(),
+                "email", userFromDb.getEmail(),
+                "role", userFromDb.getRole()
+        ));
+        return ResponseEntity.ok(response);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("Login failed: " + e.getMessage());
-        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(500).body("Login failed: " + e.getMessage());
     }
+}
+
 
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers() {
