@@ -29,8 +29,13 @@ import ManageUsers from "./component/admindashboard/ManageUsers";
 import ManageCourses from "./component/admindashboard/ManageCourses";
 import Certificate from "./component/admindashboard/Certificate";
 import Feedback from "./component/studentdashboard/Feedback";
+
+import ReferenceMaterial from "./component/teacherdashboard/ReferenceMaterial";
+import AddReference from "./component/teacherdashboard/AddReference";
+import LiveSessionTeacher from "./component/teacherdashboard/LiveSessionTeacher";
 import CourseDetails from "./component/studentdashboard/CourseDetails";
 import LiveSession from "./component/studentdashboard/LiveSession";
+
 
 
 
@@ -42,7 +47,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
-
+        {/* Admin Routes */}
         <Route path="/admin/admin-dashboard" element={<Layout role="admin"><AdminDashboard /></Layout>} />
         <Route path="/admin/adminuser" element={<Layout role="admin"><ManageUser /></Layout>} />
         <Route path="/admin/admincourse" element={<Layout role="admin"><ManageCourse /></Layout>} />
@@ -64,6 +69,9 @@ function App() {
         <Route path="/new-assignment" element={<Layout role="teacher"><NewAssignment/></Layout>} />
         <Route path="/edit-assignment/:id" element={<Layout role="teacher"><EditAssignment/></Layout>}/>
         <Route path="/view-submission/:id" element={<Layout role="teacher"><ViewSubmission/></Layout>} />
+        <Route path="/teacher/livesession" element={<Layout role="teacher"><LiveSessionTeacher/></Layout>}/>
+        <Route path="/teacher/refernce_material" element={<Layout role="teacher"><ReferenceMaterial/></Layout>}/>
+         <Route path="/teacher/addrefernce" element={<Layout role="teacher"><AddReference/></Layout>}/>
 
         {/* Student Routes */}
         <Route path="/student/student-dashboard" element={<Layout role="student"><StudentDashboard /></Layout>} />

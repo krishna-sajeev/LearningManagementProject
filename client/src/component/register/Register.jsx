@@ -38,8 +38,13 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
+    // Frontend validation
+    if (form.password !== form.confirmPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
    
+
     if (!/^\d{10}$/.test(form.mobileNumber)) {
       setError("Enter a valid 10-digit mobile number.");
       return;
@@ -48,7 +53,7 @@ const Register = () => {
     setLoading(true);
     try {
 
-  const res = await axios.post("http://localhost:8080/register", form);
+      const res = await axios.post("http://localhost:8081/register", form);
 
   if (res.data && res.data.status) {
     setBackendMessage(res.data.status);
@@ -81,11 +86,18 @@ const Register = () => {
 
           {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
           {backendMessage && (
-            <Alert severity={backendMessage.toLowerCase().includes("success") ? "success" : "error"} sx={{ mb: 2 }}>
-              {backendMessage}
-            </Alert>
-          )}
-
+  <Alert
+    severity={
+      typeof backendMessage === "string" &&
+      backendMessage.toLowerCase().includes("success")
+        ? "success"
+        : "error"
+    }
+    sx={{ mb: 2 }}
+  >
+    {backendMessage}
+  </Alert>
+)}
           <form onSubmit={handleSubmit}>
             <TextField
               name="fullName"

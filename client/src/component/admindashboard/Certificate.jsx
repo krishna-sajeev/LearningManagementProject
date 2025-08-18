@@ -23,11 +23,11 @@ const Certificate = () => {
   const handleDownload = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/certificates",formData
+        "http://localhost:8081/certificates",formData
       );
         const certId = response.data.id;
 
-        const downloadResponse = await axios.get( `http://localhost:8080/certificates/certificate/download/${certId}`,
+        const downloadResponse = await axios.get( `http://localhost:8081/certificates/certificate/download/${certId}`,
           { responseType: "blob" }
     );
     

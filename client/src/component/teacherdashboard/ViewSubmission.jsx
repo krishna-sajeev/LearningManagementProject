@@ -52,7 +52,7 @@ const ViewSubmission = () => {
     return (
       <Box p={2}>
         <Typography variant="h6">Submission not found.</Typography>
-        <Button sx={{ mt: 2 }} onClick={() => navigate('/assignments')}>
+        <Button sx={{ mt: 2 }} onClick={() => navigate('/teacher/assignment')}>
           Back to Assignments
         </Button>
       </Box>

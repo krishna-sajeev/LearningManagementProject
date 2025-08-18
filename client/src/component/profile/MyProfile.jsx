@@ -14,7 +14,7 @@ const MyProfile = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axiosInstance.get(`http://localhost:8080/my-profile/${id}`, {
+    axiosInstance.get(`http://localhost:8081/my-profile/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then((res) => {
