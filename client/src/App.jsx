@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Login from "./component/login/Login";
 import Register from "./component/register/Register";
 import ForgotPassword from "./component/login/ForgotPassword";
-
+import AboutUs from "./component/common/AboutUs";
 import AdminDashboard from "./component/admindashboard/AdminDashboard";
 import ManageCourse from "./component/admindashboard/ManageCourse";
 import ManageCourses from "./component/admindashboard/ManageCourses";
@@ -14,7 +14,7 @@ import ViewPayments from "./component/admindashboard/ViewPayments";
 import GenerateReports from "./component/admindashboard/GenerateReports";
 import AdminFeedbackList from "./component/admindashboard/AdminFeedbackList"
 import Certificate from "./component/admindashboard/Certificate";
-
+import AdminProfile from "./component/admindashboard/AdminProfile";
 
 import Assignment from "./component/teacherdashboard/Assignment";
 import Attendence from "./component/teacherdashboard/Attendence";
@@ -60,6 +60,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/about" element={<AboutUs />} />
 
         {/* Admin Routes */}
 
@@ -80,8 +81,9 @@ function App() {
         <Route path="/admin/adminreport" element={<Layout role="admin"><Certificate /></Layout>} /> 
         <Route path="/admin/adminreports" element={<Layout role="admin"><GenerateReports /></Layout>} />  
          <Route path="/admin/adminmanagecourse" element={<Layout role="admin"><ManageCourse /></Layout>} />
-         <Route path="/admin/adminmanagecourses" element={<Layout role="admin"><ManageCourses /></Layout>} />
- 
+       <Route path="/admin/adminmanagecourses" element={<Layout role="admin"><ManageCourses /></Layout>} />
+       <Route path="/admin/adminprofile" element={<Layout role="admin"><AdminProfile /></Layout>} />
+
         {/* Teacher Routes */}
         <Route path="/teacher/teacher-dashboard" element={<Layout role="teacher"><TeacherDashboard /></Layout>} />
         <Route path="/teacher/student-detail" element={<Layout role="teacher"><StudentDetail /></Layout>} />
