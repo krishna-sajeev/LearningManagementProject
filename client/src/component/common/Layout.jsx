@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar";
 
 const Layout = ({ role, children }) => {
   return (
+    
     <Sidebar role={role}>
       {children}
     </Sidebar>

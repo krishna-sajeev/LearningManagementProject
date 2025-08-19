@@ -5,10 +5,12 @@ import {
 } from '@mui/material';
 import axiosInstance from '../../axiosinteceptor';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Layout from '../common/Layout';
 
 const MyProfile = () => {
   const token = localStorage.getItem('token');
   const id = localStorage.getItem("id");
+  const role = localStorage.getItem("role");
 
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
@@ -33,6 +35,7 @@ const MyProfile = () => {
   }
 
   return (
+    <Layout role = {role} >
     <Box sx={{ p: 4, maxWidth: '900px', margin: 'auto' }}>
       
       {/* Header */}
@@ -57,6 +60,7 @@ const MyProfile = () => {
         <AccordionDetails>
           <Typography>Mobile Number: {user?.mobileNumber || "N/A"}</Typography>
           <Typography>Email: {user?.email || "N/A"}</Typography>
+           <Typography>Role: {user?.role || "N/A"}</Typography>
         </AccordionDetails>
       </Accordion>
 
@@ -88,6 +92,7 @@ const MyProfile = () => {
 
      
     </Box>
+    </Layout>
   );
 };
 

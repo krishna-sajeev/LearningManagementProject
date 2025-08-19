@@ -19,7 +19,7 @@ const Course = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axiosInstance.get('http://localhost:8080/display')
+    axiosInstance.get('http://localhost:8081/display')
       .then((res) => {
         setCourses(res.data);
       })
