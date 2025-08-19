@@ -45,7 +45,8 @@ const [user, setUser] = useState({
         //  Store token and role in localStorage
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("role", user.role); //  Save selected role
-        localStorage.setItem("id",res.data.user.id)
+        localStorage.setItem("id",res.data.user.userId)
+        console.log(localStorage.getItem("id"));
         localStorage.setItem("userName", res.data.user.fullName); // Optional
         
         

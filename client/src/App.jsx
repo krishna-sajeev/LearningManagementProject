@@ -55,6 +55,7 @@ import CourseDetails from "./component/studentdashboard/CourseDetails";
 
 function App() {
   return (
+    
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
@@ -101,7 +102,7 @@ function App() {
         <Route path="/student/student-dashboard" element={<Layout role="student"><StudentDashboard /></Layout>} />
         <Route path="/student/assignment" element={<Layout role="student"><Assignments /></Layout>} />
         <Route path="/student/project" element={<Layout role="student"><Project /></Layout>} /> 
-        <Route path="/student/profile" element={<Layout role="student"><MyProfile /></Layout>} />
+        <Route path="/profile" element={<Layout role=":role"><MyProfile /></Layout>} />
          <Route path="/student/course" element={<Layout role="student"><Course /></Layout>} /> 
          <Route path="/student/enrolled-course" element={<Layout role="student"><EnrolledCourse /></Layout>} />
          <Route path="/student/feedback" element={<Layout role="student"><Feedback /></Layout>} />
@@ -111,6 +112,8 @@ function App() {
         <Route path="/student/feedback" element={<Layout role="student"><Feedback /></Layout>} />
         <Route path="/student/:title" element={<Layout role="student"><CourseDetails /></Layout>} />
         <Route path="/student/live-session" element={<Layout role="student"><LiveSession /></Layout>} />
+
+        
         
 
       </Routes> 

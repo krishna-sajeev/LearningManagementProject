@@ -122,7 +122,7 @@ public ResponseEntity<?> login(@RequestBody User input) {
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
         response.put("user", Map.of(
-                "UserId", userFromDb.getUserId(),
+                "userId", userFromDb.getUserId(),
                 "fullName", userFromDb.getFullName(),
                 "email", userFromDb.getEmail(),
                 "role", userFromDb.getRole()

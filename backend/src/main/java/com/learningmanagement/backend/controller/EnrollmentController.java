@@ -26,7 +26,7 @@ public class EnrollmentController {
     public ResponseEntity<?> enroll(@RequestBody Enroll input){
         Map<String,String> response = new HashMap<>();
         try{
-            Enroll exisiting = repo.findByCourse(input.getCourseId());
+
             repo.save(input);
             response.put("status" ,"Course Enrolled Successfully");
         } catch (Exception e) {

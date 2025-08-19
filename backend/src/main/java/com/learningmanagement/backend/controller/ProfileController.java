@@ -21,12 +21,12 @@ public class ProfileController {
     UserRepository repo;
 
     @GetMapping("/my-profile/{id}")
-    public ResponseEntity<?> viewProfile(@PathVariable Long id ) {
+    public ResponseEntity<?> viewProfile(@PathVariable String id ) {
         Map<String, String> response = new HashMap<>();
 
         User profile;
         try {
-            profile = repo.findById(id).orElse(null);
+            profile = repo.findByUserId(id);
             if (profile == null)
                 return ResponseEntity.status(404).body("Profile not found");
 
