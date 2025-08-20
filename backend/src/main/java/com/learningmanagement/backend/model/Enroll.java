@@ -27,32 +27,36 @@ public class Enroll {
     private LocalDate enrollDate;
 
     @JsonProperty("payementId")
-    private UUID payementId ;
+    private UUID payementId;
+
+    @JsonProperty("email")
+    private String email;
+
+    @JsonProperty("contactNumber")
+    private String contactNumber;
+
+    @JsonProperty("studentName")
+    private String studentName;
 
     private STATUS status;
 
-    public enum STATUS{
-        ACTIVE,COMPLETED,DROPPED
+    public enum STATUS {
+        ACTIVE, COMPLETED, DROPPED
     }
 
-    public Enroll(UUID enrollId, String courseId, int userId, LocalDate enrollDate, UUID payementId, STATUS status) {
+    public Enroll(UUID enrollId, String courseId, int userId, LocalDate enrollDate, UUID payementId,
+                  String email, String contactNumber, STATUS status) {
         this.enrollId = enrollId;
         this.courseId = courseId;
         this.userId = userId;
         this.enrollDate = enrollDate;
         this.payementId = payementId;
+        this.email = email;
+        this.contactNumber = contactNumber;
         this.status = status;
     }
 
     public Enroll() {
-    }
-
-    public UUID getPayementId() {
-        return payementId;
-    }
-
-    public void setPayementId(UUID payementId) {
-        this.payementId = payementId;
     }
 
     public UUID getEnrollId() {
@@ -87,11 +91,43 @@ public class Enroll {
         this.enrollDate = enrollDate;
     }
 
+    public UUID getPayementId() {
+        return payementId;
+    }
+
+    public void setPayementId(UUID payementId) {
+        this.payementId = payementId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
     public STATUS getStatus() {
         return status;
     }
 
     public void setStatus(STATUS status) {
         this.status = status;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 }

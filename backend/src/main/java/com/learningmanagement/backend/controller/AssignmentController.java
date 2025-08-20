@@ -12,7 +12,7 @@ import java.util.*;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5175")
+@CrossOrigin(origins = "http://localhost:5177")
 public class AssignmentController {
     @Autowired
     AssignmentRepository repo;

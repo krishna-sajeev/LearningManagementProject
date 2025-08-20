@@ -13,7 +13,6 @@ import GenerateReports from "./component/admindashboard/GenerateReports";
 import StudentDetail from "./component/teacherdashboard/StudentDetail";
 import Assignment from "./component/teacherdashboard/Assignment";
 import Attendence from "./component/teacherdashboard/Attendence";
-import Batch from "./component/teacherdashboard/Batch";
 import TeacherDashboard from "./component/teacherdashboard/TeacherDashboard";
 
 import StudentDashboard from "./component/studentdashboard/StudentDashboard";
@@ -35,6 +34,7 @@ import AddReference from "./component/teacherdashboard/AddReference";
 import LiveSessionTeacher from "./component/teacherdashboard/LiveSessionTeacher";
 import CourseDetails from "./component/studentdashboard/CourseDetails";
 import LiveSession from "./component/studentdashboard/LiveSession";
+import UpdateMaterial from "./component/teacherdashboard/UpdateMaterial";
 
 
 
@@ -65,13 +65,14 @@ function App() {
         <Route path="/teacher/student-detail" element={<Layout role="teacher"><StudentDetail /></Layout>} />
         <Route path="/teacher/assignment" element={<Layout role="teacher"><Assignment /></Layout>} />
         <Route path="/teacher/attendance" element={<Layout role="teacher"><Attendence /></Layout>} />
-        <Route path="/teacher/schedule" element={<Layout role="teacher"><Batch /></Layout>} />
         <Route path="/new-assignment" element={<Layout role="teacher"><NewAssignment/></Layout>} />
         <Route path="/edit-assignment/:id" element={<Layout role="teacher"><EditAssignment/></Layout>}/>
         <Route path="/view-submission/:id" element={<Layout role="teacher"><ViewSubmission/></Layout>} />
         <Route path="/teacher/livesession" element={<Layout role="teacher"><LiveSessionTeacher/></Layout>}/>
         <Route path="/teacher/refernce_material" element={<Layout role="teacher"><ReferenceMaterial/></Layout>}/>
          <Route path="/teacher/addrefernce" element={<Layout role="teacher"><AddReference/></Layout>}/>
+         <Route path="/teacher/updateMaterial/:id" element={<Layout role="teacher"><UpdateMaterial/></Layout>} />
+
 
         {/* Student Routes */}
         <Route path="/student/student-dashboard" element={<Layout role="student"><StudentDashboard /></Layout>} />
@@ -81,7 +82,7 @@ function App() {
         <Route path="/student/feedback" element={<Layout role="student"><Feedback /></Layout>} />
         <Route path="/student/:title" element={<Layout role="student"><CourseDetails /></Layout>} />
         <Route path="/student/live-session" element={<Layout role="student"><LiveSession /></Layout>} />
-        
+
       </Routes> 
   
   );

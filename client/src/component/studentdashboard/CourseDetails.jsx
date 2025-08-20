@@ -13,7 +13,7 @@ const CourseDetails = () => {
 
   useEffect(() => {
     if (!courseData) {
-      axiosInstance.get(`http://localhost:8080/course/${title}`)
+      axiosInstance.get(`http://localhost:8081/course/${title}`)
         .then(res => setCourseData(res.data))
         .catch(err => console.error(err));
     }
@@ -28,7 +28,7 @@ const CourseDetails = () => {
   }
 
   const handleEnroll = () => {
-    axiosInstance.post("http://localhost:8080/enroll", {
+    axiosInstance.post("http://localhost:8081/enroll", {
       userId: user,
       courseId: courseData.id
     })

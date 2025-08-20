@@ -36,11 +36,11 @@ const LiveSession = () => {
   }));
 
   useEffect(() => {
-    axiosInstance.get('http://localhost:8080/live-session')
+    axiosInstance.get('http://localhost:8081/live-session')
       .then((res) => {
         const sessionData = Array.isArray(res.data) ? res.data : [res.data];
         setLive(sessionData);
-        sessionData.map(session => axiosInstance.get(`http://localhost:8080/users/${session.instructorId}`)
+        sessionData.map(session => axiosInstance.get(`http://localhost:8081/users/${session.instructorId}`)
             .then((result) =>{setUser(result.data) 
           console.log(result.data)} )
             

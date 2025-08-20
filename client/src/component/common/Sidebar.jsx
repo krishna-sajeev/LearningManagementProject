@@ -41,10 +41,10 @@ const Sidebar = ({ role, children }) => {
       { name: "Logout", path: "/login" },
     ],
     teacher: [
+      { name: "Teacher Dashboard", path: "/teacher/teacher-dashboard" },
       { name: "Manage Student Detail", path: "/teacher/student-detail" },
       { name: "Assignments", path: "/teacher/assignment" },
       { name: "Attendance", path: "/teacher/attendance" },
-      { name: "View Batch Schedule", path: "/teacher/schedule" },
       { name: "Live Session", path: "/teacher/livesession" },
       { name: "Reference Material", path: "/teacher/refernce_material" },
       { name: "Logout", path: "/login" },

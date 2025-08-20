@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/references")
-@CrossOrigin(origins = "http://localhost:5175")
+@CrossOrigin(origins = "http://localhost:5177")
 public class ReferenceController {
 
     @Autowired
@@ -69,4 +69,39 @@ public class ReferenceController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getReferenceById(@PathVariable Long id) {
+        return referenceRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateReference(@PathVariable Long id, @RequestBody Map<String, Object> request) {
+        try {
+            Reference reference = referenceRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Reference not found"));
+
+            String title = (String) request.get("title");
+            String imageUrl = (String) request.get("imageUrl");
+            String materialUrl = (String) request.get("materialUrl");
+            Integer courseId = Integer.valueOf(request.get("courseId").toString());
+
+            Course course = courseRepository.findById(courseId)
+                    .orElseThrow(() -> new RuntimeException("Course not found"));
+
+            reference.setTitle(title);
+            reference.setImageUrl(imageUrl);
+            reference.setMaterialUrl(materialUrl);
+            reference.setCourse(course);
+
+            referenceRepository.save(reference);
+
+            return ResponseEntity.ok(Map.of("status", "Successfully Updated"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
 }
