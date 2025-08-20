@@ -1,5 +1,6 @@
 package com.learningmanagement.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,16 +22,17 @@ public class Enroll {
     private String courseId;
 
     @JsonProperty("userId")
-    private int userId;
+    private String userId;
 
     @JsonProperty("email")
     private String email;
 
     @JsonProperty("enrollDate")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "M/d/yyyy")
     private LocalDate enrollDate;
 
     @JsonProperty("payementId")
-    private UUID payementId;
+    private String payementId;
 
     @JsonProperty("contactNumber")
     private String contactNumber;
@@ -41,10 +43,10 @@ public class Enroll {
     private STATUS status;
 
     public enum STATUS {
-        ACTIVE, COMPLETED, DROPPED
+        PENDING, COMPLETED
     }
 
-    public Enroll(UUID enrollId, String courseId, int userId, LocalDate enrollDate, UUID payementId,
+    public Enroll(UUID enrollId, String courseId, String userId, LocalDate enrollDate, String payementId,
                   String email, String contactNumber, STATUS status) {
         this.enrollId = enrollId;
         this.courseId = courseId;
@@ -75,11 +77,11 @@ public class Enroll {
         this.courseId = courseId;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -91,11 +93,11 @@ public class Enroll {
         this.enrollDate = enrollDate;
     }
 
-    public UUID getPayementId() {
+    public String getPayementId() {
         return payementId;
     }
 
-    public void setPayementId(UUID payementId) {
+    public void setPayementId(String payementId) {
         this.payementId = payementId;
     }
 

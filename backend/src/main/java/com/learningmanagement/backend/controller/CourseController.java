@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 
-@CrossOrigin(origins = "http://localhost:5179")
+@CrossOrigin(origins = "http://localhost:5173")
 
 public class CourseController {
 

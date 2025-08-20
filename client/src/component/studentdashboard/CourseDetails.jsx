@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from 'react';
- import { useLocation, useNavigate, useParams } from 'react-router-dom';
- import { Box, Typography, Button, Card, CardContent, CardActions, CardMedia, Chip, Grid, } from '@mui/material';
- import axiosInstance from '../../axiosinteceptor';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Box, Typography, Button, Card, CardContent, CardActions, CardMedia, Chip, Grid } from '@mui/material';
+import axiosInstance from '../../axiosinteceptor';
+
+// Utility: load Razorpay SDK
+const loadRazorpay = () =>
+  new Promise((resolve) => {
+    if (window.Razorpay) return resolve(true);
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
 
 const CourseDetails = () => {
   const { title } = useParams();
@@ -10,6 +21,7 @@ const CourseDetails = () => {
   const { course } = location.state || {};
   const [courseData, setCourseData] = useState(course);
   const user = localStorage.getItem("id");
+  const fullName = localStorage.getItem("userName")
 
   useEffect(() => {
     if (!courseData) {
@@ -19,7 +31,6 @@ const CourseDetails = () => {
     }
   }, [courseData, title]);
 
-
   if (!courseData) {
     return (
       <Typography variant="h6" sx={{ mt: 5, textAlign: 'center' }}>
@@ -28,16 +39,77 @@ const CourseDetails = () => {
     );
   }
 
-  const handleEnroll = () => {
-    axiosInstance.post("http://localhost:8081/enroll", {
-      userId: user,
-      courseId: courseData.id
-    })
-    .then(res => {
-      console.log("Enrollment successful:", res.data);
-    //  navigate('/payment', { state: { course: courseData } });
-    })
-    .catch(err => console.error("Enrollment failed:", err));
+  // 🔥 Payment + Enrollment
+  const handleEnroll = async () => {
+    const loaded = await loadRazorpay();
+    if (!loaded) {
+      alert("Razorpay SDK failed to load. Check your internet.");
+      return;
+    }
+
+    try {
+      // Step 1: Create order from backend
+      const orderRes = await axiosInstance.post("http://localhost:8081/api/payments/create-order", {
+        courseId: courseData.courseId
+        
+      });
+      const orderData = orderRes.data;
+
+      // Step 2: Open Razorpay Checkout
+      const options = {
+        key: orderData.key,
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: "LMS Platform",
+        description: courseData.title,
+        order_id: orderData.orderId,
+        prefill: {
+          name: localStorage.getItem("username") || "Guest User",
+          email: localStorage.getItem("email") || "guest@example.com",
+          contact: "9999999999",
+        },
+        
+        notes: { courseId: courseData.id },
+        handler: async (response) => {
+          // Step 3: Verify payment with backend
+          const verifyRes = await axiosInstance.post("http://localhost:8081/api/payments/verify", response);
+          if (verifyRes.data.status === "verified") {
+            // Step 4: Only enroll if payment verified
+            await axiosInstance.post("http://localhost:8081/enroll", {
+              userId: user,
+              courseId: courseData.id,
+              enrollDate: new Date().toLocaleDateString(),
+              status : "COMPLETED",
+              payementId: orderRes.data.orderId,
+              studentname: fullName ,
+              email: localStorage.getItem("email")
+
+
+
+              
+
+
+            });
+            alert("✅ Payment successful! You are enrolled.");
+            navigate("/student/enrolled-course"); // redirect if needed
+          } else {
+            alert("❌ Payment verification failed");
+          }
+        },
+        theme: { color: "#3399cc" },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.on("payment.failed", (err) => {
+        console.error("Payment failed", err.error);
+        alert("❌ Payment failed: " + err.error.description);
+      });
+      rzp.open();
+
+    } catch (err) {
+      console.error("Error during payment:", err);
+      alert("Something went wrong, please try again.");
+    }
   };
 
   return (
@@ -105,4 +177,5 @@ const CourseDetails = () => {
     </Box>
   );
 };
+
 export default CourseDetails;

@@ -15,7 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/references")
 
-@CrossOrigin(origins = "http://localhost:5179")
+@CrossOrigin(origins = "http://localhost:5173")
 
 public class ReferenceController {
 

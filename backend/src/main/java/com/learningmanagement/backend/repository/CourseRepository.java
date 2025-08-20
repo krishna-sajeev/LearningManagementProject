@@ -11,5 +11,7 @@ public interface CourseRepository extends JpaRepository<Course,Integer> {
 
 @Query(value="SELECT `id`, `description`, `duration`, `courseId`,`instructor`, `status`, `title`, `fee`, `icon`  FROM `course`",nativeQuery = true)
 List<Map<String, Object>> findAllCourse();
+
+   Course findByCourseId(String courseId) ;
 }
 
