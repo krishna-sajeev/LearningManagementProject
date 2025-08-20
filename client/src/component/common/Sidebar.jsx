@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import {
   AppBar, Box, CssBaseline, Drawer, IconButton, List,
-  ListItemButton, ListItemText, Toolbar, Typography, Button
+  ListItemButton, ListItemText, Toolbar, Typography, Button,
+  Dialog,
+  DialogTitle,
+  DialogContent
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
+import MyProfile from "../profile/MyProfile";
+import CloseIcon from "@mui/icons-material/Close";
 
 const drawerWidth = 220;
 
@@ -12,6 +17,11 @@ const Sidebar = ({ role, children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+   const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -33,7 +43,6 @@ const Sidebar = ({ role, children }) => {
     admin: [
 
       { name: "Manage Users", path: "/admin/adminuser" },
-      { name: "My Profile", path: "/student/profile"},
       { name: "Admin Dashboard", path: "/admin/admin-dashboard" },
       { name: "Manage Courses", path: "/admin/admincourse" },
       { name: "Payments", path: "/admin/adminpayments" },
@@ -50,7 +59,7 @@ const Sidebar = ({ role, children }) => {
       { name: "Logout", path: "/login" },
     ],
     student: [
-      { name: "My Profile", path: "/student/profile" },
+   
       { name: "Student Dashboard", path: "/student/student-dashboard" },
       { name: "Enrolled Course", path: "/student/enrolled-course" },
       { name: "Live Session", path: "/student/live-session" },
@@ -95,6 +104,41 @@ const Sidebar = ({ role, children }) => {
           <Box >
             <Button sx={{ color: "#ecf0f1" }} onClick={() => navigate("/")}>Home</Button>
             <Button sx={{ color: "#ecf0f1" }} onClick={() => navigate("/about")}>About Us</Button>
+             
+     {token && 
+      <Button variant="inherit" color="primary" onClick={handleOpen}>
+       My Profile
+      </Button>
+}
+      {/* Centered Dialog */}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        fullWidth
+        maxWidth="md" // can be sm, md, lg depending on your need
+      >
+        <DialogTitle>
+          My Profile
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+
+        <DialogContent dividers>
+          {/* Injecting MyProfile component */}
+          <MyProfile />
+        </DialogContent>
+      </Dialog>
+ 
             
             {token && (
             <Button sx={{ color: "#ecf0f1" }}  onClick={clearUser}>

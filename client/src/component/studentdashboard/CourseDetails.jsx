@@ -19,6 +19,7 @@ const CourseDetails = () => {
     }
   }, [courseData, title]);
 
+
   if (!courseData) {
     return (
       <Typography variant="h6" sx={{ mt: 5, textAlign: 'center' }}>

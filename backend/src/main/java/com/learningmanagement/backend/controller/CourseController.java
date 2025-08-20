@@ -14,7 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+
 @CrossOrigin(origins = "http://localhost:5177")
+
 public class CourseController {
 
     @Autowired
@@ -73,5 +75,3 @@ public class CourseController {
     }
 
 }
-
-

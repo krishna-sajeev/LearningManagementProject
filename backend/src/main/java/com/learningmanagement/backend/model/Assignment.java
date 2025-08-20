@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 public class Assignment {
     @Id
@@ -18,7 +20,7 @@ public class Assignment {
     private String details;
 
     @JsonProperty("dueDate")
-    private String dueDate;
+    private Date dueDate;
 
     @JsonProperty("status")
     @Column(nullable = false)
@@ -28,7 +30,7 @@ public class Assignment {
         this.status = "Active"; // Ensure default if constructor is used
     }
 
-    public Assignment(int assignment_id, String title, String details, String dueDate, String status) {
+    public Assignment(int assignment_id, String title, String details, Date dueDate, String status) {
         this.assignment_id = assignment_id;
         this.title = title;
         this.details = details;
@@ -60,11 +62,11 @@ public class Assignment {
         this.details = details;
     }
 
-    public String getDueDate() {
+    public Date getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
 

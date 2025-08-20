@@ -1,37 +1,58 @@
-import React from "react";
-import { Box, Typography, Paper, Button, Grid } from "@mui/material";
-import Sidebar from "../common/Sidebar";
-import Header from "../common/Header";
+import React, { useEffect, useState } from "react";
+import {
+  Container,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
+import axios from "axios";
 
 const ManageUser = () => {
+  const [users, setUsers] = useState([]);
+
+  // Fetch users from backend
+  useEffect(() => {
+    axios
+      .get("http://localhost:8081/users") 
+      .then((res) => setUsers(res.data))
+      .catch((err) => console.error("Error fetching users:", err));
+  }, []);
+
   return (
-    <Box display="flex">
-      <Sidebar role="admin" />
-      <Box flexGrow={1}>
-        <Header title="Manage Users" />
-        <Box p={3}>
-          <Typography variant="h5" gutterBottom>
-            User Management
-          </Typography>
-           <Paper elevation={5} sx={{ 
-            p:30,
-             mt:8 }}>
-            <Typography variant="body1">User list will go here...</Typography>
-            <Grid container spacing={2} sx={{ mt: 4 }}>
-              <Grid item>
-                <Button variant="contained" color="primary">Add User</Button>
-              </Grid>
-              <Grid item>
-                <Button variant="outlined" color="secondary">Edit User</Button>
-              </Grid>
-              <Grid item>
-                <Button variant="contained" color="error">Delete User</Button>
-              </Grid>
-            </Grid>
-          </Paper>
-        </Box>
-      </Box>
-    </Box>
+    <Container sx={{ marginTop: 4 }}>
+      <Typography variant="h5" gutterBottom>
+        User Details
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>User ID</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Role</TableCell>
+              <TableCell>Mobile Number</TableCell>
+              <TableCell>Email</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell>{user.userId}</TableCell>
+                <TableCell>{user.fullName}</TableCell>
+                <TableCell>{user.role}</TableCell>
+                <TableCell>{user.mobileNumber}</TableCell>
+                <TableCell>{user.email}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
   );
 };
 

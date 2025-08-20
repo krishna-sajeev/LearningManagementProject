@@ -23,14 +23,14 @@ public class Enroll {
     @JsonProperty("userId")
     private int userId;
 
+    @JsonProperty("email")
+    private String email;
+
     @JsonProperty("enrollDate")
     private LocalDate enrollDate;
 
     @JsonProperty("payementId")
     private UUID payementId;
-
-    @JsonProperty("email")
-    private String email;
 
     @JsonProperty("contactNumber")
     private String contactNumber;

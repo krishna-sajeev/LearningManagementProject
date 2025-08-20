@@ -8,14 +8,13 @@ import {
   MenuItem,
   Grid,
   Link,
-  Alert
+  Alert,
 } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Layout from "../common/Layout";
 import axios from "axios";
 
 const Register = () => {
-  const navigate = useNavigate();
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -24,154 +23,143 @@ const Register = () => {
     role: "",
     mobileNumber: "",
   });
-
-  const [error, setError] = useState("");
   const [backendMessage, setBackendMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setError("");
-    setBackendMessage("");
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Frontend validation
     if (form.password !== form.confirmPassword) {
-      setError("Passwords do not match!");
+      setBackendMessage("Passwords do not match");
       return;
     }
-   
 
     if (!/^\d{10}$/.test(form.mobileNumber)) {
-      setError("Enter a valid 10-digit mobile number.");
+      setBackendMessage("Enter a valid 10-digit mobile number.");
       return;
     }
 
-    setLoading(true);
     try {
+      const payload = {
+        ...form,
+        mobileNumber: Number(form.mobileNumber),
+        role: form.role.toUpperCase(),
+      };
+      const res = await axios.post("http://localhost:8081/register", payload);
 
-      const res = await axios.post("http://localhost:8081/register", form);
+      if (res.data && typeof res.data.status === "string") {
+        setBackendMessage(res.data.status);
+        alert(res.data.status);
 
-  if (res.data && res.data.status) {
-    setBackendMessage(res.data.status);
-    alert(res.data.status); // Alert from backend message
-
-    if (res.data.status.toLowerCase().includes("success")) {
-      setTimeout(() => navigate("/login"), 1500);
+        if (res.data.status.toLowerCase().includes("success")) {
+          setTimeout(() => navigate("/login"), 1500);
+        }
+      } else {
+        setBackendMessage("Unexpected server response.");
+      }
+    } catch (err) {
+      console.error(err);
+      setBackendMessage("Registration failed. Please try again.");
     }
-  }
-} catch (err) {
-  let message = "Registration failed. Please try again.";
-  
-  if (err.response && err.response.data && err.response.data.status) {
-    message = err.response.data.status;
-  }
-  
-  setBackendMessage(message);
-  alert(message); // Alert from backend message
-}
-
   };
 
   return (
     <Layout>
       <Container maxWidth="sm">
-        <Box sx={{ mt: 8, p: 4, boxShadow: 3, borderRadius: 2, bgcolor: "#fff" }}>
-          <Typography variant="h5" align="center" gutterBottom>
+        <Box
+          sx={{
+            mt: 8,
+            p: 4,
+            border: "1px solid #ccc",
+            borderRadius: "8px",
+          }}
+        >
+          <Typography variant="h4" gutterBottom>
             Register
           </Typography>
 
-          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
           {backendMessage && (
-  <Alert
-    severity={
-      typeof backendMessage === "string" &&
-      backendMessage.toLowerCase().includes("success")
-        ? "success"
-        : "error"
-    }
-    sx={{ mb: 2 }}
-  >
-    {backendMessage}
-  </Alert>
-)}
-          <form onSubmit={handleSubmit}>
+            <Alert
+              severity={
+                typeof backendMessage === "string" &&
+                backendMessage.toLowerCase().includes("success")
+                  ? "success"
+                  : "error"
+              }
+              sx={{ mb: 2 }}
+            >
+              {backendMessage}
+            </Alert>
+          )}
+
+          <Box component="form" onSubmit={handleSubmit}>
             <TextField
-              name="fullName"
-              label="Full Name"
               fullWidth
-              margin="normal"
+              label="Full Name"
+              name="fullName"
               value={form.fullName}
               onChange={handleChange}
-              required
+              sx={{ mb: 2 }}
             />
             <TextField
-              name="email"
-              label="Email"
-              type="email"
               fullWidth
-              margin="normal"
+              label="Email"
+              name="email"
+              type="email"
               value={form.email}
               onChange={handleChange}
-              required
+              sx={{ mb: 2 }}
             />
             <TextField
-              name="password"
-              label="Password"
-              type="password"
               fullWidth
-              margin="normal"
+              label="Password"
+              name="password"
+              type="password"
               value={form.password}
               onChange={handleChange}
-              required
+              sx={{ mb: 2 }}
             />
             <TextField
-              name="confirmPassword"
-              label="Confirm Password"
-              type="password"
               fullWidth
-              margin="normal"
+              label="Confirm Password"
+              name="confirmPassword"
+              type="password"
               value={form.confirmPassword}
               onChange={handleChange}
-              required
+              sx={{ mb: 2 }}
             />
             <TextField
+              fullWidth
               name="mobileNumber"
               label="Mobile Number"
               type="tel"
-              fullWidth
-              margin="normal"
               value={form.mobileNumber}
               onChange={handleChange}
-              required
+              sx={{ mb: 2 }}
             />
             <TextField
               select
-              name="role"
-              label="Select Role"
               fullWidth
-              margin="normal"
+              label="Role"
+              name="role"
               value={form.role}
               onChange={handleChange}
-              required
+              sx={{ mb: 2 }}
             >
-
-              <MenuItem value="ADMIN">Admin</MenuItem>
-              <MenuItem value="TEACHER">Teacher</MenuItem>
-              <MenuItem value="STUDENT">Student</MenuItem>
+              <MenuItem value="ADMIN">ADMIN</MenuItem>
+              <MenuItem value="TEACHER">TEACHER</MenuItem>
+              <MenuItem value="STUDENT">STUDENT</MenuItem>
             </TextField>
 
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 2 }}
-              disabled={loading}
-            >
-              {loading ? "Registering..." : "Register"}
+            <Button variant="contained" type="submit" fullWidth>
+              Register
             </Button>
 
             <Grid container justifyContent="flex-end" sx={{ mt: 2 }}>
@@ -181,7 +169,7 @@ const Register = () => {
                 </Link>
               </Grid>
             </Grid>
-          </form>
+          </Box>
         </Box>
       </Container>
     </Layout>

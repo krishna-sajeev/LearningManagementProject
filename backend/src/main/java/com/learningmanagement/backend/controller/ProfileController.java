@@ -13,7 +13,9 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
+
 @CrossOrigin(origins = "http://localhost:5177")
+
 public class ProfileController {
 
 
@@ -21,12 +23,12 @@ public class ProfileController {
     UserRepository repo;
 
     @GetMapping("/my-profile/{id}")
-    public ResponseEntity<?> viewProfile(@PathVariable int id ) {
+    public ResponseEntity<?> viewProfile(@PathVariable String id ) {
         Map<String, String> response = new HashMap<>();
 
         User profile;
         try {
-            profile = repo.findById(id).orElse(null);
+            profile = repo.findByUserId(id);
             if (profile == null)
                 return ResponseEntity.status(404).body("Profile not found");
 
@@ -38,7 +40,7 @@ public class ProfileController {
 
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Map<String,String>> delete(@PathVariable int id){
+    public ResponseEntity<Map<String,String>> delete(@PathVariable Long id){
         Map<String, String> response = new HashMap<>();
 
         try {
@@ -58,7 +60,7 @@ public class ProfileController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable int id, @RequestBody User input) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody User input) {
         Map<String, String> response = new HashMap<>();
 
         try {

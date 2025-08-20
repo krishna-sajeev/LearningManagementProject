@@ -1,35 +1,47 @@
-package com.learningmanagement.backend.controller;
 
+package com.learningmanagement.backend.controller;
 
 import com.learningmanagement.backend.model.Feedback;
 import com.learningmanagement.backend.repository.FeedbackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
+
 @CrossOrigin(origins = "http://localhost:5177")
+
+
 public class FeedbackController {
 
     @Autowired
-    FeedbackRepository repo;
+    private FeedbackRepository repo;
 
+    // Add new feedback
     @PostMapping("/feedback")
-    public ResponseEntity<?> addFeedback(@RequestBody Feedback input){
-        Map<String,String> response = new HashMap<>();
-        try{
+    public ResponseEntity<?> addFeedback(@RequestBody Feedback input) {
+        Map<String, String> response = new HashMap<>();
+        try {
             repo.save(input);
-            response.put("status","Feedback Added successfully");
+            response.put("status", "Feedback Added successfully");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            response.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
         }
-
         return ResponseEntity.ok(response);
+    }
+
+    // Get all feedback (Admin View)
+    @GetMapping("/feedbacklist")
+    public List<Feedback> getAllFeedback() {
+        return repo.findAll();
+    }
+
+    // Filter by review type (e.g., "COURSE", "TEACHER")
+    @GetMapping("/feedbacklist/type/{type}")
+    public List<Feedback> getFeedbackByType(@PathVariable String type) {
+        return repo.findByReviewType(type);
     }
 }
