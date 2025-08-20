@@ -3,16 +3,15 @@ package com.learningmanagement.backend.model;
 import jakarta.persistence.*;
 
 @Entity
-public class Reference {
+@Table(name = "live_session_teacher")
+public class LiveSessionTeacher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-    private String imageUrl;
-    private String materialUrl;
-
+    private String date;
+    private String liveUrl;
 
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
@@ -27,28 +26,20 @@ public class Reference {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getDate() {
+        return date;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getLiveUrl() {
+        return liveUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getMaterialUrl() {
-        return materialUrl;
-    }
-
-    public void setMaterialUrl(String materialUrl) {
-        this.materialUrl = materialUrl;
+    public void setLiveUrl(String liveUrl) {
+        this.liveUrl = liveUrl;
     }
 
     public Course getCourse() {

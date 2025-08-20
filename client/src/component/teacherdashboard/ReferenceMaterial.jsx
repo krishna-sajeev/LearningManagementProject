@@ -124,8 +124,8 @@ const ReferenceMaterial = () => {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small" variant="contained" color="primary">
-                 Access to Batch
+              <Button size="small" variant="contained" color="primary" onClick={() => navigate(`/teacher/updateMaterial/${ref.id}`)}>
+                 Update Material
               </Button>
               <Button
                 size="small"

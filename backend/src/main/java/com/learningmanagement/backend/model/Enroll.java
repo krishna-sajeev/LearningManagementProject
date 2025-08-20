@@ -26,38 +26,37 @@ public class Enroll {
     @JsonProperty("email")
     private String email;
 
-
     @JsonProperty("enrollDate")
     private LocalDate enrollDate;
 
-    @JsonProperty("paymentId")
-    private UUID paymentId ;
+    @JsonProperty("payementId")
+    private UUID payementId;
+
+    @JsonProperty("contactNumber")
+    private String contactNumber;
+
+    @JsonProperty("studentName")
+    private String studentName;
 
     private STATUS status;
 
-    public enum STATUS{
-        ACTIVE,COMPLETED,DROPPED,PENDING
+    public enum STATUS {
+        ACTIVE, COMPLETED, DROPPED
     }
 
-    public Enroll(UUID enrollId, String courseId, String email,int userId, LocalDate enrollDate, UUID paymentId, STATUS status) {
+    public Enroll(UUID enrollId, String courseId, int userId, LocalDate enrollDate, UUID payementId,
+                  String email, String contactNumber, STATUS status) {
         this.enrollId = enrollId;
         this.courseId = courseId;
         this.userId = userId;
-        this.email=email;
         this.enrollDate = enrollDate;
-        this.paymentId = paymentId;
+        this.payementId = payementId;
+        this.email = email;
+        this.contactNumber = contactNumber;
         this.status = status;
     }
 
     public Enroll() {
-    }
-
-    public UUID getPaymentId() {
-        return paymentId;
-    }
-
-    public void setPaymentId(UUID paymentId) {
-        this.paymentId = paymentId;
     }
 
     public UUID getEnrollId() {
@@ -76,10 +75,6 @@ public class Enroll {
         this.courseId = courseId;
     }
 
-    public String getEmail(){return  email;}
-
-    public void  setEmail(String email){this.email=email;}
-
     public int getUserId() {
         return userId;
     }
@@ -96,11 +91,43 @@ public class Enroll {
         this.enrollDate = enrollDate;
     }
 
+    public UUID getPayementId() {
+        return payementId;
+    }
+
+    public void setPayementId(UUID payementId) {
+        this.payementId = payementId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
     public STATUS getStatus() {
         return status;
     }
 
     public void setStatus(STATUS status) {
         this.status = status;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 }

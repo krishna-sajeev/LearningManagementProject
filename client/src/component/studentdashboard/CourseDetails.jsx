@@ -11,7 +11,14 @@ const CourseDetails = () => {
   const [courseData, setCourseData] = useState(course);
   const user = localStorage.getItem("id");
 
- 
+  useEffect(() => {
+    if (!courseData) {
+      axiosInstance.get(`http://localhost:8081/course/${title}`)
+        .then(res => setCourseData(res.data))
+        .catch(err => console.error(err));
+    }
+  }, [courseData, title]);
+
 
   if (!courseData) {
     return (
