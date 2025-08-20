@@ -47,6 +47,7 @@ import LiveSessionTeacher from "./component/teacherdashboard/LiveSessionTeacher"
 import CourseDetails from "./component/studentdashboard/CourseDetails";
 import UpdateMaterial from "./component/teacherdashboard/UpdateMaterial";
 import ReferenceMaterialTeacher from "./component/teacherdashboard/ReferenceMaterialTeacher";
+import RecordedVideoTeacher from "./component/teacherdashboard/RecordedVideoTeacher";
 
 
 
@@ -93,6 +94,7 @@ function App() {
         <Route path="/edit-assignment/:id" element={<Layout role="teacher"><EditAssignment/></Layout>}/>
         <Route path="/view-submission/:id" element={<Layout role="teacher"><ViewSubmission/></Layout>} />
         <Route path="/teacher/livesession" element={<Layout role="teacher"><LiveSessionTeacher/></Layout>}/>
+        <Route path="/teacher/recordedvideo" element={<Layout role="teacher"><RecordedVideoTeacher/></Layout>}/>
         <Route path="/teacher/refernce_material" element={<Layout role="teacher"><ReferenceMaterialTeacher/></Layout>}/>
          <Route path="/teacher/addrefernce" element={<Layout role="teacher"><AddReference/></Layout>}/>
          <Route path="/teacher/updateMaterial/:id" element={<Layout role="teacher"><UpdateMaterial/></Layout>} />
