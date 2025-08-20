@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 
-@CrossOrigin(origins = "http://localhost:5177")
+@CrossOrigin(origins = "http://localhost:5179")
 
 public class ProfileController {
 

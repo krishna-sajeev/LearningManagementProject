@@ -45,11 +45,9 @@ const [user, setUser] = useState({
         //  Store token and role in localStorage
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("role", user.role); //  Save selected role
-        localStorage.setItem("id",res.data.user.userId)
+        localStorage.setItem("id",res.data.user.userId);
         console.log(localStorage.getItem("id"));
         localStorage.setItem("userName", res.data.user.fullName); // Optional
-        
-        
         navigate(`/${user.role.toLowerCase()}/${user.role.toLowerCase()}-dashboard`);
 
       } else {
@@ -58,9 +56,20 @@ const [user, setUser] = useState({
       }
     })
     .catch((err) => {
-      console.error("Login error:", err);
-      alert("Login failed due to bad credentials or server error");
-    });
+  console.error("Login error:", err);
+
+  if (err.response && err.response.data) {
+    // Backend is sending { status: "..." }
+    const backendMessage = err.response.data.status || err.response.data.error;
+    if (backendMessage) {
+      alert(backendMessage);
+    } else {
+      alert("Login failed: " + JSON.stringify(err.response.data));
+    }
+  } else {
+    alert("Login failed: " + err.message);
+  }
+});
 };
 
 

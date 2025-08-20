@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   FormControl,
@@ -16,83 +16,140 @@ import {
   Checkbox,
   Paper,
   Box,
+  CircularProgress,
+  Alert,
 } from "@mui/material";
+import axios from "axios";
+
+const API_BASE = "http://localhost:8081";
 
 const Attendance = () => {
+  const [courses, setCourses] = useState([]);
   const [course, setCourse] = useState("");
   const [date, setDate] = useState("");
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState({});
+  const [loadingCourses, setLoadingCourses] = useState(false);
+  const [loadingStudents, setLoadingStudents] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
-  // Dummy students per course (replace with API calls later)
-  const courseStudents = {
-    math101: [
-      { id: 1, name: "Alice Johnson", studentId: "M101", email: "alice@mail.com" },
-      { id: 2, name: "Bob Smith", studentId: "M102", email: "bob@mail.com" },
-    ],
-    cs102: [
-      { id: 3, name: "Charlie Brown", studentId: "C201", email: "charlie@mail.com" },
-      { id: 4, name: "Diana Prince", studentId: "C202", email: "diana@mail.com" },
-    ],
-    eng201: [
-      { id: 5, name: "Edward Stark", studentId: "E301", email: "edward@mail.com" },
-      { id: 6, name: "Fiona White", studentId: "E302", email: "fiona@mail.com" },
-    ],
-  };
+  // Load courses on mount
+  useEffect(() => {
+    const loadCourses = async () => {
+      setLoadingCourses(true);
+      setError("");
+      try {
+        // your CourseController exposes /display
+        const res = await axios.get(`${API_BASE}/display`);
+        setCourses(res.data || []);
+      } catch (err) {
+        console.error("Error fetching courses:", err);
+        setError("Failed to load courses");
+      } finally {
+        setLoadingCourses(false);
+      }
+    };
+    loadCourses();
+  }, []);
 
-  const handleLoadStudents = () => {
-    if (course) {
-      setStudents(courseStudents[course] || []);
-      setAttendance({});
+  const handleLoadStudents = async () => {
+    if (!course || !date) return;
+    setLoadingStudents(true);
+    setError("");
+    try {
+      // EnrollmentController: /students/{courseId}
+      const res = await axios.get(`${API_BASE}/students/${course}`);
+      const list = (res.data || []).map((e, idx) => ({
+        id: e.userId ?? idx,            // unique row key
+        userId: e.userId,
+        studentName: e.studentName,
+        email: e.email,
+        courseId: e.courseId,
+      }));
+      setStudents(list);
+      // reset attendance map
+      const initial = {};
+      list.forEach(s => { initial[s.userId] = false; });
+      setAttendance(initial);
+    } catch (err) {
+      console.error("Error fetching students:", err);
+      setError("Failed to load students");
+    } finally {
+      setLoadingStudents(false);
     }
   };
 
-  const toggleAttendance = (id) => {
-    setAttendance((prev) => ({
+  const toggleAttendance = (userId) => {
+    setAttendance(prev => ({
       ...prev,
-      [id]: !prev[id],
+      [userId]: !prev[userId],
     }));
   };
 
-  const handleSubmit = () => {
-    const presentStudents = students
-      .filter((s) => attendance[s.id])
-      .map((s) => ({
-        studentId: s.studentId,
-        name: s.name,
-        email: s.email,
-      }));
+  const handleSubmit = async () => {
+    if (!course || !date || students.length === 0) {
+      setError("Please select course, date and load students first");
+      return;
+    }
+    setSaving(true);
+    setError("");
 
-    const payload = {
-      course,
-      date,
-      presentStudents,
-    };
+    const payload = students.map(s => ({
+      courseId: course,
+      userId: s.userId,
+      studentName: s.studentName,
+      email: s.email,
+      date,                  // yyyy-MM-dd string; Spring maps to LocalDate
+      present: !!attendance[s.userId],
+    }));
 
-    console.log("Submitting Attendance:", payload);
-    alert("Attendance submitted! (check console)");
-    
+    try {
+      await axios.post(`${API_BASE}/attendance/save`, payload, {
+        headers: { "Content-Type": "application/json" },
+      });
+      alert("Attendance saved successfully!");
+    } catch (err) {
+      console.error("Error saving attendance:", err);
+      setError(
+        err?.response?.data || "Failed to save attendance"
+      );
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
     <Box p={4}>
-      
       <Typography variant="h4" gutterBottom>
-       Add Attendance
+        Add Attendance
       </Typography>
 
-      
-      <Box display="flex" alignItems="center" gap={3} mb={4}>
-        <FormControl sx={{ minWidth: 200 }}>
+      {error && (
+        <Box mb={2}>
+          <Alert severity="error">{String(error)}</Alert>
+        </Box>
+      )}
+
+      <Box display="flex" alignItems="center" gap={3} mb={4} flexWrap="wrap">
+        <FormControl sx={{ minWidth: 260 }}>
           <InputLabel>Select Course</InputLabel>
           <Select
             value={course}
-            onChange={(e) => setCourse(e.target.value)}
             label="Select Course"
+            onChange={(e) => setCourse(e.target.value)}
           >
-            <MenuItem value="math101">Math 101</MenuItem>
-            <MenuItem value="cs102">CS 102</MenuItem>
-            <MenuItem value="eng201">English 201</MenuItem>
+            {loadingCourses && (
+              <MenuItem value="" disabled>
+                Loading…
+              </MenuItem>
+            )}
+            {!loadingCourses &&
+              courses.map((c) => (
+                <MenuItem key={c.courseId || c.id} value={c.courseId}>
+                  {c.title} {c.courseId ? `(${c.courseId})` : ""}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
 
@@ -106,15 +163,19 @@ const Attendance = () => {
 
         <Button
           variant="contained"
-          color="primary"
           onClick={handleLoadStudents}
-          disabled={!course || !date}
+          disabled={!course || !date || loadingStudents}
         >
-          Load Students
+          {loadingStudents ? (
+            <>
+              <CircularProgress size={18} sx={{ mr: 1 }} /> Loading…
+            </>
+          ) : (
+            "Load Students"
+          )}
         </Button>
       </Box>
 
-      {/* Student Table */}
       {students.length > 0 && (
         <>
           <TableContainer component={Paper}>
@@ -122,7 +183,7 @@ const Attendance = () => {
               <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
                 <TableRow>
                   <TableCell>Student Name</TableCell>
-                  <TableCell>Student ID</TableCell>
+                  <TableCell>Student ID (userId)</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell align="center">Present</TableCell>
                 </TableRow>
@@ -130,14 +191,13 @@ const Attendance = () => {
               <TableBody>
                 {students.map((s) => (
                   <TableRow key={s.id}>
-                    <TableCell>{s.name}</TableCell>
-                    <TableCell>{s.studentId}</TableCell>
+                    <TableCell>{s.studentName}</TableCell>
+                    <TableCell>{s.userId}</TableCell>
                     <TableCell>{s.email}</TableCell>
                     <TableCell align="center">
                       <Checkbox
-                        checked={attendance[s.id] || false}
-                        onChange={() => toggleAttendance(s.id)}
-                        color="primary"
+                        checked={!!attendance[s.userId]}
+                        onChange={() => toggleAttendance(s.userId)}
                       />
                     </TableCell>
                   </TableRow>
@@ -146,14 +206,21 @@ const Attendance = () => {
             </Table>
           </TableContainer>
 
-          {/* Submit Button */}
           <Box mt={3} textAlign="right">
             <Button
               variant="contained"
               color="success"
               onClick={handleSubmit}
+              disabled={saving}
             >
-              Submit Attendance
+              {saving ? (
+                <>
+                  <CircularProgress size={18} sx={{ mr: 1 }} />
+                  Saving…
+                </>
+              ) : (
+                "Submit Attendance"
+              )}
             </Button>
           </Box>
         </>

@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-
-@CrossOrigin(origins = "http://localhost:5177")
-
+@CrossOrigin(origins = "http://localhost:5179")
 public class UserController {
 
     @Autowired
@@ -68,108 +66,99 @@ public class UserController {
             e.printStackTrace();
             return ResponseEntity.status(500).body(Map.of(
                     "status", "Registration failed",
-                    "error", e.getMessage()
+                    "error", e.getMessage() != null ? e.getMessage() : e.toString()
             ));
         }
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@RequestBody User input) {
-//        try {
-//            User userFromDb = repo.findByEmail(input.getEmail());
-//            if (userFromDb == null) return ResponseEntity.status(401).body("Invalid credentials");
-//
-//            String enteredHashed = PasswordUtil.hashWithSHA256(input.getPassword(), userFromDb.getSalt());
-//            if (!enteredHashed.equals(userFromDb.getPassword())) return ResponseEntity.status(401).body("Invalid credentials");
-//
-//            if (input.getRole() == null || !userFromDb.getRole().equals(input.getRole()))
-//                return ResponseEntity.status(401).body("Invalid Role");
-//
-//            String token = jwtUtil.generateToken(userFromDb.getEmail());
-//            if (token == null) return ResponseEntity.status(500).body("Token generation failed");
-//
-//            Map<String, Object> response = new HashMap<>();
-//            response.put("token", token);
-//            response.put("user", Map.of(
-//                    "UserId", userFromDb.getUserId(),
-//                    "fullName", userFromDb.getFullName(),
-//                    "email", userFromDb.getEmail(),
-//                    "role", userFromDb.getRole()
-//            ));
-//            return ResponseEntity.ok(response);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(500).body("Login failed: " + e.getMessage());
-//        }
-//    }
-@PostMapping("/login")
-public ResponseEntity<?> login(@RequestBody User input) {
-    try {
-        Optional<User> userOpt = repo.findByEmail(input.getEmail());
-        User userFromDb = userOpt.orElse(null);
-        if (userFromDb == null)
-            return ResponseEntity.status(401).body("Invalid credentials");
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody User input) {
+        try {
+            if (input.getEmail() == null || input.getPassword() == null || input.getRole() == null) {
+                return ResponseEntity.badRequest().body(Map.of("status", "Missing login fields"));
+            }
 
-        String enteredHashed = PasswordUtil.hashWithSHA256(input.getPassword(), userFromDb.getSalt());
-        if (!enteredHashed.equals(userFromDb.getPassword()))
-            return ResponseEntity.status(401).body("Invalid credentials");
+            Optional<User> userOpt = repo.findByEmail(input.getEmail());
+            User userFromDb = userOpt.orElse(null);
 
-        if (input.getRole() == null || !userFromDb.getRole().equals(input.getRole()))
-            return ResponseEntity.status(401).body("Invalid Role");
+            if (userFromDb == null) {
+                return ResponseEntity.status(401).body(Map.of("status", "Invalid credentials"));
+            }
 
-        String token = jwtUtil.generateToken(userFromDb.getEmail());
-        if (token == null) return ResponseEntity.status(500).body("Token generation failed");
+            if (userFromDb.getSalt() == null || userFromDb.getPassword() == null) {
+                return ResponseEntity.status(500).body(Map.of("status", "User record corrupted (missing salt/password)"));
+            }
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("token", token);
-        response.put("user", Map.of(
-                "userId", userFromDb.getUserId(),
-                "fullName", userFromDb.getFullName(),
-                "email", userFromDb.getEmail(),
-                "role", userFromDb.getRole()
-        ));
-        return ResponseEntity.ok(response);
+            String enteredHashed = PasswordUtil.hashWithSHA256(input.getPassword(), userFromDb.getSalt());
+            if (!enteredHashed.equals(userFromDb.getPassword())) {
+                return ResponseEntity.status(401).body(Map.of("status", "Invalid credentials"));
+            }
 
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(500).body("Login failed: " + e.getMessage());
+            if (!userFromDb.getRole().equals(input.getRole())) {
+                return ResponseEntity.status(401).body(Map.of("status", "Invalid role"));
+            }
+
+            if (!userFromDb.isApproved()) {
+                return ResponseEntity.status(403).body(Map.of("status", "User not approved by Admin yet"));
+            }
+
+            String token = jwtUtil.generateToken(userFromDb.getEmail());
+            if (token == null) {
+                return ResponseEntity.status(500).body(Map.of("status", "Token generation failed"));
+            }
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("user", Map.of(
+                    "userId", userFromDb.getUserId(),
+                    "fullName", userFromDb.getFullName(),
+                    "email", userFromDb.getEmail(),
+                    "role", userFromDb.getRole()
+            ));
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of(
+                    "status", "Login failed",
+                    "error", e.getMessage() != null ? e.getMessage() : e.toString()
+            ));
+        }
     }
-}
-
 
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers() {
-        try { return ResponseEntity.ok(repo.findAll()); }
-        catch (Exception e) {
+        try {
+            return ResponseEntity.ok(repo.findAll());
+        } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Error fetching users: " + e.getMessage());
+            return ResponseEntity.status(500).body(Map.of("status", "Error fetching users", "error", e.getMessage()));
         }
     }
 
     @DeleteMapping("/users/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable String userId) {
         User user = repo.findByUserId(userId);
-        if (user == null) return ResponseEntity.status(404).body("User not found");
+        if (user == null) return ResponseEntity.status(404).body(Map.of("status", "User not found"));
         repo.delete(user);
-        return ResponseEntity.ok("User deleted successfully");
+        return ResponseEntity.ok(Map.of("status", "User deleted successfully"));
     }
+
     @PutMapping("/users/{userId}/approve")
     public ResponseEntity<?> approveUser(@PathVariable String userId) {
         try {
             User user = repo.findByUserId(userId);
             if (user == null) {
-                return ResponseEntity.status(404).body("User not found");
+                return ResponseEntity.status(404).body(Map.of("status", "User not found"));
             }
             user.setApproved(true);
             repo.save(user);
             return ResponseEntity.ok(Map.of("status", "User approved successfully"));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Error approving user: " + e.getMessage());
+            return ResponseEntity.status(500).body(Map.of("status", "Error approving user", "error", e.getMessage()));
         }
     }
-
 
     @GetMapping("/users/{id}")
     public ResponseEntity<?> getUser(@PathVariable Long id) {
@@ -177,8 +166,7 @@ public ResponseEntity<?> login(@RequestBody User input) {
         if (user.isPresent()) {
             return ResponseEntity.ok(user.get());
         } else {
-            return ResponseEntity.status(404).body("User not found");
+            return ResponseEntity.status(404).body(Map.of("status", "User not found"));
         }
     }
-
 }

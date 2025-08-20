@@ -22,7 +22,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 @RestController
 @RequestMapping("/certificates")
 
-@CrossOrigin(origins = "http://localhost:5177")
+@CrossOrigin(origins = "http://localhost:5179")
 
 public class CertificateController {
 
