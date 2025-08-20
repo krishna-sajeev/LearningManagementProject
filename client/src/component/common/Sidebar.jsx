@@ -42,12 +42,14 @@ const Sidebar = ({ role, children }) => {
   const sidebarLinks = {
     admin: [
 
-      { name: "Manage Users", path: "/admin/adminuser" },
       { name: "Admin Dashboard", path: "/admin/admin-dashboard" },
-      { name: "Manage Courses", path: "/admin/admincourse" },
+      { name: "Manage Users", path: "/admin/adminmanageusers" }, //Manage user
+      { name: "Manage Courses", path: "/admin/adminmanagecourse" },
       { name: "Payments", path: "/admin/adminpayments" },
-      { name: "Reports", path: "/admin/adminreports" },
+      { name: "Reports", path: "/admin/adminreport" }, //certificate
       { name: "Logout", path: "/login" },
+      
+
     ],
     teacher: [
       { name: "Teacher Dashboard", path: "/teacher/teacher-dashboard" },
