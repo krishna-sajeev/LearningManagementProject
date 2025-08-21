@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.UUID;
 
@@ -27,56 +26,46 @@ public class Submission {
     private String submissionURL;
 
     @JsonProperty("submissionDate")
-    private Date submissionDate ;
+    private Date submissionDate;
 
-    public UUID getSubmissionId() {
-        return submissionId;
-    }
+    @JsonProperty("grade")
+    private Integer grade;
 
-    public void setSubmissionId(UUID submissionId) {
-        this.submissionId = submissionId;
-    }
+    @JsonProperty("feedback")
+    private String feedback;
 
-    public int getAssignmentId() {
-        return assignmentId;
-    }
+    // Getters & Setters
+    public UUID getSubmissionId() { return submissionId; }
+    public void setSubmissionId(UUID submissionId) { this.submissionId = submissionId; }
 
-    public void setAssignmentId(int assignmentId) {
-        this.assignmentId = assignmentId;
-    }
+    public int getAssignmentId() { return assignmentId; }
+    public void setAssignmentId(int assignmentId) { this.assignmentId = assignmentId; }
 
-    public String getStudentId() {
-        return studentId;
-    }
+    public String getStudentId() { return studentId; }
+    public void setStudentId(String studentId) { this.studentId = studentId; }
 
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
+    public String getSubmissionURL() { return submissionURL; }
+    public void setSubmissionURL(String submissionURL) { this.submissionURL = submissionURL; }
 
-    public String getSubmissionURL() {
-        return submissionURL;
-    }
+    public Date getSubmissionDate() { return submissionDate; }
+    public void setSubmissionDate(Date submissionDate) { this.submissionDate = submissionDate; }
 
-    public void setSubmissionURL(String submissionURL) {
-        this.submissionURL = submissionURL;
-    }
+    public Integer getGrade() { return grade; }
+    public void setGrade(Integer grade) { this.grade = grade; }
 
-    public Date getSubmissionDate() {
-        return submissionDate;
-    }
+    public String getFeedback() { return feedback; }
+    public void setFeedback(String feedback) { this.feedback = feedback; }
 
-    public void setSubmissionDate(Date submissionDate) {
-        this.submissionDate = submissionDate;
-    }
-
-    public Submission(UUID submissionId, int assignmentId, String studentId, String submissionURL, Date submissionDate) {
+    // Constructors
+    public Submission() {}
+    public Submission(UUID submissionId, int assignmentId, String studentId,
+                      String submissionURL, Date submissionDate, Integer grade, String feedback) {
         this.submissionId = submissionId;
         this.assignmentId = assignmentId;
         this.studentId = studentId;
         this.submissionURL = submissionURL;
         this.submissionDate = submissionDate;
-    }
-
-    public Submission() {
+        this.grade = grade;
+        this.feedback = feedback;
     }
 }
