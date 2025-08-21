@@ -19,7 +19,7 @@ public class Attendance {
     private String studentName;
 
     @JsonProperty("studentId")
-    private int studentId;
+    private String studentId;
 
     @JsonProperty("email")
     private String email;
@@ -32,7 +32,7 @@ public class Attendance {
 
     public Attendance() {}
 
-    public Attendance(String courseId, int studentId, String studentName, String email, LocalDate date, boolean present) {
+    public Attendance(String courseId, String studentId, String studentName, String email, LocalDate date, boolean present) {
         this.courseId = courseId;
         this.studentId = studentId;
         this.studentName = studentName;
@@ -48,8 +48,9 @@ public class Attendance {
     public String getCourseId() { return courseId; }
     public void setCourseId(String courseId) { this.courseId = courseId; }
 
-    public int getStudentId() { return studentId; }
-    public void setStudentId(int studentId) { this.studentId = studentId; }
+
+    public String getStudentId() { return studentId; }
+    public void setStudentId(String studentId) { this.studentId = studentId; }
 
     public String getStudentName() { return studentName; }
     public void setStudentName(String studentName) { this.studentName = studentName; }
