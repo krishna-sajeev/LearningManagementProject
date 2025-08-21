@@ -18,11 +18,10 @@ public class AttendanceController {
     @Autowired
     private AttendanceRepository attendanceRepository;
 
-    // Save attendance
     @PostMapping("/save")
-    public ResponseEntity<?> saveAttendance(@RequestBody List<Attendance> attendanceList) {
+    public ResponseEntity<String> saveAttendance(@RequestBody List<Attendance> attendanceList) {
         attendanceRepository.saveAll(attendanceList);
-        return ResponseEntity.ok("Attendance saved successfully!");
+        return ResponseEntity.ok("Attendance saved");
     }
 
     // Get attendance for a course on a specific date
