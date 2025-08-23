@@ -88,6 +88,7 @@ const Assignment = () => {
                     size="small"
                     style={{ marginRight: '0.5rem' }}
                     onClick={() => navigate(`/view-submission/${assignment.assignmentId}`)}
+
                   >
                     View Submission
                   </Button>

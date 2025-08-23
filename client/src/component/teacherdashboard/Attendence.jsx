@@ -41,7 +41,7 @@ const Attendance = () => {
       setError("");
       try {
         // your CourseController exposes /display
-        const res = await axios.get(`${API_BASE}/display`);
+        const res = await axios.get(`${API_BASE}/courses`);
         setCourses(res.data || []);
       } catch (err) {
         console.error("Error fetching courses:", err);
@@ -97,7 +97,7 @@ const Attendance = () => {
 
     const payload = students.map(s => ({
       courseId: course,
-      userId: s.userId,
+      studentId: s.userId,
       studentName: s.studentName,
       email: s.email,
       date,                  // yyyy-MM-dd string; Spring maps to LocalDate
@@ -146,8 +146,8 @@ const Attendance = () => {
             )}
             {!loadingCourses &&
               courses.map((c) => (
-                <MenuItem key={c.courseId || c.id} value={c.courseId}>
-                  {c.title} {c.courseId ? `(${c.courseId})` : ""}
+                <MenuItem key={c} value={c}>
+                  {c.toUpperCase()}
                 </MenuItem>
               ))}
           </Select>
