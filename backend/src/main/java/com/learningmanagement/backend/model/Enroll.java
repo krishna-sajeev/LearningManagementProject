@@ -2,10 +2,7 @@ package com.learningmanagement.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -40,11 +37,14 @@ public class Enroll {
     @JsonProperty("studentName")
     private String studentName;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private STATUS status;
 
     public enum STATUS {
         FULL, INSTALLMENT
     }
+
 
     public Enroll(UUID enrollId, String courseId, String userId, LocalDate enrollDate, String paymentId,
                   String email, long contactNumber, STATUS status) {

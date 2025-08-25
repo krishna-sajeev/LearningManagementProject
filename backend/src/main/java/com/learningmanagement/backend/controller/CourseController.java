@@ -94,7 +94,7 @@ public class CourseController {
         return ResponseEntity.ok(enrolledCourses);
     }
 
-    @GetMapping("/courses/{id}")
+    @GetMapping("/courses/{courseId}")
     public Course coursedetails(@PathVariable String courseId){
         return repo.findByCourseId(courseId);
     }

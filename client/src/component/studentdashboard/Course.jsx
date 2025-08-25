@@ -30,7 +30,7 @@ const Course = () => {
   }, []);
 
   const handleExplore = (course) => {
-    navigate(`/student/${course.title}`, { state: { course } });
+    navigate(`/student/${course.courseId}`, { state: { course } });
   };
 
   return (

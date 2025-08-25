@@ -74,13 +74,8 @@ const MyProfile = () => {
                 <Box sx={{ width: '100%' }}>
                   <ListItemText 
                     primary={course.title} 
-                    secondary={`Progress: ${course.progress || 0}%`} 
                   />
-                  <LinearProgress 
-                    variant="determinate" 
-                    value={course.progress || 0} 
-                    sx={{ height: 8, borderRadius: 5 }} 
-                  />
+                  
                 </Box>
               </ListItem>
             ))}

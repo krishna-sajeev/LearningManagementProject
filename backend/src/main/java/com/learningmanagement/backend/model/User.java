@@ -39,6 +39,7 @@ public class User {
     @Column(name = "salt")
     private String salt;
 
+
     public enum Role { ADMIN, TEACHER, STUDENT }
 
     public User() {}
