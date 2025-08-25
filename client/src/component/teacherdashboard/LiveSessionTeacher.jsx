@@ -20,6 +20,7 @@ const LiveSessionTeacher = () => {
     courseId: "",
     date: "",
     liveUrl: "",
+    instructorId: ""
   });
   const [selectedSession, setSelectedSession] = useState("");
   const [snackbar, setSnackbar] = useState({
@@ -45,7 +46,7 @@ const LiveSessionTeacher = () => {
 
   const fetchSessions = async () => {
     try {
-      const res = await axios.get("http://localhost:8081/api/livesessions/display");
+      const res = await axios.get("http://localhost:8081/api/livesessions/live-display");
       setSessions(res.data);
     } catch (error) {
       console.error("Error loading sessions:", error);
@@ -66,10 +67,13 @@ const LiveSessionTeacher = () => {
           message: "Live session added successfully!",
           severity: "success",
         });
-        setFormData({ courseId: "", date: "", liveUrl: "" });
+        
+        setFormData({ courseId: "", date: "", liveUrl: "",instructorId: localStorage.getItem("id")  });
+        
         fetchSessions();
       }
     } catch (error) {
+       console.log(localStorage.getItem("id"))
       console.error("Error adding session:", error);
       setSnackbar({
         open: true,
@@ -122,7 +126,7 @@ const LiveSessionTeacher = () => {
             required
           >
             {courses.map((course) => (
-              <MenuItem key={course.id} value={course.id}>
+              <MenuItem key={course.courseId} value={course.courseId}>
                 {course.title}
               </MenuItem>
             ))}

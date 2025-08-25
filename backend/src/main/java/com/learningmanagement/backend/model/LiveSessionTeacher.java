@@ -1,6 +1,9 @@
 package com.learningmanagement.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "live_session_teacher")
@@ -17,6 +20,27 @@ public class LiveSessionTeacher {
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
+    @JsonProperty("instructorId")
+    private String instructorId;
+
+    @JsonProperty("feedbackId")
+    private UUID feedbackId;
+
+    public String getInstructorId() {
+        return instructorId;
+    }
+
+    public void setInstructorId(String instructorId) {
+        this.instructorId = instructorId;
+    }
+
+    public UUID getFeedbackId() {
+        return feedbackId;
+    }
+
+    public void setFeedbackId(UUID feedbackId) {
+        this.feedbackId = feedbackId;
+    }
 
     public Long getId() {
         return id;

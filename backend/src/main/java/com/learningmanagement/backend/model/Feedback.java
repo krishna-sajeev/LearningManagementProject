@@ -19,7 +19,7 @@ public class Feedback {
     private UUID feedId;
 
     @JsonProperty("userId")
-    private int userId;
+    private String userId;
 
     @JsonProperty("reviewType")
     private String reviewType;
@@ -36,7 +36,7 @@ public class Feedback {
     @JsonProperty("reviewDate")
     private LocalDate reviewDate;
 
-    public Feedback(UUID feedId, int userId, String reviewType, String comment, String courseId, int star, LocalDate reviewDate) {
+    public Feedback(UUID feedId, String userId, String reviewType, String comment, String courseId, int star, LocalDate reviewDate) {
         this.feedId = feedId;
         this.userId = userId;
         this.reviewType = reviewType;
@@ -57,11 +57,11 @@ public class Feedback {
         this.feedId = feedId;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

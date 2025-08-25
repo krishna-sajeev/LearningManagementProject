@@ -17,5 +17,6 @@ public interface EnrollmentRepository extends JpaRepository<Enroll, UUID> {
     List<Enroll> findByStudentNameContainingIgnoreCase(String studentName);
 
 
+    List<Enroll> findByUserId(String userId);
 }
 

@@ -3,7 +3,9 @@ package com.learningmanagement.backend.controller;
 import com.learningmanagement.backend.Util.JwtUtil;
 import com.learningmanagement.backend.Util.PasswordUtil;
 import com.learningmanagement.backend.Util.SaltUtil;
+import com.learningmanagement.backend.model.Enroll;
 import com.learningmanagement.backend.model.User;
+import com.learningmanagement.backend.repository.EnrollmentRepository;
 import com.learningmanagement.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,11 +24,16 @@ public class UserController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    EnrollmentRepository enrollmentRepo;
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User input) {
+        Map<String,String> response = new HashMap<>();
         try {
             if (input.getEmail() == null || input.getPassword() == null
                     || input.getConfirmPassword() == null || input.getRole() == null) {
+
                 return ResponseEntity.badRequest().body(Map.of("status", "Missing required fields"));
             }
 
@@ -43,7 +50,15 @@ public class UserController {
             String hashed = PasswordUtil.hashWithSHA256(input.getPassword(), salt);
             input.setSalt(salt);
             input.setPassword(hashed);
-            input.setApproved(false);
+            // Auto-approve Admins
+            if ((User.Role.ADMIN).equals(input.getRole()) ) {
+                input.setApproved(true);
+                response.put("status","Successfully Registered");
+            }
+            else {
+                input.setApproved(false);
+                response.put("status", "Registered successfully, Please wait for Admin approval");
+            }
 
             // Save first to get numeric ID
             User saved = repo.save(input);
@@ -53,14 +68,13 @@ public class UserController {
             switch (saved.getRole()) {
                 case STUDENT: prefix = "STU"; break;
                 case TEACHER: prefix = "TEA"; break;
-                case ADMIN:   prefix = "ADM"; break;
                 default:      prefix = "USR";
             }
 
             saved.setUserId(prefix + (saved.getId() + 10));
             repo.save(saved);
 
-            return ResponseEntity.ok(Map.of("status", "Registered successfully, Please wait for Admin approval"));
+            return ResponseEntity.ok(response);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,57 +88,65 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User input) {
         try {
-            if (input.getEmail() == null || input.getPassword() == null || input.getRole() == null) {
-                return ResponseEntity.badRequest().body(Map.of("status", "Missing login fields"));
+            if (input.getEmail() == null || input.getPassword() == null) {
+                return ResponseEntity.badRequest().body(
+                        Map.of("status", "error", "message", "Missing login fields")
+                );
             }
 
             Optional<User> userOpt = repo.findByEmail(input.getEmail());
-            User userFromDb = userOpt.orElse(null);
-
-            if (userFromDb == null) {
-                return ResponseEntity.status(401).body(Map.of("status", "Invalid credentials"));
+            if (userOpt.isEmpty()) {
+                return ResponseEntity.status(401).body(
+                        Map.of("status", "error", "message", "Invalid credentials")
+                );
             }
 
-            if (userFromDb.getSalt() == null || userFromDb.getPassword() == null) {
-                return ResponseEntity.status(500).body(Map.of("status", "User record corrupted (missing salt/password)"));
-            }
+            User userFromDb = userOpt.get();
 
+            // ✅ Validate password
             String enteredHashed = PasswordUtil.hashWithSHA256(input.getPassword(), userFromDb.getSalt());
             if (!enteredHashed.equals(userFromDb.getPassword())) {
-                return ResponseEntity.status(401).body(Map.of("status", "Invalid credentials"));
+                return ResponseEntity.status(401).body(
+                        Map.of("status", "error", "message", "Invalid credentials")
+                );
             }
 
-            if (!userFromDb.getRole().equals(input.getRole())) {
-                return ResponseEntity.status(401).body(Map.of("status", "Invalid role"));
-            }
-
+            // ✅ Ensure user is approved
             if (!userFromDb.isApproved()) {
-                return ResponseEntity.status(403).body(Map.of("status", "User not approved by Admin yet"));
+                return ResponseEntity.status(403).body(
+                        Map.of("status", "error", "message", "User not approved by Admin yet")
+                );
             }
 
-            String token = jwtUtil.generateToken(userFromDb.getEmail());
+            // ✅ Generate JWT including role
+            String token = jwtUtil.generateToken(userFromDb.getEmail(), userFromDb.getRole());
             if (token == null) {
-                return ResponseEntity.status(500).body(Map.of("status", "Token generation failed"));
+                return ResponseEntity.status(500).body(
+                        Map.of("status", "error", "message", "Token generation failed")
+                );
             }
 
+            // ✅ Success response
             Map<String, Object> response = new HashMap<>();
+            response.put("status", "success");
             response.put("token", token);
             response.put("user", Map.of(
                     "userId", userFromDb.getUserId(),
                     "fullName", userFromDb.getFullName(),
                     "email", userFromDb.getEmail(),
-                    "role", userFromDb.getRole()
+                    "role", userFromDb.getRole().name() // ensure it's string
             ));
+
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(Map.of(
-                    "status", "Login failed",
-                    "error", e.getMessage() != null ? e.getMessage() : e.toString()
-            ));
+            return ResponseEntity.status(500).body(
+                    Map.of("status", "error", "message", "Login failed", "error", e.getMessage())
+            );
         }
     }
+
 
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers() {
@@ -169,4 +191,48 @@ public class UserController {
             return ResponseEntity.status(404).body(Map.of("status", "User not found"));
         }
     }
+
+    @GetMapping("/users/{userId}/enrollments")
+    public ResponseEntity<?> getEnrollmentsByUser(@PathVariable String userId) {
+        try {
+            // ✅ Correct: fetch enrollments from EnrollmentRepository
+            List<Enroll> enrollments = enrollmentRepo.findByUserId(userId);
+
+            if (enrollments.isEmpty()) {
+                return ResponseEntity.ok(List.of()); // return empty list if no enrollments
+            }
+
+            // ✅ Fetch the actual user details only once
+            User user = repo.findByUserId(userId);
+            if (user == null) {
+                return ResponseEntity.status(404).body(Map.of("error", "User not found"));
+            }
+
+            // ✅ Attach user details to each enrollment
+            List<Map<String, Object>> response = enrollments.stream().map(enrollment -> {
+                Map<String, Object> data = new HashMap<>();
+                data.put("enrollId", enrollment.getEnrollId());
+                data.put("courseId", enrollment.getCourseId());
+                data.put("enrollDate", enrollment.getEnrollDate());
+                data.put("status", enrollment.getStatus());
+                data.put("paymentId", enrollment.getPaymentId());
+
+                data.put("user", Map.of(
+                        "userId", user.getUserId(),
+                        "fullName", user.getFullName(),
+                        "email", user.getEmail(),
+                        "mobileNumber", user.getMobileNumber(),
+                        "role", user.getRole()
+                ));
+                return data;
+            }).toList();
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("error", "Failed to fetch enrollments"));
+        }
+    }
+
 }

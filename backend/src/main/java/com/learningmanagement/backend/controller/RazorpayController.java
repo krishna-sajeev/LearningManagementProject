@@ -92,11 +92,18 @@ public class RazorpayController {
             // Throws Exception if signature invalid
             Utils.verifyPaymentSignature(data, keySecret);
 
-            // ✅ Mark order as successful in DB (not shown here)
-            return ResponseEntity.ok(Map.of("status", "verified"));
+            // ✅ Return status + IDs
+            return ResponseEntity.ok(Map.of(
+                    "status", "verified",
+                    "paymentId", paymentId,
+                    "orderId", orderId
+            ));
 
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("status", "invalid", "message", e.getMessage()));
+            return ResponseEntity.badRequest().body(Map.of(
+                    "status", "invalid",
+                    "message", e.getMessage()
+            ));
         }
     }
 

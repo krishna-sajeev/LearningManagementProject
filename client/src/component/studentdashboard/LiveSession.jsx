@@ -36,15 +36,13 @@ const LiveSession = () => {
   }));
 
   useEffect(() => {
-    axiosInstance.get('http://localhost:8081/live-session')
+    axiosInstance.get('http://localhost:8081/api/livesessions/live-display')
       .then((res) => {
         const sessionData = Array.isArray(res.data) ? res.data : [res.data];
         setLive(sessionData);
-        sessionData.map(session => axiosInstance.get(`http://localhost:8081/users/${session.instructorId}`)
-            .then((result) =>{setUser(result.data) 
-          console.log(result.data)} )
-            
-        );       
+        console.log(sessionData)
+       
+             
       })
       .catch(console.error);
   }, []);
@@ -65,8 +63,8 @@ const LiveSession = () => {
           {live.map((row) => (
             <StyledTableRow key={row.live_id}>
               <StyledTableCell>{row.date}</StyledTableCell>
-              <StyledTableCell align="right">{row.liveURL}</StyledTableCell>
-              <StyledTableCell align="right">{user.fullName}</StyledTableCell>
+              <StyledTableCell align="right">{row.liveUrl}</StyledTableCell>
+              <StyledTableCell align="right">{row.course.instructor}</StyledTableCell>
               <StyledTableCell align='right'>
                <Button
                   variant="contained"
@@ -85,7 +83,9 @@ const LiveSession = () => {
                     },
                     transition: 'all 0.3s ease',
                   }}
-                  onClick={()=>navigate('/student/feedback')}
+                onClick={() => navigate('/student/feedback', { state: { title: row.course.title } })}
+
+
                 >
                   Feedback
                 </Button>

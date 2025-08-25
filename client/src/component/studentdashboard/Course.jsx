@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -7,19 +7,20 @@ import {
   CardMedia,
   CardContent,
   Avatar,
-  Button
-} from '@mui/material';
-import { red } from '@mui/material/colors';
-import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../../axiosinteceptor';
+  Button,
+  Chip,
+} from "@mui/material";
+import { red } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../axiosinteceptor";
 
 const Course = () => {
-
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axiosInstance.get('http://localhost:8081/display')
+    axiosInstance
+      .get("http://localhost:8081/display")
       .then((res) => {
         setCourses(res.data);
       })
@@ -32,56 +33,89 @@ const Course = () => {
     navigate(`/student/${course.title}`, { state: { course } });
   };
 
-
   return (
     <>
-      <Box sx={{ textAlign: 'center', mt: 5, mb: 2 }}>
-        <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#2c3e50' }}>
-          Available Courses
-        </Typography>
-        <Box
-          sx={{
-            width: 120,
-            height: 4,
-            backgroundColor: '#3498db',
-            margin: '8px auto 0',
-            borderRadius: 2,
-          }}
-        />
-      </Box>
-
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4, justifyContent: 'center', mt: 4 }}>
+      {/* Course Cards Grid */}
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gap: 3,
+          mt: 3,
+        }}
+      >
         {courses.map((course) => (
-          <Card sx={{ maxWidth: 345 }} key={course.id}>
+          <Card
+            key={course.id}
+            sx={{
+              borderRadius: 3,
+              overflow: "hidden",
+              width: "30%",
+              transition: "all 0.3s ease",
+              boxShadow: "0 3px 8px rgba(0,0,0,0.1)",
+              "&:hover": {
+                transform: "translateY(-5px)",
+                boxShadow: "0 6px 16px rgba(0,0,0,0.15)",
+              },
+            }}
+          >
             <CardHeader
               avatar={
-                <Avatar sx={{ bgcolor: red[500] }} aria-label="course">
-                  ICT
+                <Avatar sx={{ bgcolor: red[500], width: 32, height: 32 }}>
+                  {course.title?.charAt(0) || "C"}
                 </Avatar>
               }
-              title={course.title}
-              subheader={course.startdate}
+              title={
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                  {course.title}
+                </Typography>
+              }
+              subheader={
+                <Typography variant="caption" color="text.secondary">
+                  Starts: {course.date}
+                </Typography>
+              }
+              sx={{ p: 1.5 }}
             />
-            <CardMedia
-              component="img"
-              height="194"
-              image={course.icon}
-              alt="Course Banner"
-            />
-            <CardContent>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+
+            <CardMedia component="img" image={course.icon} alt="Course Banner" />
+
+            <CardContent sx={{ p: 2 }}>
+              <Typography
+                variant="body2"
+                sx={{ color: "text.secondary", mb: 1, minHeight: 40 }}
+                noWrap
+              >
                 {course.description}
               </Typography>
+
+              <Chip
+                label={course.level || "Beginner"}
+                size="small"
+                color="primary"
+                variant="outlined"
+                sx={{ mb: 1 }}
+              />
+
+              <Box>
+                <Button
+                  variant="contained"
+                  size="small"
+                  sx={{
+                    background: "linear-gradient(45deg, #3498db, #2ecc71)",
+                    color: "#fff",
+                    fontWeight: "bold",
+                    borderRadius: 2,
+                    "&:hover": {
+                      background: "linear-gradient(45deg, #2980b9, #27ae60)",
+                    },
+                  }}
+                  onClick={() => handleExplore(course)}
+                >
+                  Explore
+                </Button>
+              </Box>
             </CardContent>
-            <Box sx={{ mt: 4, mb: 5, ml: 5 }}>
-              <Button
-                variant="contained"
-                size="large"
-                onClick={() => handleExplore(course)}
-              >
-                Explore More
-              </Button>
-            </Box>
           </Card>
         ))}
       </Box>

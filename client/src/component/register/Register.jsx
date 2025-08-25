@@ -52,7 +52,8 @@ const Register = () => {
         mobileNumber: Number(form.mobileNumber),
         role: form.role.toUpperCase(),
       };
-      const res = await axios.post("http://localhost:8081/register", payload);
+    
+      const res = await axios.post("http://localhost:8081/register", payload)
 
       if (res.data && typeof res.data.status === "string") {
         setBackendMessage(res.data.status);
@@ -63,10 +64,10 @@ const Register = () => {
         }
       } else {
         setBackendMessage("Unexpected server response.");
-      }
+      } 
     } catch (err) {
       console.error(err);
-      setBackendMessage("Registration failed. Please try again.");
+      setBackendMessage("User Already exist");
     }
   };
 
@@ -153,7 +154,6 @@ const Register = () => {
               onChange={handleChange}
               sx={{ mb: 2 }}
             >
-              <MenuItem value="ADMIN">ADMIN</MenuItem>
               <MenuItem value="TEACHER">TEACHER</MenuItem>
               <MenuItem value="STUDENT">STUDENT</MenuItem>
             </TextField>

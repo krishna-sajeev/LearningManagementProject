@@ -1,14 +1,18 @@
 import { Box, Button, MenuItem, TextField, Typography, Paper } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const Feedback = () => {
+  const location = useLocation();
+  const title_name = location.state?.title || ""; // <-- get course title
+
   const [star, setStar] = useState(0);
   const [review, setReview] = useState({
     userId: "",
     reviewType: "",
     comment: "",
-    courseId: "",
+    title: "",
     star: 0,
     reviewDate: "",
   });
@@ -24,6 +28,7 @@ const Feedback = () => {
     const payload = {
       ...review,
       userId: localStorage.getItem("id"),
+      title: title_name,
       star: star,
       reviewDate: new Date().toISOString().split("T")[0],
     };
@@ -33,6 +38,7 @@ const Feedback = () => {
       .post("http://localhost:8081/feedback", payload)
       .then((res) => {
         alert(res.data.status);
+        nav
       })
       .catch((err) => {
         console.error(err);
@@ -62,33 +68,27 @@ const Feedback = () => {
         }}
       >
         <Typography variant="h5" fontWeight="bold" gutterBottom>
-          Hi , {name} <br></br>
+          Hi , {name} <br />
           We value your opinion.
         </Typography>
-        <TextField
-        label="Enrolled Course ID"
-        name="courseId"
-        value={review.courseId}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-      /><br></br>
-        <Typography variant="h7" >
-          Please select your feedback option : 
-          <TextField
-        select
-        label="Review Type"
-        name="reviewType"
-        value={review.reviewType}
-        onChange={handleChange}
-        variant="outlined"
-        fullWidth
-        required
-      >
-        <MenuItem value="COURSE">COURSE</MenuItem>
-        <MenuItem value="TEACHER">TEACHER</MenuItem>
-      </TextField> <br></br>
+        <Typography sx={{ fontWeight: "bold", mb: 2 }}>
+          Enrolled Course : {title_name}
         </Typography>
+
+        <TextField
+          select
+          label="Review Type"
+          name="reviewType"
+          value={review.reviewType}
+          onChange={handleChange}
+          variant="outlined"
+          fullWidth
+          required
+          sx={{ mb: 2 }}
+        >
+          <MenuItem value="COURSE">COURSE</MenuItem>
+          <MenuItem value="TEACHER">TEACHER</MenuItem>
+        </TextField>
 
         <Typography variant="body2" sx={{ mb: 2 }}>
           How would you rate your overall experience?

@@ -1,97 +1,137 @@
-import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Box, Card, CardContent, CardActions, Typography, Button, Grid, Chip } from "@mui/material";
-import jsPDF from "jspdf";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  Container,
+  Typography,
+  Card,
+  CardContent,
+  CardMedia,
+  CardActions,
+  Button,
+  Grid,
+  CircularProgress,
+  Chip,
+} from "@mui/material";
+import SchoolIcon from "@mui/icons-material/School";
 
-const EnrollmentSuccess = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+const EnrolledCourses = () => {
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const { course, paymentDetails } = location.state || {};
+  const userId = localStorage.getItem("id");
+  const token = localStorage.getItem("token");
 
-  if (!course || !paymentDetails) {
+  useEffect(() => {
+    if (!userId || !token) {
+      alert("Please login first.");
+      return;
+    }
+
+    axios
+      .get(`http://localhost:8081/students/${userId}/courses`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setCourses(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching courses:", err);
+        setLoading(false);
+      });
+  }, [userId, token]);
+
+  if (loading) {
     return (
-      <Typography variant="h6" sx={{ mt: 5, textAlign: "center" }}>
-        No enrollment data found.
-      </Typography>
+      <Container sx={{ mt: 5, textAlign: "center" }}>
+        <CircularProgress />
+        <Typography variant="h6" sx={{ mt: 2 }}>
+          Loading enrolled courses...
+        </Typography>
+      </Container>
     );
   }
 
-  const downloadReceipt = () => {
-    const doc = new jsPDF();
-
-    doc.setFontSize(20);
-    doc.text("Payment Receipt", 20, 20);
-
-    doc.setFontSize(12);
-    doc.text(`Course: ${course.title}`, 20, 40);
-    doc.text(`Instructor: ${course.instructor}`, 20, 50);
-    doc.text(`Duration: ${course.duration}`, 20, 60);
-    doc.text(`Start Date: ${course.startdate}`, 20, 70);
-
-    doc.text(`\nPayment Details:`, 20, 90);
-    doc.text(`Order ID: ${paymentDetails.orderId}`, 20, 100);
-    doc.text(`Payment ID: ${paymentDetails.paymentId}`, 20, 110);
-    doc.text(`Amount Paid: ₹${paymentDetails.amount / 100}`, 20, 120);
-    doc.text(`Payment Status: ${paymentDetails.status}`, 20, 130);
-
-    doc.save(`Receipt_${course.title}_${paymentDetails.paymentId}.pdf`);
-  };
-
   return (
-    <Box sx={{ p: 4, backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
-      <Card sx={{ maxWidth: 800, margin: "auto", borderRadius: 4, boxShadow: 6 }}>
-        <CardContent>
-          <Typography variant="h4" sx={{ fontWeight: "bold", mb: 2 }}>
-            🎉 Enrollment Successful!
-          </Typography>
+    <Container sx={{ mt: 5 }}>
+      <Typography variant="h4" gutterBottom fontWeight="bold">
+        🎓 My Enrolled Courses
+      </Typography>
 
-          <Typography variant="h6" sx={{ mb: 3 }}>
-            You have successfully enrolled in:
-          </Typography>
+      {courses.length === 0 ? (
+        <Typography variant="body1">
+          You are not enrolled in any courses yet.
+        </Typography>
+      ) : (
+        <Grid container spacing={3}>
+          {courses.map((course) => (
+            <Grid item xs={12} sm={6} md={4} key={course.id}>
+              <Card
+                sx={{
+                  borderRadius: 3,
+                  boxShadow: 4,
+                  transition: "0.3s",
+                  "&:hover": { transform: "scale(1.05)" },
+                }}
+              >
+                {/* Course image */}
+                <CardMedia
+                  component="img"
+                  height="180"
+                  image={course.icon || "https://via.placeholder.com/300x180?text=Course+Image"}
+                  alt={course.title}
+                  sx={{ borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
+                />
 
-          <Typography variant="h5" sx={{ mb: 1, fontWeight: "bold" }}>
-            {course.title}
-          </Typography>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom fontWeight="bold">
+                    {course.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ minHeight: 50 }}
+                  >
+                    {course.description}
+                  </Typography>
 
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 3 }}>
-            <Chip label={`Instructor: ${course.instructor}`} color="primary" variant="outlined" />
-            <Chip label={`Duration: ${course.duration}`} color="secondary" variant="outlined" />
-            <Chip label={`Start Date: ${course.startdate}`} variant="outlined" />
-            <Chip label={`Fee Paid: ₹${course.fee}`} color="success" variant="outlined" />
-          </Box>
+                  <Typography variant="body2" sx={{ mt: 1 }}>
+                    👨‍🏫 <strong>Instructor:</strong> {course.instructor}
+                  </Typography>
+                  <Typography variant="body2">
+                    ⏱ <strong>Duration:</strong> {course.duration}
+                  </Typography>
 
-          <Typography variant="h6" sx={{ mt: 3, mb: 1 }}>
-            💳 Payment Receipt
-          </Typography>
+                  <Chip
+                    label={`₹ ${course.fee}`}
+                    color="primary"
+                    variant="outlined"
+                    sx={{ mt: 1 }}
+                  />
+                </CardContent>
 
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>Order ID:</strong> {paymentDetails.orderId}</Typography>
+                <CardActions sx={{ justifyContent: "space-between", px: 2, pb: 2 }}>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    startIcon={<SchoolIcon />}
+                    href={`/courses/${course.id}`}
+                  >
+                    View Details
+                  </Button>
+                  <Button size="small" variant="outlined" color="secondary" >
+                    Continue
+                  </Button>
+                </CardActions>
+              </Card>
             </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>Payment ID:</strong> {paymentDetails.paymentId}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>Amount Paid:</strong> ₹{paymentDetails.amount / 100}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>Payment Status:</strong> {paymentDetails.status}</Typography>
-            </Grid>
-          </Grid>
-        </CardContent>
-
-        <CardActions sx={{ justifyContent: "space-between", p: 3 }}>
-          <Button variant="contained" color="primary" onClick={() => navigate("/")}>
-            Go to My Courses
-          </Button>
-          <Button variant="outlined" color="secondary" onClick={downloadReceipt}>
-            Download Receipt PDF
-          </Button>
-        </CardActions>
-      </Card>
-    </Box>
+          ))}
+        </Grid>
+      )}
+    </Container>
   );
 };
 
-export default EnrollmentSuccess;
+export default EnrolledCourses;
