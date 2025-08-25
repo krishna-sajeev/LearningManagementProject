@@ -94,6 +94,31 @@ public class EnrollmentController {
         }
     }
 
+    @GetMapping("/{courseId}")
+    public ResponseEntity<?> getEnrollmentsByCourse(@PathVariable String courseId) {
+        try {
+            List<Enroll> enrollments = repo.findByCourseId(courseId);
+            if (enrollments.isEmpty()) {
+                return ResponseEntity.status(404).body("No enrollments found for courseId: " + courseId);
+            }
+            return ResponseEntity.ok(enrollments);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching enrollments");
+        }
+
+    }
+    @GetMapping("/api/enrollments/{userId}")
+    public ResponseEntity<?> getEnrollmentsByUser(@PathVariable String userId) {
+        try {
+            List<Enroll> enrollments = repo.findByUserId(userId);
+            if (enrollments.isEmpty()) {
+                return ResponseEntity.status(404).body("No enrollments found for userId: " + userId);
+            }
+            return ResponseEntity.ok(enrollments);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching enrollments for userId: " + userId);
+        }
+    }
 
 
 

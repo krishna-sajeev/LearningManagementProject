@@ -39,9 +39,9 @@ const Course = () => {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-          gap: 3,
-          mt: 3,
+          gridTemplateColumns: "repeat(auto-fit, minmax(550px, 7fr))",
+          gap: 1,
+          mt: 1,
         }}
       >
         {courses.map((course) => (
@@ -50,7 +50,7 @@ const Course = () => {
             sx={{
               borderRadius: 3,
               overflow: "hidden",
-              width: "30%",
+              width: "60%",
               transition: "all 0.3s ease",
               boxShadow: "0 3px 8px rgba(0,0,0,0.1)",
               "&:hover": {

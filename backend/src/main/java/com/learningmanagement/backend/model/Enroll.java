@@ -36,7 +36,7 @@ public class Enroll {
 
     @JsonProperty("studentName")
     private String studentName;
-    
+
     private STATUS status;
 
     public enum STATUS {

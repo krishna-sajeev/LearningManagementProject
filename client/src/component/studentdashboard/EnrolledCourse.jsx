@@ -17,7 +17,7 @@ import SchoolIcon from "@mui/icons-material/School";
 const EnrolledCourses = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  
   const userId = localStorage.getItem("id");
   const token = localStorage.getItem("token");
 
