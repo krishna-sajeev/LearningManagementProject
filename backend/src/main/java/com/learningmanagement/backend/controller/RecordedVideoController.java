@@ -49,6 +49,17 @@ public class RecordedVideoController {
         return ResponseEntity.ok(recordedVideoRepository.findAll());
     }
 
+    @GetMapping("/{courseId}")
+    public ResponseEntity<List<RecordedVideo>> getVideosByCourseId(@PathVariable String courseId) {
+        List<RecordedVideo> videos = recordedVideoRepository.findByCourse_CourseId(courseId);
+
+        if (videos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(videos);
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Map<String, Object>> deleteVideo(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();

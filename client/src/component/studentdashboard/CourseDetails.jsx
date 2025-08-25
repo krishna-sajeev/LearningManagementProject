@@ -34,6 +34,7 @@ const CourseDetail = () => {
   const [courseData, setCourseData] = useState(course);
   const user = localStorage.getItem("id");
 
+
   // Popup state
   const [openPaymentDialog, setOpenPaymentDialog] = useState(false);
   const [paymentType, setPaymentType] = useState("");

@@ -43,7 +43,7 @@ const StudentDashboard = () => {
           </Typography>
 
           {/* Section Divider */}
-          <Divider sx={{ mb: 3 }} textAlign="left">
+          <Divider sx={{ mb: 2 }} textAlign="left">
             <Typography variant="h6" fontWeight="bold" color="primary">
               📚 Explore Courses
             </Typography>

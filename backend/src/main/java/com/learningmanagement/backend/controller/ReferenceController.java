@@ -1,6 +1,7 @@
 package com.learningmanagement.backend.controller;
 
 import com.learningmanagement.backend.model.Course;
+import com.learningmanagement.backend.model.RecordedVideo;
 import com.learningmanagement.backend.model.Reference;
 import com.learningmanagement.backend.repository.CourseRepository;
 import com.learningmanagement.backend.repository.ReferenceRepository;
@@ -79,6 +80,8 @@ public class ReferenceController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+
+
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateReference(@PathVariable Long id, @RequestBody Map<String, Object> request) {
         try {
@@ -105,5 +108,19 @@ public class ReferenceController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
+
+    @GetMapping("/course/{courseId}")
+    public ResponseEntity<List<Reference>> getReferenceByCourseId(@PathVariable String courseId) {
+        try {
+            List<Reference> references = referenceRepository.findByCourse_CourseId(courseId);
+            if (references.isEmpty()) {
+                return ResponseEntity.noContent().build(); // 204 if no data
+            }
+            return ResponseEntity.ok(references);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 
 }

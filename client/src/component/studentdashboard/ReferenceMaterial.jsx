@@ -1,55 +1,56 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Snackbar,
-  Alert,
   Box,
-  Divider,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Paper,
 } from "@mui/material";
 
-const ReferenceMaterial = () => {
+const ReferenceMaterial = ({  }) => {
   const [references, setReferences] = useState([]);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
+  const userId = localStorage.getItem("id");
 
-  // Fetch references
   useEffect(() => {
-    fetchReferences();
+    fetchEnrolledCourses();
   }, []);
 
-  const fetchReferences = async () => {
+  const fetchEnrolledCourses = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8081/api/references/display"
+      // 1. Get all enrolled courses for the student
+      const enrollmentsRes = await axios.get(
+        `http://localhost:8081/api/enrollments/${userId}`
       );
-      setReferences(response.data);
+
+      const enrollments = enrollmentsRes.data;
+
+      // 2. For each courseId, fetch reference materials
+      const allRefs = [];
+      for (const enrollment of enrollments) {
+        const courseId = enrollment.courseId;
+
+        const refRes = await axios.get(
+          `http://localhost:8081/api/references/course/${courseId}`
+        );
+
+        // Append courseId & courseName for clarity
+        const refsWithCourse = refRes.data.map((ref) => ({
+          ...ref,
+          courseTitle: enrollment.courseTitle || `Course ${courseId}`,
+        }));
+
+        allRefs.push(...refsWithCourse);
+      }
+
+      setReferences(allRefs);
     } catch (error) {
       console.error("Error fetching references:", error);
-      setSnackbar({
-        open: true,
-        message: "Failed to load references",
-        severity: "error",
-      });
     }
   };
-
-  const handleCloseSnackbar = () =>
-    setSnackbar({ ...snackbar, open: false });
-
-  // Group references by subject/course
-  const groupedReferences = references.reduce((acc, ref) => {
-    const courseTitle = ref.course?.title || "Other";
-    if (!acc[courseTitle]) acc[courseTitle] = [];
-    acc[courseTitle].push(ref);
-    return acc;
-  }, {});
 
   return (
     <Box sx={{ padding: 3 }}>
@@ -57,63 +58,46 @@ const ReferenceMaterial = () => {
         Reference Materials
       </Typography>
 
-      {Object.keys(groupedReferences).map((courseTitle, idx) => (
-        <Box key={idx} mb={4}>
-          {/* Subject Heading with Separator */}
-          <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }}>
-            {courseTitle}
-          </Typography>
-          <Divider sx={{ mb: 2 }} />
-
-          {/* Cards for each reference */}
-          <Box display="flex" flexWrap="wrap">
-            {groupedReferences[courseTitle].map((ref) => (
-              <Card key={ref.id} sx={{ width: 280, margin: 2 }}>
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={ref.imageUrl}
-                  alt={ref.title}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h6">
-                    {ref.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    <a
-                      href={ref.materialUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        color: "blue",
-                        textDecoration: "underline",
-                      }}
-                    >
-                      Open Material
-                    </a>
-                  </Typography>
-                </CardContent>
-              </Card>
+      <Paper>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Course</TableCell>
+              <TableCell>Title</TableCell>
+              <TableCell>Preview</TableCell>
+              <TableCell>Material</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {references.map((ref) => (
+              <TableRow key={ref.id}>
+                <TableCell>{ref.courseTitle}</TableCell>
+                <TableCell>{ref.title}</TableCell>
+                <TableCell>
+                  {ref.imageUrl ? (
+                    <img
+                      src={ref.imageUrl}
+                      alt={ref.title}
+                      style={{ width: "80px", borderRadius: "6px" }}
+                    />
+                  ) : (
+                    "N/A"
+                  )}
+                </TableCell>
+                <TableCell>
+                  <a
+                    href={ref.materialUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Open Material
+                  </a>
+                </TableCell>
+              </TableRow>
             ))}
-          </Box>
-        </Box>
-      ))}
-
-      {/* Snackbar */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={4000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert
-          severity={snackbar.severity}
-          onClose={handleCloseSnackbar}
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+          </TableBody>
+        </Table>
+      </Paper>
     </Box>
   );
 };
