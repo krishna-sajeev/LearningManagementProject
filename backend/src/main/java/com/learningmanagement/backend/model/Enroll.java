@@ -36,9 +36,7 @@ public class Enroll {
 
     @JsonProperty("studentName")
     private String studentName;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    
     private STATUS status;
 
     public enum STATUS {
