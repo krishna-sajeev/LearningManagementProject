@@ -1,7 +1,9 @@
 package com.learningmanagement.backend.controller;
 
 import com.learningmanagement.backend.model.Enroll;
+import com.learningmanagement.backend.model.User;
 import com.learningmanagement.backend.repository.EnrollmentRepository;
+import com.learningmanagement.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
@@ -24,19 +26,34 @@ public class EnrollmentController {
     @Autowired
     private JavaMailSender mailSender;
 
+    @Autowired
+    UserRepository userRepo;
+
     @PostMapping("/enroll")
-    public ResponseEntity<?> enroll(@RequestBody Enroll input){
-        Map<String,String> response = new HashMap<>();
-        try{
+    public ResponseEntity<?> enroll(@RequestBody Enroll input) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            User user = userRepo.findByUserId(input.getUserId());
+            input.setStudentName(user.getFullName());
+            input.setEmail(user.getEmail());
+            input.setContactNumber(user.getMobileNumber());
+
+            if (input.getPaymentId() == null || input.getPaymentId().isBlank()) {
+                response.put("status", "Payment ID missing. Enrollment failed.");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+
 
             repo.save(input);
-            response.put("status" ,"Course Enrolled Successfully");
+            response.put("status", "Course Enrolled Successfully");
         } catch (Exception e) {
-            response.put("status","Error occured, Please try again later");
+            response.put("status", "Error occurred, Please try again later");
             throw new RuntimeException(e);
         }
         return ResponseEntity.ok(response);
     }
+
 
     @GetMapping("/students/{courseId}")
     public ResponseEntity<List<Enroll>> getStudentsByCourse(@PathVariable String courseId) {
@@ -76,5 +93,8 @@ public class EnrollmentController {
             return ResponseEntity.status(500).body("Error sending email");
         }
     }
+
+
+
 
 }

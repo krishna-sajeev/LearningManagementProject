@@ -12,6 +12,7 @@ import {
   Link,
 } from "@mui/material";
 import axios from "axios";
+import instance from "../common/axiosConfig";
 
 const Login = () => {
   
@@ -19,7 +20,7 @@ const Login = () => {
 const [user, setUser] = useState({
     email: "",
     password: "",
-    role: "",
+    //role: "",
   });
 
   const handleChange = (e) => {
@@ -35,20 +36,22 @@ const [user, setUser] = useState({
 
   let validateUser = () => {
   console.log(user);
-  axios.post("http://localhost:8081/login", user)
+  instance.post("/login", user)
     .then((res) => {
       console.log(res.data);
       if (res.data.token) {
-        console.log(`/${user.role}/${user.role.toLowerCase()}-dashboard`)
+       const roles = res.data.user.role;
+        console.log(`/${roles}/${roles}-dashboard`)
         alert("Login successful");
 
         //  Store token and role in localStorage
         localStorage.setItem("token", res.data.token);
-        localStorage.setItem("role", user.role); //  Save selected role
+        localStorage.setItem("role", roles); //  Save selected role
         localStorage.setItem("id",res.data.user.userId);
         console.log(localStorage.getItem("id"));
-        localStorage.setItem("userName", res.data.user.fullName); // Optional
-        navigate(`/${user.role.toLowerCase()}/${user.role.toLowerCase()}-dashboard`);
+        console.log(localStorage.setItem("userName", res.data.user.fullName)) ; // Optional
+
+        navigate(`/${roles.toLowerCase()}/${roles.toLowerCase()}-dashboard`);
 
       } else {
         alert(res.data.status);
@@ -109,7 +112,7 @@ const [user, setUser] = useState({
             onChange={handleChange}
             required
           />
-          <TextField
+          {/* <TextField
             select
             label=" Role"
             name="role"
@@ -122,7 +125,7 @@ const [user, setUser] = useState({
             <MenuItem value="ADMIN">ADMIN</MenuItem>
            <MenuItem value="TEACHER">TEACHER</MenuItem>
             <MenuItem value="STUDENT">STUDENT</MenuItem>
-          </TextField>
+          </TextField> */}
 
           <Button sx={{ mt: 1 /* margin top */ }} onClick={validateUser}>Log in</Button>
 

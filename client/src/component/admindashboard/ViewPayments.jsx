@@ -57,14 +57,14 @@ const ViewPayments = () => {
               <TableCell>{enroll.courseId}</TableCell>
               <TableCell
                 sx={{
-                  color: enroll.status === "PENDING" ? "red" : "green",
+                  color: enroll.status === "INSTALLMENT" ? "red" : "green",
                   fontWeight: "bold",
                 }}
               >
                 {enroll.status}
               </TableCell>
               <TableCell>
-                {enroll.status === "PENDING" && (
+                {enroll.status === "INSTALLMENT" && (
                   <Button
                     variant="contained"
                     color="warning"

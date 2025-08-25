@@ -24,17 +24,20 @@ public class LiveSessionTeacherController {
     @PostMapping("/add")
     public ResponseEntity<?> addSession(@RequestBody Map<String, Object> request) {
         try {
-            Integer courseId = Integer.valueOf(request.get("courseId").toString());
+            Course course= courseRepository.findByCourseId((String) request.get("courseId"));
+            Integer courseId = course.getId();
             String date = request.get("date").toString();
             String liveUrl = request.get("liveUrl").toString();
-
-            Course course = courseRepository.findById(courseId)
+            String instructor = (String) request.get("instructorId");
+            System.out.println(instructor);
+            Course courses = courseRepository.findById(courseId)
                     .orElseThrow(() -> new RuntimeException("Course not found"));
 
             LiveSessionTeacher session = new LiveSessionTeacher();
-            session.setCourse(course);
+            session.setCourse(courses);
             session.setDate(date);
             session.setLiveUrl(liveUrl);
+            session.setInstructorId(instructor);
 
             liveSessionTeacherRepository.save(session);
 
@@ -45,7 +48,7 @@ public class LiveSessionTeacherController {
     }
 
 
-    @GetMapping("/display")
+    @GetMapping("/live-display")
     public ResponseEntity<List<LiveSessionTeacher>> getAllSessions() {
         return ResponseEntity.ok(liveSessionTeacherRepository.findAll());
     }

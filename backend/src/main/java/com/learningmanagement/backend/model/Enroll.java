@@ -28,14 +28,14 @@ public class Enroll {
     private String email;
 
     @JsonProperty("enrollDate")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "M/d/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate enrollDate;
 
-    @JsonProperty("payementId")
-    private String payementId;
+    @JsonProperty("paymentId")
+    private String paymentId;
 
     @JsonProperty("contactNumber")
-    private String contactNumber;
+    private long contactNumber;
 
     @JsonProperty("studentName")
     private String studentName;
@@ -43,16 +43,16 @@ public class Enroll {
     private STATUS status;
 
     public enum STATUS {
-        PENDING, COMPLETED
+        FULL, INSTALLMENT
     }
 
-    public Enroll(UUID enrollId, String courseId, String userId, LocalDate enrollDate, String payementId,
-                  String email, String contactNumber, STATUS status) {
+    public Enroll(UUID enrollId, String courseId, String userId, LocalDate enrollDate, String paymentId,
+                  String email, long contactNumber, STATUS status) {
         this.enrollId = enrollId;
         this.courseId = courseId;
         this.userId = userId;
         this.enrollDate = enrollDate;
-        this.payementId = payementId;
+        this.paymentId = paymentId;
         this.email = email;
         this.contactNumber = contactNumber;
         this.status = status;
@@ -93,12 +93,12 @@ public class Enroll {
         this.enrollDate = enrollDate;
     }
 
-    public String getPayementId() {
-        return payementId;
+    public String getPaymentId() {
+        return paymentId;
     }
 
-    public void setPayementId(String payementId) {
-        this.payementId = payementId;
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
     }
 
     public String getEmail() {
@@ -109,11 +109,11 @@ public class Enroll {
         this.email = email;
     }
 
-    public String getContactNumber() {
+    public long getContactNumber() {
         return contactNumber;
     }
 
-    public void setContactNumber(String contactNumber) {
+    public void setContactNumber(long contactNumber) {
         this.contactNumber = contactNumber;
     }
 

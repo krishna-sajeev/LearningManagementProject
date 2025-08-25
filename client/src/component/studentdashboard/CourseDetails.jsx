@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Box, Typography, Button, Card, CardContent, CardActions, CardMedia, Chip, Grid } from '@mui/material';
+import {
+  Box, Typography, Button, Card, CardContent, CardActions, CardMedia,
+  Chip, Grid, Dialog, DialogTitle, DialogContent, DialogActions
+} from '@mui/material';
 import axiosInstance from '../../axiosinteceptor';
 
-// Utility: load Razorpay SDK
+// Utility: load Razorpay SDK dynamically
 const loadRazorpay = () =>
   new Promise((resolve) => {
     if (window.Razorpay) return resolve(true);
@@ -21,7 +24,10 @@ const CourseDetails = () => {
   const { course } = location.state || {};
   const [courseData, setCourseData] = useState(course);
   const user = localStorage.getItem("id");
-  const fullName = localStorage.getItem("userName")
+
+  // Popup state
+  const [openDialog, setOpenDialog] = useState(false);
+  const [paymentType, setPaymentType] = useState("");
 
   useEffect(() => {
     if (!courseData) {
@@ -39,8 +45,16 @@ const CourseDetails = () => {
     );
   }
 
-  // 🔥 Payment + Enrollment
-  const handleEnroll = async () => {
+  // Step 1: Ask for payment type
+  const handleEnrollClick = () => {
+    setOpenDialog(true);
+  };
+
+  // Step 2: After selecting payment type → start Razorpay
+  const handlePaymentProceed = async (type) => {
+    setPaymentType(type);
+    setOpenDialog(false);
+
     const loaded = await loadRazorpay();
     if (!loaded) {
       alert("Razorpay SDK failed to load. Check your internet.");
@@ -48,14 +62,13 @@ const CourseDetails = () => {
     }
 
     try {
-      // Step 1: Create order from backend
+      // Create order from backend
       const orderRes = await axiosInstance.post("http://localhost:8081/api/payments/create-order", {
         courseId: courseData.courseId
-        
       });
       const orderData = orderRes.data;
 
-      // Step 2: Open Razorpay Checkout
+      // Razorpay Checkout
       const options = {
         key: orderData.key,
         amount: orderData.amount,
@@ -69,46 +82,47 @@ const CourseDetails = () => {
           contact: "9999999999",
         },
         
-        notes: { courseId: courseData.id },
+        notes: { courseId: courseData.courseId, status: type },
+        
         handler: async (response) => {
-          // Step 3: Verify payment with backend
-          const verifyRes = await axiosInstance.post("http://localhost:8081/api/payments/verify", response);
-          if (verifyRes.data.status === "verified") {
-            // Step 4: Only enroll if payment verified
-            await axiosInstance.post("http://localhost:8081/enroll", {
-              userId: user,
-              courseId: courseData.id,
-              enrollDate: new Date().toLocaleDateString(),
-              status : "COMPLETED",
-              payementId: orderRes.data.orderId,
-              studentname: fullName ,
-              email: localStorage.getItem("email")
-
-
-
+          try {
+            console.log(type)
+            // verify payment with backend
+            const verifyRes = await axiosInstance.post(
+              "http://localhost:8081/api/payments/verify",
+              response
               
+            );
 
+            console.log(verifyRes.data)
+            if (verifyRes.data.status === "verified") {
+              // Save enrollment with paymentId + status
+              await axiosInstance.post("http://localhost:8081/enroll", {
+                userId: user,
+                courseId: courseData.courseId,
+                enrollDate: new Date().toISOString().split("T")[0],  // gives "2025-08-23"
+                status: type, // FULL / INSTALLMENT
+                paymentId: verifyRes.data.paymentId
+              });
 
-            });
-            alert("✅ Payment successful! You are enrolled.");
-            navigate("/student/enrolled-course"); // redirect if needed
-          } else {
-            alert("❌ Payment verification failed");
+              alert(`✅ Enrolled with ${type} payment!`);
+              navigate("/student/enrolled-course");
+            } else {
+              alert("❌ Payment verification failed");
+            }
+          } catch (err) {
+            console.error("Error saving enrollment:", err);
+            alert("Something went wrong, please try again.");
           }
         },
-        theme: { color: "#3399cc" },
+        theme: { color: "#3399cc" }
       };
 
-      const rzp = new window.Razorpay(options);
-      rzp.on("payment.failed", (err) => {
-        console.error("Payment failed", err.error);
-        alert("❌ Payment failed: " + err.error.description);
-      });
-      rzp.open();
-
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
     } catch (err) {
-      console.error("Error during payment:", err);
-      alert("Something went wrong, please try again.");
+      console.error("Error creating Razorpay order:", err);
+      alert("Failed to start payment. Try again.");
     }
   };
 
@@ -116,20 +130,17 @@ const CourseDetails = () => {
     <Box sx={{ p: 4, backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
       <Card sx={{ maxWidth: 1200, margin: 'auto', borderRadius: 4, boxShadow: 6, overflow: 'hidden' }}>
         <Grid container>
+          {/* Left - Image */}
           <Grid item xs={12} md={6}>
             <CardMedia
               component="img"
-              sx={{
-                height: '100%',
-                objectFit: 'cover',
-                transition: 'transform 0.4s ease',
-                '&:hover': { transform: 'scale(1.05)' },
-              }}
+              sx={{ height: '100%', objectFit: 'cover' }}
               image={courseData.icon}
               alt={courseData.title}
             />
           </Grid>
 
+          {/* Right - Details */}
           <Grid item xs={12} md={6}>
             <CardContent sx={{ p: 4 }}>
               <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold', color: '#2c3e50' }}>
@@ -144,7 +155,11 @@ const CourseDetails = () => {
                 <Chip label={`Duration: ${courseData.duration}`} color="secondary" variant="outlined" />
                 <Chip label={`Start Date: ${courseData.startdate}`} variant="outlined" />
                 <Chip label={`Fee: ₹${courseData.fee}`} color="success" variant="outlined" />
-                <Chip label={courseData.status} color={courseData.status?.toLowerCase() === 'active' ? 'success' : 'warning'} variant="outlined" />
+                <Chip
+                  label={courseData.status}
+                  color={courseData.status?.toLowerCase() === 'active' ? 'success' : 'warning'}
+                  variant="outlined"
+                />
               </Box>
 
               <CardActions sx={{ mt: 2 }}>
@@ -159,13 +174,8 @@ const CourseDetails = () => {
                     fontSize: '1.1rem',
                     fontWeight: 'bold',
                     borderRadius: 2,
-                    '&:hover': {
-                      background: 'linear-gradient(45deg, #1976d2, #00bcd4)',
-                      transform: 'scale(1.05)',
-                    },
-                    transition: 'all 0.3s ease',
                   }}
-                  onClick={handleEnroll}
+                  onClick={handleEnrollClick}
                 >
                   Enroll Now
                 </Button>
@@ -174,6 +184,22 @@ const CourseDetails = () => {
           </Grid>
         </Grid>
       </Card>
+
+      {/* 🔥 Payment Type Popup */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Select Payment Option</DialogTitle>
+        <DialogContent>
+          <Typography>How would you like to pay for this course?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => handlePaymentProceed("FULL")} variant="contained" color="success">
+            Full Payment
+          </Button>
+          <Button onClick={() => handlePaymentProceed("INSTALLMENT")} variant="outlined" color="primary">
+            Installment
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
